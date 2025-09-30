@@ -1,4 +1,8 @@
 import type { Metadata } from 'next'
+import { prisma } from '@/lib/prisma'
+import { Calendar, User, Tag, ArrowRight } from 'lucide-react'
+import Link from 'next/link'
+import Image from 'next/image'
 
 export const metadata: Metadata = {
   title: 'Blog - JEIns | Articoli e News sulla Junior Enterprise',
@@ -14,7 +18,17 @@ export const metadata: Metadata = {
   },
 }
 
-export default function BlogPage() {
+async function getPublishedPosts() {
+  return await prisma.blogPost.findMany({
+    where: { isPublished: true },
+    orderBy: { publishedAt: 'desc' },
+    take: 6
+  })
+}
+
+export default async function BlogPage() {
+  const posts = await getPublishedPosts()
+
   return (
     <main>
       {/* Hero Section */}
@@ -26,47 +40,109 @@ export default function BlogPage() {
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 newspaper-headline">
-            Blog
+            Blog JEIns
           </h1>
           <p className="text-xl max-w-3xl mx-auto">
-            Articoli, insights e novità dal mondo della consulenza e dell'innovazione
+            Scopri gli ultimi articoli, approfondimenti e novità dal mondo delle Junior Enterprise
           </p>
         </div>
       </section>
 
-      {/* Coming Soon */}
-      <section className="py-20 section-white relative">
-        {/* Elementi decorativi */}
-        <div className="decorative-corner top-0 left-0"></div>
-        <div className="decorative-corner-bottom-right bottom-0 right-0"></div>
-        <div className="decorative-strip decorative-strip-top"></div>
-        
-        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="animate-fade-in-up">
-            <div className="bg-insubria-50 border-2 border-insubria-200 rounded-2xl p-12 shadow-sm">
-              <h2 className="text-3xl font-bold mb-6 newspaper-headline">
-                Prossimamente
-              </h2>
-              <p className="text-neutral-500 text-lg mb-8">
-                Stiamo lavorando per portarti contenuti di qualità su temi di attualità, 
-                innovazione e consulenza aziendale. Torna presto per scoprire i nostri articoli!
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a
-                  href="/newsletter"
-                  className="bg-insubria-600 text-white px-8 py-4 rounded-2xl font-semibold hover:bg-insubria-700 transition-colors"
-                >
-                  Iscriviti alla newsletter
-                </a>
-                <a
-                  href="/contatti"
-                  className="border-2 border-insubria-600 text-insubria-600 px-8 py-4 rounded-2xl font-semibold hover:bg-insubria-50 transition-colors"
-                >
-                  Contattaci
-                </a>
-              </div>
-            </div>
+      {/* Blog Posts */}
+      <section className="py-16 section-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Ultimi Articoli
+            </h2>
+            <p className="text-lg text-gray-600">
+              Approfondimenti, guide e novità dal team JEIns
+            </p>
           </div>
+
+          {posts.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {posts.map((post) => {
+                const tags = post.tags ? JSON.parse(post.tags) : []
+                return (
+                  <article key={post.id} className="bg-white border-2 border-insubria-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                    {post.featuredImage && (
+                      <div className="aspect-video w-full">
+                        <Image
+                          src={post.featuredImage}
+                          alt={post.title}
+                          width={400}
+                          height={225}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                    
+                    <div className="p-6">
+                      <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
+                        <div className="flex items-center gap-1">
+                          <Calendar className="h-4 w-4" />
+                          <span>{new Date(post.publishedAt || post.createdAt).toLocaleDateString('it-IT')}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <User className="h-4 w-4" />
+                          <span>JEIns Team</span>
+                        </div>
+                      </div>
+
+                      <h3 className="text-xl font-semibold text-gray-900 mb-3 line-clamp-2">
+                        {post.title}
+                      </h3>
+
+                      {post.excerpt && (
+                        <p className="text-gray-600 mb-4 line-clamp-3">
+                          {post.excerpt}
+                        </p>
+                      )}
+
+                      {tags.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {tags.slice(0, 3).map((tag: string, index: number) => (
+                            <span
+                              key={index}
+                              className="inline-flex px-2 py-1 bg-insubria-100 text-insubria-800 rounded-full text-xs font-medium"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                          {tags.length > 3 && (
+                            <span className="text-xs text-gray-500">
+                              +{tags.length - 3} altri
+                            </span>
+                          )}
+                        </div>
+                      )}
+
+                      <Link
+                        href={`/blog/${post.slug}`}
+                        className="inline-flex items-center gap-2 text-insubria-600 hover:text-insubria-700 font-medium transition-colors"
+                      >
+                        Leggi tutto
+                        <ArrowRight className="h-4 w-4" />
+                      </Link>
+                    </div>
+                  </article>
+                )
+              })}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <div className="mx-auto h-12 w-12 text-gray-400 mb-4">
+                <Tag className="h-12 w-12" />
+              </div>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                Nessun articolo pubblicato
+              </h3>
+              <p className="text-gray-500">
+                Gli articoli del blog saranno disponibili presto.
+              </p>
+            </div>
+          )}
         </div>
       </section>
     </main>
