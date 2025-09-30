@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { signIn, getSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Eye, EyeOff, Lock, Mail } from 'lucide-react'
@@ -12,6 +12,15 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+
+  useEffect(() => {
+    // Check if user is already logged in
+    getSession().then((session) => {
+      if (session) {
+        router.push('/admin')
+      }
+    })
+  }, [router])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -26,7 +35,7 @@ export default function LoginPage() {
 
       if (result?.error) {
         toast.error('Credenziali non valide')
-      } else {
+      } else if (result?.ok) {
         toast.success('Login effettuato con successo')
         router.push('/admin')
       }

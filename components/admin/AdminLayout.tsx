@@ -1,6 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { 
@@ -35,6 +37,30 @@ export default function AdminLayout({
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const pathname = usePathname()
+  const { data: session, status } = useSession()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (status === 'loading') return // Still loading
+    if (!session) {
+      router.push('/admin/login')
+    }
+  }, [session, status, router])
+
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-insubria-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Caricamento...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!session) {
+    return null // Will redirect to login
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
