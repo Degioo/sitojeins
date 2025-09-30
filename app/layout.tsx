@@ -5,7 +5,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import CookieBanner from '@/components/CookieBanner'
 import StructuredData from '@/components/StructuredData'
-import { SessionProvider } from 'next-auth/react'
+import AuthProvider from '@/components/AuthProvider'
 
 const montserrat = Montserrat({ 
   subsets: ['latin'],
@@ -14,6 +14,7 @@ const montserrat = Montserrat({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://jeins.it'),
   title: 'JEIns - Junior Enterprise Insubria | Consulenza e Progetti Universitari',
   description: 'JEIns è la Junior Enterprise dell\'Università dell\'Insubria. Offriamo consulenza aziendale, progetti di ricerca e opportunità di crescita per studenti e aziende. Scopri i nostri servizi di marketing, sviluppo web e business consulting.',
   keywords: 'Junior Enterprise, Università Insubria, consulenza aziendale, progetti universitari, studenti, business consulting, marketing, sviluppo web, Varese, Como',
@@ -72,12 +73,12 @@ export default function RootLayout({
         <StructuredData />
       </head>
       <body className={`${montserrat.variable} font-montserrat antialiased`}>
-        <SessionProvider>
+        <AuthProvider>
           <Navbar />
           {children}
           <Footer />
           <CookieBanner />
-        </SessionProvider>
+        </AuthProvider>
       </body>
     </html>
   )
