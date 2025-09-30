@@ -1,5 +1,21 @@
 import ServiceCard from '@/components/ServiceCard'
 
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Servizi - JEIns | Consulenza Aziendale e Progetti Universitari',
+  description: 'Scopri i servizi di JEIns: consulenza aziendale, sviluppo web, marketing digitale, business consulting e progetti di ricerca. Soluzioni innovative per aziende e opportunità di crescita per studenti.',
+  keywords: 'servizi JEIns, consulenza aziendale, sviluppo web, marketing digitale, business consulting, progetti universitari, servizi studenti',
+  openGraph: {
+    title: 'Servizi - JEIns | Consulenza Aziendale e Progetti Universitari',
+    description: 'Scopri i servizi di JEIns: consulenza aziendale, sviluppo web, marketing digitale e business consulting.',
+    url: 'https://jeins.it/servizi',
+  },
+  alternates: {
+    canonical: 'https://jeins.it/servizi',
+  },
+}
+
 export default function ServiziPage() {
   const services = [
     {

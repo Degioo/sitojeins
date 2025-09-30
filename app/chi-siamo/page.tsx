@@ -1,6 +1,22 @@
 import { Target, Eye, Users, Award, CheckCircle } from 'lucide-react'
 import TeamMember from '@/components/TeamMember'
 
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Chi Siamo - JEIns | Il Team e la Nostra Missione',
+  description: 'Scopri JEIns, la Junior Enterprise dell\'Università dell\'Insubria. Conosci il nostro team di studenti motivati, la nostra missione e i valori che ci guidano nel fornire consulenza aziendale di qualità.',
+  keywords: 'team JEIns, missione Junior Enterprise, valori universitari, studenti Insubria, chi siamo JEIns',
+  openGraph: {
+    title: 'Chi Siamo - JEIns | Il Team e la Nostra Missione',
+    description: 'Scopri JEIns, la Junior Enterprise dell\'Università dell\'Insubria. Conosci il nostro team di studenti motivati e la nostra missione.',
+    url: 'https://jeins.it/chi-siamo',
+  },
+  alternates: {
+    canonical: 'https://jeins.it/chi-siamo',
+  },
+}
+
 export default function ChiSiamoPage() {
   return (
     <main>

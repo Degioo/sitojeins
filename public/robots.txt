@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://jeins.it/sitemap.xml
+
+# Disallow admin areas (if any)
+Disallow: /admin/
+Disallow: /api/
+
+# Allow all other content
+Allow: /chi-siamo
+Allow: /servizi
+Allow: /recruitment
+Allow: /contatti
+Allow: /blog

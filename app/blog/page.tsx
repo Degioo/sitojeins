@@ -1,3 +1,19 @@
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Blog - JEIns | Articoli e News sulla Junior Enterprise',
+  description: 'Scopri gli ultimi articoli e news di JEIns. Approfondimenti su consulenza aziendale, progetti universitari, eventi e opportunità per studenti dell\'Università dell\'Insubria.',
+  keywords: 'blog JEIns, articoli Junior Enterprise, news università, progetti studenti, consulenza aziendale blog',
+  openGraph: {
+    title: 'Blog - JEIns | Articoli e News sulla Junior Enterprise',
+    description: 'Scopri gli ultimi articoli e news di JEIns su consulenza aziendale e progetti universitari.',
+    url: 'https://jeins.it/blog',
+  },
+  alternates: {
+    canonical: 'https://jeins.it/blog',
+  },
+}
+
 export default function BlogPage() {
   return (
     <main>

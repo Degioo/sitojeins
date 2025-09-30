@@ -1,5 +1,21 @@
 import ContactForm from '@/components/ContactForm'
 
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Contatti - JEIns | Contattaci per Consulenza e Progetti',
+  description: 'Contatta JEIns per consulenza aziendale, progetti di ricerca e collaborazioni. Siamo disponibili per aziende e studenti dell\'Università dell\'Insubria. Richiedi un preventivo gratuito.',
+  keywords: 'contatti JEIns, consulenza gratuita, preventivo JEIns, contatto Junior Enterprise, Università Insubria contatti',
+  openGraph: {
+    title: 'Contatti - JEIns | Contattaci per Consulenza e Progetti',
+    description: 'Contatta JEIns per consulenza aziendale e progetti di ricerca. Richiedi un preventivo gratuito.',
+    url: 'https://jeins.it/contatti',
+  },
+  alternates: {
+    canonical: 'https://jeins.it/contatti',
+  },
+}
+
 export default function ContattiPage() {
   return (
     <main>

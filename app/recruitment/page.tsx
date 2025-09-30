@@ -1,5 +1,21 @@
 import RecruitmentForm from '@/components/RecruitmentForm'
 
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Recruitment - JEIns | Unisciti al Nostro Team di Studenti',
+  description: 'Candidati per entrare a far parte di JEIns! Offriamo opportunità di crescita professionale, progetti reali e esperienza pratica per studenti dell\'Università dell\'Insubria. Scopri i ruoli disponibili.',
+  keywords: 'recruitment JEIns, candidature studenti, opportunità lavoro universitario, team JEIns, posizioni aperte, carriera studenti',
+  openGraph: {
+    title: 'Recruitment - JEIns | Unisciti al Nostro Team di Studenti',
+    description: 'Candidati per entrare a far parte di JEIns! Opportunità di crescita professionale per studenti dell\'Università dell\'Insubria.',
+    url: 'https://jeins.it/recruitment',
+  },
+  alternates: {
+    canonical: 'https://jeins.it/recruitment',
+  },
+}
+
 export default function RecruitmentPage() {
   const faqs = [
     {
