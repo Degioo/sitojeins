@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import CookieBanner from '@/components/CookieBanner'
 import StructuredData from '@/components/StructuredData'
+import { SessionProvider } from 'next-auth/react'
 
 const montserrat = Montserrat({ 
   subsets: ['latin'],
@@ -71,10 +72,12 @@ export default function RootLayout({
         <StructuredData />
       </head>
       <body className={`${montserrat.variable} font-montserrat antialiased`}>
-        <Navbar />
-        {children}
-        <Footer />
-        <CookieBanner />
+        <SessionProvider>
+          <Navbar />
+          {children}
+          <Footer />
+          <CookieBanner />
+        </SessionProvider>
       </body>
     </html>
   )
