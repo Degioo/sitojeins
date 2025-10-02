@@ -9,6 +9,7 @@ const recruitmentSettingsSchema = z.object({
   description: z.string().optional(),
   requirements: z.string().optional(),
   benefits: z.string().optional(),
+  googleFormUrl: z.string().url().optional().or(z.literal('')),
 })
 
 interface RouteParams {

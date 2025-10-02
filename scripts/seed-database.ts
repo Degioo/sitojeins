@@ -214,7 +214,8 @@ async function seedDatabase() {
       closeDate: new Date('2024-03-31'),
       description: "Stiamo cercando studenti motivati e intraprendenti per entrare a far parte del nostro team. Offriamo opportunità di crescita professionale, progetti reali e un ambiente stimolante per sviluppare le tue competenze.",
       requirements: "Studenti iscritti all'Università dell'Insubria, buone capacità comunicative, spirito di squadra e voglia di mettersi in gioco.",
-      benefits: "Esperienza professionale reale, networking con aziende, sviluppo di competenze trasversali, certificazioni e possibilità di crescita personale e professionale."
+      benefits: "Esperienza professionale reale, networking con aziende, sviluppo di competenze trasversali, certificazioni e possibilità di crescita personale e professionale.",
+      googleFormUrl: "https://forms.gle/example"
     }
   })
 

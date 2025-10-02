@@ -1,5 +1,5 @@
-import RecruitmentForm from '@/components/RecruitmentForm'
 import { prisma } from '@/lib/prisma'
+import { ExternalLink, Users, Calendar, MapPin, Clock } from 'lucide-react'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -71,15 +71,91 @@ export default async function RecruitmentPage() {
         </div>
       </section>
 
-      {/* Form di candidatura */}
+      {/* Google Form di candidatura */}
       <section className="py-20 section-white relative">
         {/* Elementi decorativi */}
         <div className="decorative-corner top-0 left-0"></div>
         <div className="decorative-corner-bottom-right bottom-0 right-0"></div>
         <div className="decorative-strip decorative-strip-top"></div>
         
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <RecruitmentForm />
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 animate-fade-in-up">
+            <h2 className="text-3xl font-bold mb-6 newspaper-headline">
+              Candidati ora
+            </h2>
+            <p className="text-neutral-500 text-lg">
+              Compila il form per candidarti e unisciti al nostro team
+            </p>
+          </div>
+
+          {recruitment ? (
+            <div className="bg-white border-2 border-insubria-200 rounded-2xl p-8 shadow-sm animate-fade-in-up">
+              <div className="text-center mb-8">
+                <div className="bg-insubria-50 text-insubria-600 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
+                  <Users className="h-10 w-10" />
+                </div>
+                <h3 className="text-2xl font-bold text-insubria-600 mb-4">
+                  Form di Candidatura JEIns
+                </h3>
+                <p className="text-neutral-500 mb-6">
+                  Clicca il pulsante qui sotto per accedere al form di candidatura su Google Forms
+                </p>
+                
+                <a
+                  href={recruitment.googleFormUrl || "https://forms.gle/example"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center px-8 py-4 bg-insubria-600 text-white rounded-2xl font-semibold hover:bg-insubria-700 transition-colors text-lg"
+                >
+                  <ExternalLink className="h-5 w-5 mr-2" />
+                  Compila il Form di Candidatura
+                </a>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                <div className="text-center">
+                  <div className="bg-insubria-50 text-insubria-600 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
+                    <Calendar className="h-6 w-6" />
+                  </div>
+                  <h4 className="font-semibold text-insubria-600 mb-2">Scadenza</h4>
+                  <p className="text-sm text-neutral-500">
+                    {recruitment.closeDate 
+                      ? new Date(recruitment.closeDate).toLocaleDateString('it-IT')
+                      : 'Da definire'
+                    }
+                  </p>
+                </div>
+                
+                <div className="text-center">
+                  <div className="bg-insubria-50 text-insubria-600 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
+                    <MapPin className="h-6 w-6" />
+                  </div>
+                  <h4 className="font-semibold text-insubria-600 mb-2">Modalità</h4>
+                  <p className="text-sm text-neutral-500">Online</p>
+                </div>
+                
+                <div className="text-center">
+                  <div className="bg-insubria-50 text-insubria-600 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
+                    <Clock className="h-6 w-6" />
+                  </div>
+                  <h4 className="font-semibold text-insubria-600 mb-2">Tempo</h4>
+                  <p className="text-sm text-neutral-500">10-15 minuti</p>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="bg-white border-2 border-insubria-200 rounded-2xl p-8 shadow-sm animate-fade-in-up text-center">
+              <div className="bg-gray-50 text-gray-400 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
+                <Users className="h-10 w-10" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-600 mb-4">
+                Recruitment Chiuso
+              </h3>
+              <p className="text-gray-500">
+                Al momento non ci sono posizioni aperte. Torna a trovarci presto per nuove opportunità!
+              </p>
+            </div>
+          )}
         </div>
       </section>
 

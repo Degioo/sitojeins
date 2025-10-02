@@ -1,5 +1,5 @@
 import ContactForm from '@/components/ContactForm'
-
+import { prisma } from '@/lib/prisma'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -16,7 +16,23 @@ export const metadata: Metadata = {
   },
 }
 
-export default function ContattiPage() {
+async function getContacts() {
+  return await prisma.contact.findMany({
+    where: { isActive: true },
+    orderBy: { order: 'asc' }
+  })
+}
+
+export default async function ContattiPage() {
+  const contacts = await getContacts()
+  
+  // Organizza i contatti per tipo
+  const emailContact = contacts.find(c => c.type === 'email')
+  const phoneContact = contacts.find(c => c.type === 'phone')
+  const addressContact = contacts.find(c => c.type === 'address')
+  const facebookContact = contacts.find(c => c.type === 'facebook')
+  const instagramContact = contacts.find(c => c.type === 'instagram')
+  const linkedinContact = contacts.find(c => c.type === 'linkedin')
   return (
     <main>
       {/* Hero Section */}
@@ -67,7 +83,7 @@ export default function ContattiPage() {
                   Email
                 </h3>
                 <p className="text-neutral-500 mb-1">
-                  info@jeins.it
+                  {emailContact?.value || 'info@jeins.it'}
                 </p>
                 <p className="text-neutral-500">
                   recruitment@jeins.it
@@ -84,7 +100,7 @@ export default function ContattiPage() {
                   Telefono
                 </h3>
                 <p className="text-neutral-500 mb-1">
-                  +39 123 456 7890
+                  {phoneContact?.value || '+39 123 456 7890'}
                 </p>
                 <p className="text-neutral-500 text-sm">
                   Lun-Ven 9:00-18:00
@@ -101,7 +117,7 @@ export default function ContattiPage() {
                   Sede
                 </h3>
                 <p className="text-neutral-500 mb-1">
-                  Università dell'Insubria
+                  {addressContact?.value || 'Università dell\'Insubria'}
                 </p>
                 <p className="text-neutral-500">
                   Varese, Italia
@@ -129,24 +145,36 @@ export default function ContattiPage() {
             </p>
             
             <div className="flex justify-center space-x-6">
-              <a 
-                href="#" 
-                className="bg-insubria-50 text-insubria-600 px-6 py-3 rounded-2xl font-semibold hover:bg-insubria-600 hover:text-white transition-colors"
-              >
-                Facebook
-              </a>
-              <a 
-                href="#" 
-                className="bg-insubria-50 text-insubria-600 px-6 py-3 rounded-2xl font-semibold hover:bg-insubria-600 hover:text-white transition-colors"
-              >
-                Instagram
-              </a>
-              <a 
-                href="#" 
-                className="bg-insubria-50 text-insubria-600 px-6 py-3 rounded-2xl font-semibold hover:bg-insubria-600 hover:text-white transition-colors"
-              >
-                LinkedIn
-              </a>
+              {facebookContact && (
+                <a 
+                  href={facebookContact.value} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="bg-insubria-50 text-insubria-600 px-6 py-3 rounded-2xl font-semibold hover:bg-insubria-600 hover:text-white transition-colors"
+                >
+                  Facebook
+                </a>
+              )}
+              {instagramContact && (
+                <a 
+                  href={instagramContact.value} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="bg-insubria-50 text-insubria-600 px-6 py-3 rounded-2xl font-semibold hover:bg-insubria-600 hover:text-white transition-colors"
+                >
+                  Instagram
+                </a>
+              )}
+              {linkedinContact && (
+                <a 
+                  href={linkedinContact.value} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="bg-insubria-50 text-insubria-600 px-6 py-3 rounded-2xl font-semibold hover:bg-insubria-600 hover:text-white transition-colors"
+                >
+                  LinkedIn
+                </a>
+              )}
             </div>
           </div>
         </div>

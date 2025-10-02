@@ -116,15 +116,16 @@ model BlogPost {
 }
 
 model Recruitment {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  isOpen      Boolean  @default(false)
-  openDate    DateTime?
-  closeDate   DateTime?
-  description String?
-  requirements String?
-  benefits    String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  isOpen        Boolean  @default(false)
+  openDate      DateTime?
+  closeDate     DateTime?
+  description   String?
+  requirements  String?
+  benefits      String?
+  googleFormUrl String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model RecruitmentApplication {

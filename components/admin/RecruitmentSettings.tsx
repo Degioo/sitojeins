@@ -16,6 +16,7 @@ const recruitmentSettingsSchema = z.object({
   description: z.string().optional(),
   requirements: z.string().optional(),
   benefits: z.string().optional(),
+  googleFormUrl: z.string().url().optional().or(z.literal('')),
 })
 
 type RecruitmentSettingsData = z.infer<typeof recruitmentSettingsSchema>
@@ -29,6 +30,7 @@ interface RecruitmentSettingsProps {
     description?: string
     requirements?: string
     benefits?: string
+    googleFormUrl?: string
   }
 }
 
@@ -51,6 +53,7 @@ export default function RecruitmentSettings({ recruitment }: RecruitmentSettings
       description: recruitment.description || '',
       requirements: recruitment.requirements || '',
       benefits: recruitment.benefits || '',
+      googleFormUrl: recruitment.googleFormUrl || '',
     } : {
       isOpen: false,
       openDate: '',
@@ -58,6 +61,7 @@ export default function RecruitmentSettings({ recruitment }: RecruitmentSettings
       description: '',
       requirements: '',
       benefits: '',
+      googleFormUrl: '',
     }
   })
 
@@ -233,6 +237,25 @@ export default function RecruitmentSettings({ recruitment }: RecruitmentSettings
           <p className="mt-1 text-xs text-gray-500">
             Descrivi i vantaggi di far parte del team JEIns
           </p>
+        </div>
+
+        {/* Google Form URL */}
+        <div className="bg-white rounded-lg border border-gray-200 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Google Form</h2>
+          <input
+            {...register('googleFormUrl')}
+            type="url"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-insubria-500 focus:border-insubria-500"
+            placeholder="https://forms.gle/..."
+          />
+          <p className="mt-1 text-xs text-gray-500">
+            URL del Google Form per le candidature. Se vuoto, verrà mostrato un link di esempio.
+          </p>
+          {errors.googleFormUrl && (
+            <p className="mt-1 text-xs text-red-500">
+              {errors.googleFormUrl.message}
+            </p>
+          )}
         </div>
 
         <div className="flex justify-end gap-4">
