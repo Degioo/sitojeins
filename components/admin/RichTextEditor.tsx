@@ -36,7 +36,8 @@ import {
   Palette,
   Highlighter
 } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import dynamic from 'next/dynamic'
 
 interface RichTextEditorProps {
   content: string
@@ -44,11 +45,16 @@ interface RichTextEditorProps {
   placeholder?: string
 }
 
-export default function RichTextEditor({ content, onChange, placeholder = "Inizia a scrivere..." }: RichTextEditorProps) {
+function RichTextEditorComponent({ content, onChange, placeholder = "Inizia a scrivere..." }: RichTextEditorProps) {
   const [showLinkDialog, setShowLinkDialog] = useState(false)
   const [linkUrl, setLinkUrl] = useState('')
   const [showImageDialog, setShowImageDialog] = useState(false)
   const [imageUrl, setImageUrl] = useState('')
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -376,3 +382,15 @@ export default function RichTextEditor({ content, onChange, placeholder = "Inizi
     </div>
   )
 }
+
+// Export with dynamic import to prevent SSR issues
+const RichTextEditor = dynamic(() => Promise.resolve(RichTextEditorComponent), {
+  ssr: false,
+  loading: () => (
+    <div className="border border-gray-300 rounded-lg p-4 min-h-[200px] flex items-center justify-center">
+      <div className="text-gray-500">Caricamento editor...</div>
+    </div>
+  )
+})
+
+export default RichTextEditor
