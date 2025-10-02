@@ -1,5 +1,5 @@
 import RecruitmentForm from '@/components/RecruitmentForm'
-
+import { prisma } from '@/lib/prisma'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -16,7 +16,15 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RecruitmentPage() {
+async function getRecruitmentStatus() {
+  return await prisma.recruitment.findFirst({
+    where: { isOpen: true },
+    orderBy: { createdAt: 'desc' }
+  })
+}
+
+export default async function RecruitmentPage() {
+  const recruitment = await getRecruitmentStatus()
   const faqs = [
     {
       question: "Come funziona il processo di selezione?",
@@ -50,9 +58,16 @@ export default function RecruitmentPage() {
             Unisciti al nostro team
           </h1>
           <p className="text-xl max-w-3xl mx-auto">
-            Candidati per diventare parte di JEIns e sviluppa le tue competenze 
-            professionali attraverso progetti reali e un ambiente stimolante.
+            {recruitment?.description || "Candidati per diventare parte di JEIns e sviluppa le tue competenze professionali attraverso progetti reali e un ambiente stimolante."}
           </p>
+          {recruitment && (
+            <div className="mt-6">
+              <div className="inline-flex items-center px-4 py-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full text-white">
+                <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
+                Recruitment aperto
+              </div>
+            </div>
+          )}
         </div>
       </section>
 

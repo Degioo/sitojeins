@@ -4,8 +4,33 @@ import StatsCard from '@/components/StatsCard'
 import PortfolioCard from '@/components/PortfolioCard'
 import NewsletterBox from '@/components/NewsletterBox'
 import ContactForm from '@/components/ContactForm'
+import { prisma } from '@/lib/prisma'
 
-export default function HomePage() {
+async function getHomeData() {
+  const [services, projects, stats] = await Promise.all([
+    prisma.service.findMany({
+      where: { isActive: true },
+      orderBy: { order: 'asc' },
+      take: 3
+    }),
+    prisma.project.findMany({
+      where: { isActive: true },
+      orderBy: { order: 'asc' },
+      take: 6
+    }),
+    {
+      projects: await prisma.project.count({ where: { isActive: true } }),
+      services: await prisma.service.count({ where: { isActive: true } }),
+      applications: await prisma.recruitmentApplication.count(),
+      team: 15 // Placeholder per ora
+    }
+  ])
+
+  return { services, projects, stats }
+}
+
+export default async function HomePage() {
+  const { services, projects, stats } = await getHomeData()
   return (
     <main>
       {/* Hero Section */}
@@ -39,69 +64,29 @@ export default function HomePage() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="animate-fade-in-left hover-lift">
-              <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm">
-                <div className="mb-4">
-                  <span className="bg-insubria-600 text-white px-3 py-1 rounded-full text-sm font-medium">
-                    Business
-                  </span>
+            {services.map((service, index) => (
+              <div key={service.id} className="animate-fade-in-left hover-lift" style={{animationDelay: `${index * 0.1}s`}}>
+                <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm">
+                  <div className="mb-4">
+                    <span className="bg-insubria-600 text-white px-3 py-1 rounded-full text-sm font-medium">
+                      {service.sector}
+                    </span>
+                  </div>
+                  <h3 className="text-xl font-semibold text-insubria-600 mb-3">
+                    {service.title}
+                  </h3>
+                  <p className="text-neutral-500 mb-4">
+                    {service.description}
+                  </p>
+                  <a
+                    href="/contatti"
+                    className="inline-block text-insubria-600 font-medium hover:text-insubria-700 transition-colors"
+                  >
+                    Richiedi un preventivo →
+                  </a>
                 </div>
-                <h3 className="text-xl font-semibold text-insubria-600 mb-3">
-                  Consulenza Strategica
-                </h3>
-                <p className="text-neutral-500 mb-4">
-                  Analisi e strategie per il miglioramento dei processi aziendali e l'ottimizzazione delle risorse.
-                </p>
-                <a
-                  href="/contatti"
-                  className="inline-block text-insubria-600 font-medium hover:text-insubria-700 transition-colors"
-                >
-                  Richiedi un preventivo →
-                </a>
               </div>
-            </div>
-            <div className="animate-fade-in-up hover-lift">
-              <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm">
-                <div className="mb-4">
-                  <span className="bg-insubria-300 text-white px-3 py-1 rounded-full text-sm font-medium">
-                    Marketing
-                  </span>
-                </div>
-                <h3 className="text-xl font-semibold text-insubria-600 mb-3">
-                  Digital Marketing
-                </h3>
-                <p className="text-neutral-500 mb-4">
-                  Strategie digitali personalizzate per aumentare la visibilità e l'engagement del tuo brand.
-                </p>
-                <a
-                  href="/contatti"
-                  className="inline-block text-insubria-600 font-medium hover:text-insubria-700 transition-colors"
-                >
-                  Richiedi un preventivo →
-                </a>
-              </div>
-            </div>
-            <div className="animate-fade-in-right hover-lift">
-              <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm">
-                <div className="mb-4">
-                  <span className="bg-insubria-200 text-insubria-700 px-3 py-1 rounded-full text-sm font-medium">
-                    Tecnologia
-                  </span>
-                </div>
-                <h3 className="text-xl font-semibold text-insubria-600 mb-3">
-                  Sviluppo Software
-                </h3>
-                <p className="text-neutral-500 mb-4">
-                  Soluzioni software innovative e personalizzate per automatizzare i tuoi processi.
-                </p>
-                <a
-                  href="/contatti"
-                  className="inline-block text-insubria-600 font-medium hover:text-insubria-700 transition-colors"
-                >
-                  Richiedi un preventivo →
-                </a>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -127,7 +112,7 @@ export default function HomePage() {
             <div className="animate-scale-in hover-lift">
               <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-center">
                 <div className="text-4xl md:text-5xl font-bold text-white mb-2">
-                  50+
+                  {stats.projects}+
                 </div>
                 <div className="text-lg font-semibold mb-1">
                   Progetti completati
@@ -140,10 +125,10 @@ export default function HomePage() {
             <div className="animate-scale-in hover-lift" style={{animationDelay: '0.1s'}}>
               <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-center">
                 <div className="text-4xl md:text-5xl font-bold text-white mb-2">
-                  30+
+                  {stats.services}+
                 </div>
                 <div className="text-lg font-semibold mb-1">
-                  Aziende partner
+                  Servizi offerti
                 </div>
                 <div className="text-sm opacity-90">
                   Soddisfatte
@@ -153,7 +138,7 @@ export default function HomePage() {
             <div className="animate-scale-in hover-lift" style={{animationDelay: '0.2s'}}>
               <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-center">
                 <div className="text-4xl md:text-5xl font-bold text-white mb-2">
-                  25+
+                  {stats.team}+
                 </div>
                 <div className="text-lg font-semibold mb-1">
                   Membri attivi
@@ -166,10 +151,10 @@ export default function HomePage() {
             <div className="animate-scale-in hover-lift" style={{animationDelay: '0.3s'}}>
               <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-center">
                 <div className="text-4xl md:text-5xl font-bold text-white mb-2">
-                  3
+                  {stats.applications}
                 </div>
                 <div className="text-lg font-semibold mb-1">
-                  Anni di esperienza
+                  Candidature
                 </div>
                 <div className="text-sm opacity-90">
                   Nel settore
@@ -199,198 +184,47 @@ export default function HomePage() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="animate-fade-in-left hover-lift">
-              <div className="bg-white border-2 border-insubria-200 rounded-2xl overflow-hidden shadow-sm">
-                <div className="h-48 bg-insubria-50 flex items-center justify-center">
-                  <div className="text-insubria-600 text-center">
-                    <div className="text-4xl mb-2">📊</div>
-                    <div className="text-sm font-medium">Digitalizzazione Processi</div>
+            {projects.map((project, index) => {
+              const tags = project.tags ? JSON.parse(project.tags) : []
+              return (
+                <div key={project.id} className="animate-fade-in-left hover-lift" style={{animationDelay: `${index * 0.1}s`}}>
+                  <div className="bg-white border-2 border-insubria-200 rounded-2xl overflow-hidden shadow-sm">
+                    <div className="h-48 bg-insubria-50 flex items-center justify-center">
+                      {project.image ? (
+                        <img 
+                          src={project.image} 
+                          alt={project.title}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="text-insubria-600 text-center">
+                          <div className="text-4xl mb-2">📊</div>
+                          <div className="text-sm font-medium">{project.title}</div>
+                        </div>
+                      )}
+                    </div>
+                    <div className="p-6">
+                      <p className="text-sm text-insubria-600 font-medium mb-2">
+                        {project.client || 'JEIns'}
+                      </p>
+                      <h3 className="text-lg font-semibold text-insubria-600 mb-2">
+                        {project.title}
+                      </h3>
+                      <p className="text-neutral-500 mb-4">
+                        {project.description}
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {tags.slice(0, 3).map((tag: string, tagIndex: number) => (
+                          <span key={tagIndex} className="bg-insubria-50 text-insubria-600 px-2 py-1 rounded text-xs">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="p-6">
-                  <p className="text-sm text-insubria-600 font-medium mb-2">
-                    Azienda Manifatturiera
-                  </p>
-                  <h3 className="text-lg font-semibold text-insubria-600 mb-2">
-                    Digitalizzazione Processi
-                  </h3>
-                  <p className="text-neutral-500 mb-4">
-                    Implementazione di un sistema digitale per automatizzare i processi di gestione documentale.
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="bg-insubria-50 text-insubria-600 px-2 py-1 rounded text-xs">
-                      Digital Transformation
-                    </span>
-                    <span className="bg-insubria-50 text-insubria-600 px-2 py-1 rounded text-xs">
-                      Process Automation
-                    </span>
-                    <span className="bg-insubria-50 text-insubria-600 px-2 py-1 rounded text-xs">
-                      Efficiency
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="animate-fade-in-up hover-lift">
-              <div className="bg-white border-2 border-insubria-200 rounded-2xl overflow-hidden shadow-sm">
-                <div className="h-48 bg-insubria-50 flex items-center justify-center">
-                  <div className="text-insubria-600 text-center">
-                    <div className="text-4xl mb-2">📱</div>
-                    <div className="text-sm font-medium">Strategia Social Media</div>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <p className="text-sm text-insubria-600 font-medium mb-2">
-                    Startup Tech
-                  </p>
-                  <h3 className="text-lg font-semibold text-insubria-600 mb-2">
-                    Strategia Social Media
-                  </h3>
-                  <p className="text-neutral-500 mb-4">
-                    Sviluppo e implementazione di una strategia social media per aumentare l'engagement.
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="bg-insubria-50 text-insubria-600 px-2 py-1 rounded text-xs">
-                      Social Media
-                    </span>
-                    <span className="bg-insubria-50 text-insubria-600 px-2 py-1 rounded text-xs">
-                      Marketing
-                    </span>
-                    <span className="bg-insubria-50 text-insubria-600 px-2 py-1 rounded text-xs">
-                      Brand Awareness
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="animate-fade-in-right hover-lift">
-              <div className="bg-white border-2 border-insubria-200 rounded-2xl overflow-hidden shadow-sm">
-                <div className="h-48 bg-insubria-50 flex items-center justify-center">
-                  <div className="text-insubria-600 text-center">
-                    <div className="text-4xl mb-2">📈</div>
-                    <div className="text-sm font-medium">Analisi di Mercato</div>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <p className="text-sm text-insubria-600 font-medium mb-2">
-                    PMI Innovativa
-                  </p>
-                  <h3 className="text-lg font-semibold text-insubria-600 mb-2">
-                    Analisi di Mercato
-                  </h3>
-                  <p className="text-neutral-500 mb-4">
-                    Ricerca approfondita del mercato target per lanciare un nuovo prodotto innovativo.
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="bg-insubria-50 text-insubria-600 px-2 py-1 rounded text-xs">
-                      Market Research
-                    </span>
-                    <span className="bg-insubria-50 text-insubria-600 px-2 py-1 rounded text-xs">
-                      Strategy
-                    </span>
-                    <span className="bg-insubria-50 text-insubria-600 px-2 py-1 rounded text-xs">
-                      Innovation
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="animate-fade-in-left hover-lift">
-              <div className="bg-white border-2 border-insubria-200 rounded-2xl overflow-hidden shadow-sm">
-                <div className="h-48 bg-insubria-50 flex items-center justify-center">
-                  <div className="text-insubria-600 text-center">
-                    <div className="text-4xl mb-2">💻</div>
-                    <div className="text-sm font-medium">Sito Web Aziendale</div>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <p className="text-sm text-insubria-600 font-medium mb-2">
-                    Azienda Locale
-                  </p>
-                  <h3 className="text-lg font-semibold text-insubria-600 mb-2">
-                    Sito Web Aziendale
-                  </h3>
-                  <p className="text-neutral-500 mb-4">
-                    Progettazione e sviluppo di un sito web moderno e responsive per una PMI locale.
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="bg-insubria-50 text-insubria-600 px-2 py-1 rounded text-xs">
-                      Web Development
-                    </span>
-                    <span className="bg-insubria-50 text-insubria-600 px-2 py-1 rounded text-xs">
-                      UI/UX
-                    </span>
-                    <span className="bg-insubria-50 text-insubria-600 px-2 py-1 rounded text-xs">
-                      Responsive Design
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="animate-fade-in-up hover-lift">
-              <div className="bg-white border-2 border-insubria-200 rounded-2xl overflow-hidden shadow-sm">
-                <div className="h-48 bg-insubria-50 flex items-center justify-center">
-                  <div className="text-insubria-600 text-center">
-                    <div className="text-4xl mb-2">🔍</div>
-                    <div className="text-sm font-medium">Ottimizzazione SEO</div>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <p className="text-sm text-insubria-600 font-medium mb-2">
-                    E-commerce
-                  </p>
-                  <h3 className="text-lg font-semibold text-insubria-600 mb-2">
-                    Ottimizzazione SEO
-                  </h3>
-                  <p className="text-neutral-500 mb-4">
-                    Miglioramento del posizionamento sui motori di ricerca per aumentare la visibilità online.
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="bg-insubria-50 text-insubria-600 px-2 py-1 rounded text-xs">
-                      SEO
-                    </span>
-                    <span className="bg-insubria-50 text-insubria-600 px-2 py-1 rounded text-xs">
-                      Digital Marketing
-                    </span>
-                    <span className="bg-insubria-50 text-insubria-600 px-2 py-1 rounded text-xs">
-                      Visibility
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="animate-fade-in-right hover-lift">
-              <div className="bg-white border-2 border-insubria-200 rounded-2xl overflow-hidden shadow-sm">
-                <div className="h-48 bg-insubria-50 flex items-center justify-center">
-                  <div className="text-insubria-600 text-center">
-                    <div className="text-4xl mb-2">🎓</div>
-                    <div className="text-sm font-medium">Formazione Team</div>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <p className="text-sm text-insubria-600 font-medium mb-2">
-                    Azienda Servizi
-                  </p>
-                  <h3 className="text-lg font-semibold text-insubria-600 mb-2">
-                    Formazione Team
-                  </h3>
-                  <p className="text-neutral-500 mb-4">
-                    Programma di formazione personalizzato per migliorare le competenze digitali del team.
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="bg-insubria-50 text-insubria-600 px-2 py-1 rounded text-xs">
-                      Training
-                    </span>
-                    <span className="bg-insubria-50 text-insubria-600 px-2 py-1 rounded text-xs">
-                      Digital Skills
-                    </span>
-                    <span className="bg-insubria-50 text-insubria-600 px-2 py-1 rounded text-xs">
-                      Team Development
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
+              )
+            })}
           </div>
         </div>
       </section>

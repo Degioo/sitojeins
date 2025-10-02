@@ -1,5 +1,5 @@
 import ServiceCard from '@/components/ServiceCard'
-
+import { prisma } from '@/lib/prisma'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -16,49 +16,15 @@ export const metadata: Metadata = {
   },
 }
 
-export default function ServiziPage() {
-  const services = [
-    {
-      title: "Consulenza Strategica",
-      description: "Analisi approfondita dei processi aziendali e sviluppo di strategie personalizzate per il miglioramento dell'efficienza operativa e la crescita del business.",
-      sector: "Business Strategy"
-    },
-    {
-      title: "Digital Marketing",
-      description: "Strategie digitali complete per aumentare la visibilità online, migliorare l'engagement e generare lead qualificati attraverso canali digitali innovativi.",
-      sector: "Marketing Digitale"
-    },
-    {
-      title: "Sviluppo Software",
-      description: "Soluzioni software personalizzate per automatizzare processi, migliorare l'efficienza e digitalizzare le operazioni aziendali.",
-      sector: "Tecnologia"
-    },
-    {
-      title: "Analisi di Mercato",
-      description: "Ricerca di mercato approfondita per comprendere le tendenze, identificare opportunità e sviluppare strategie competitive.",
-      sector: "Market Research"
-    },
-    {
-      title: "Formazione e Training",
-      description: "Programmi di formazione personalizzati per sviluppare competenze digitali e professionali del team aziendale.",
-      sector: "Formazione"
-    },
-    {
-      title: "Brand Identity",
-      description: "Sviluppo dell'identità visiva e strategica del brand per comunicare efficacemente i valori e la mission aziendale.",
-      sector: "Branding"
-    },
-    {
-      title: "E-commerce Solutions",
-      description: "Progettazione e sviluppo di piattaforme e-commerce complete per espandere la presenza online e aumentare le vendite.",
-      sector: "E-commerce"
-    },
-    {
-      title: "Social Media Management",
-      description: "Gestione completa dei social media con strategie di content marketing per costruire una community fedele e coinvolgente.",
-      sector: "Social Media"
-    }
-  ]
+async function getServices() {
+  return await prisma.service.findMany({
+    where: { isActive: true },
+    orderBy: { order: 'asc' }
+  })
+}
+
+export default async function ServiziPage() {
+  const services = await getServices()
 
   return (
     <main>

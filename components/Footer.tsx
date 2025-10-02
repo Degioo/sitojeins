@@ -1,7 +1,24 @@
 import Link from 'next/link'
 import { Mail, Phone, MapPin, Facebook, Instagram, Linkedin } from 'lucide-react'
+import { prisma } from '@/lib/prisma'
 
-export default function Footer() {
+async function getContacts() {
+  return await prisma.contact.findMany({
+    where: { isActive: true },
+    orderBy: { order: 'asc' }
+  })
+}
+
+export default async function Footer() {
+  const contacts = await getContacts()
+  
+  // Organizza i contatti per tipo
+  const emailContact = contacts.find(c => c.type === 'email')
+  const phoneContact = contacts.find(c => c.type === 'phone')
+  const addressContact = contacts.find(c => c.type === 'address')
+  const facebookContact = contacts.find(c => c.type === 'facebook')
+  const instagramContact = contacts.find(c => c.type === 'instagram')
+  const linkedinContact = contacts.find(c => c.type === 'linkedin')
   return (
     <footer className="bg-insubria-50 border-t border-neutral-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -10,18 +27,24 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-semibold text-neutral-900 mb-4">Contatti</h3>
             <div className="space-y-3">
-              <div className="flex items-center space-x-2">
-                <Mail size={16} className="text-insubria-600" />
-                <span className="text-neutral-500">info@jeins.it</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Phone size={16} className="text-insubria-600" />
-                <span className="text-neutral-500">+39 123 456 7890</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <MapPin size={16} className="text-insubria-600" />
-                <span className="text-neutral-500">Università dell'Insubria</span>
-              </div>
+              {emailContact && (
+                <div className="flex items-center space-x-2">
+                  <Mail size={16} className="text-insubria-600" />
+                  <span className="text-neutral-500">{emailContact.value}</span>
+                </div>
+              )}
+              {phoneContact && (
+                <div className="flex items-center space-x-2">
+                  <Phone size={16} className="text-insubria-600" />
+                  <span className="text-neutral-500">{phoneContact.value}</span>
+                </div>
+              )}
+              {addressContact && (
+                <div className="flex items-center space-x-2">
+                  <MapPin size={16} className="text-insubria-600" />
+                  <span className="text-neutral-500">{addressContact.value}</span>
+                </div>
+              )}
             </div>
           </div>
 
@@ -29,15 +52,21 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-semibold text-neutral-900 mb-4">Seguici</h3>
             <div className="flex space-x-4">
-              <a href="#" className="text-neutral-500 hover:text-insubria-600 transition-colors">
-                <Facebook size={20} />
-              </a>
-              <a href="#" className="text-neutral-500 hover:text-insubria-600 transition-colors">
-                <Instagram size={20} />
-              </a>
-              <a href="#" className="text-neutral-500 hover:text-insubria-600 transition-colors">
-                <Linkedin size={20} />
-              </a>
+              {facebookContact && (
+                <a href={facebookContact.value} target="_blank" rel="noopener noreferrer" className="text-neutral-500 hover:text-insubria-600 transition-colors">
+                  <Facebook size={20} />
+                </a>
+              )}
+              {instagramContact && (
+                <a href={instagramContact.value} target="_blank" rel="noopener noreferrer" className="text-neutral-500 hover:text-insubria-600 transition-colors">
+                  <Instagram size={20} />
+                </a>
+              )}
+              {linkedinContact && (
+                <a href={linkedinContact.value} target="_blank" rel="noopener noreferrer" className="text-neutral-500 hover:text-insubria-600 transition-colors">
+                  <Linkedin size={20} />
+                </a>
+              )}
             </div>
           </div>
 
