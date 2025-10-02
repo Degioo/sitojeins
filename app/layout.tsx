@@ -74,9 +74,7 @@ export default function RootLayout({
       </head>
       <body className={`${montserrat.variable} font-montserrat antialiased`}>
         <AuthProvider>
-          <Navbar />
           {children}
-          <Footer />
           <CookieBanner />
         </AuthProvider>
       </body>
