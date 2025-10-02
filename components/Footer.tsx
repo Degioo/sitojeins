@@ -67,7 +67,7 @@ export default function Footer() {
               <Link href="/privacy" className="block text-neutral-500 hover:text-insubria-600 transition-colors">
                 Privacy Policy
               </Link>
-              <Link href="/cookie" className="block text-neutral-500 hover:text-insubria-600 transition-colors">
+              <Link href="/cookie-policy" className="block text-neutral-500 hover:text-insubria-600 transition-colors">
                 Cookie Policy
               </Link>
               <Link href="/terms" className="block text-neutral-500 hover:text-insubria-600 transition-colors">

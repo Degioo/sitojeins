@@ -46,12 +46,18 @@ export default function CookieBanner() {
                 fornire funzionalità personalizzate e analizzare il nostro traffico. 
                 Cliccando "Accetta tutti" acconsenti al nostro utilizzo dei cookie.
               </p>
-              <div className="mt-2">
+              <div className="mt-2 flex gap-4">
                 <a 
                   href="/privacy" 
                   className="text-insubria-600 hover:text-insubria-700 text-sm font-medium"
                 >
-                  Leggi la nostra Privacy Policy
+                  Privacy Policy
+                </a>
+                <a 
+                  href="/cookie-policy" 
+                  className="text-insubria-600 hover:text-insubria-700 text-sm font-medium"
+                >
+                  Cookie Policy
                 </a>
               </div>
             </div>
