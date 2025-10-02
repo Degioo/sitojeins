@@ -51,6 +51,7 @@ export default function RichTextEditor({ content, onChange, placeholder = "Inizi
   const [imageUrl, setImageUrl] = useState('')
 
   const editor = useEditor({
+    immediatelyRender: false,
     extensions: [
       StarterKit,
       Image.configure({
