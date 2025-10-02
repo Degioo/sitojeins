@@ -7,9 +7,11 @@ export default function AdminRootLayout({
   children: React.ReactNode
 }) {
   return (
-    <AdminLayout>
-      <Toaster position="top-right" />
-      {children}
-    </AdminLayout>
+    <div className="min-h-screen bg-gray-50">
+      <AdminLayout>
+        <Toaster position="top-right" />
+        {children}
+      </AdminLayout>
+    </div>
   )
 }
