@@ -219,7 +219,7 @@ export default function ProjectForm({ project }: ProjectFormProps) {
               placeholder="https://example.com/image.jpg"
             />
             <p className="mt-1 text-xs text-gray-500">
-              URL dell'immagine del progetto
+              URL dell&apos;immagine del progetto
             </p>
           </div>
 

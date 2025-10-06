@@ -179,7 +179,7 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
                 <p className="mt-1 text-sm text-red-600">{errors.slug.message}</p>
               )}
               <p className="mt-1 text-xs text-gray-500">
-                URL dell'articolo: /blog/{watch('slug')}
+                URL dell&apos;articolo: /blog/{watch('slug')}
               </p>
             </div>
           </div>
@@ -212,7 +212,7 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
               placeholder="https://example.com/image.jpg"
             />
             <p className="mt-1 text-xs text-gray-500">
-              URL dell'immagine principale dell'articolo
+              URL dell&apos;immagine principale dell&apos;articolo
             </p>
           </div>
 

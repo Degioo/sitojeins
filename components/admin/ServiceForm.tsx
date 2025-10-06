@@ -149,7 +149,7 @@ export default function ServiceForm({ service }: ServiceFormProps) {
                 placeholder="Es. Briefcase"
               />
               <p className="mt-1 text-xs text-gray-500">
-                Nome dell'icona da Lucide React
+                Nome dell&apos;icona da Lucide React
               </p>
             </div>
 
