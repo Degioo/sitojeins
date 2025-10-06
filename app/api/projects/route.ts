@@ -30,13 +30,19 @@ export async function POST(request: NextRequest) {
     const data = projectSchema.parse(body)
 
     const project = await prisma.project.create({
-      data
+      data: {
+        ...data,
+        image: data.image || '',
+        tags: data.tags || '',
+        client: data.client || '',
+        year: data.year || new Date().getFullYear(),
+      }
     })
 
     return NextResponse.json(project, { status: 201 })
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.errors }, { status: 400 })
+      return NextResponse.json({ error: error.issues }, { status: 400 })
     }
     return NextResponse.json({ error: 'Failed to create project' }, { status: 500 })
   }

@@ -14,7 +14,7 @@ const contactSchema = z.object({
   value: z.string().min(1, 'Il valore è obbligatorio'),
   label: z.string().optional(),
   order: z.number().min(0, 'L\'ordine deve essere maggiore o uguale a 0'),
-  isActive: z.boolean().default(true),
+  isActive: z.boolean(),
 })
 
 type ContactFormData = z.infer<typeof contactSchema>

@@ -17,7 +17,7 @@ const blogPostSchema = z.object({
   excerpt: z.string().optional(),
   featuredImage: z.string().optional(),
   tags: z.string().optional(),
-  isPublished: z.boolean().default(false),
+  isPublished: z.boolean(),
   publishedAt: z.string().optional(),
 })
 
@@ -52,7 +52,10 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
     watch
   } = useForm<BlogPostFormData>({
     resolver: zodResolver(blogPostSchema),
-    defaultValues: post || {
+    defaultValues: post ? {
+      ...post,
+      publishedAt: post.publishedAt ? post.publishedAt.toISOString().split('T')[0] : '',
+    } : {
       title: '',
       slug: '',
       content: '',

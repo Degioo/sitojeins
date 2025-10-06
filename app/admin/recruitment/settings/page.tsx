@@ -8,5 +8,16 @@ async function getRecruitmentSettings() {
 export default async function RecruitmentSettingsPage() {
   const recruitment = await getRecruitmentSettings()
   
-  return <RecruitmentSettings recruitment={recruitment} />
+  // Converti null in undefined e i campi null in undefined per compatibilità TypeScript
+  const formattedRecruitment = recruitment ? {
+    ...recruitment,
+    openDate: recruitment.openDate ?? undefined,
+    closeDate: recruitment.closeDate ?? undefined,
+    description: recruitment.description ?? undefined,
+    requirements: recruitment.requirements ?? undefined,
+    benefits: recruitment.benefits ?? undefined,
+    googleFormUrl: recruitment.googleFormUrl ?? undefined,
+  } : undefined
+  
+  return <RecruitmentSettings recruitment={formattedRecruitment} />
 }

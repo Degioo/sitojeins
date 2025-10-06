@@ -27,13 +27,16 @@ export async function POST(request: NextRequest) {
     const data = contactSchema.parse(body)
 
     const contact = await prisma.contact.create({
-      data
+      data: {
+        ...data,
+        label: data.label || '',
+      }
     })
 
     return NextResponse.json(contact, { status: 201 })
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.errors }, { status: 400 })
+      return NextResponse.json({ error: error.issues }, { status: 400 })
     }
     return NextResponse.json({ error: 'Failed to create contact' }, { status: 500 })
   }

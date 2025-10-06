@@ -41,6 +41,9 @@ export async function POST(request: NextRequest) {
     const post = await prisma.blogPost.create({
       data: {
         ...data,
+        tags: data.tags || '',
+        excerpt: data.excerpt || '',
+        featuredImage: data.featuredImage || '',
         publishedAt: data.isPublished ? new Date(data.publishedAt || new Date()) : null,
       }
     })
@@ -48,7 +51,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(post, { status: 201 })
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.errors }, { status: 400 })
+      return NextResponse.json({ error: error.issues }, { status: 400 })
     }
     return NextResponse.json({ error: 'Failed to create blog post' }, { status: 500 })
   }
