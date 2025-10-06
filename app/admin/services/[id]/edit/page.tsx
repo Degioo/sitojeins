@@ -23,5 +23,11 @@ async function getService(id: string) {
 export default async function EditServicePage({ params }: EditServicePageProps) {
   const service = await getService(params.id)
 
-  return <ServiceForm service={service} />
+  // Converti null in undefined per compatibilità TypeScript
+  const formattedService = {
+    ...service,
+    icon: service.icon ?? undefined,
+  }
+
+  return <ServiceForm service={formattedService} />
 }

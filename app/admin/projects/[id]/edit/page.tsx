@@ -23,5 +23,14 @@ async function getProject(id: string) {
 export default async function EditProjectPage({ params }: EditProjectPageProps) {
   const project = await getProject(params.id)
 
-  return <ProjectForm project={project} />
+  // Converti null in undefined per compatibilità TypeScript
+  const formattedProject = {
+    ...project,
+    image: project.image ?? undefined,
+    tags: project.tags ?? undefined,
+    client: project.client ?? undefined,
+    year: project.year ?? undefined,
+  }
+
+  return <ProjectForm project={formattedProject} />
 }

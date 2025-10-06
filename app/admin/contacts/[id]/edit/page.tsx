@@ -23,5 +23,11 @@ async function getContact(id: string) {
 export default async function EditContactPage({ params }: EditContactPageProps) {
   const contact = await getContact(params.id)
 
-  return <ContactForm contact={contact} />
+  // Converti null in undefined per compatibilità TypeScript
+  const formattedContact = {
+    ...contact,
+    label: contact.label ?? undefined,
+  }
+
+  return <ContactForm contact={formattedContact} />
 }
