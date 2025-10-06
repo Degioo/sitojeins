@@ -11,7 +11,7 @@ import Color from '@tiptap/extension-color'
 import TextStyle from '@tiptap/extension-text-style'
 import Highlight from '@tiptap/extension-highlight'
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
-import { lowlight } from 'lowlight'
+import { createLowlight } from 'lowlight'
 import { 
   Bold, 
   Italic, 
@@ -84,7 +84,7 @@ function RichTextEditorComponent({ content, onChange, placeholder = "Inizia a sc
         multicolor: true,
       }),
       CodeBlockLowlight.configure({
-        lowlight,
+        lowlight: createLowlight(),
       }),
     ],
     content,

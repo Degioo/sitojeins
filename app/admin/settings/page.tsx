@@ -227,7 +227,7 @@ export default function SettingsPage() {
             Sezioni Homepage
           </h2>
           <p className="text-sm text-gray-500">
-            Attiva/disattiva le sezioni e configura il loro contenuto. L'ordine può essere modificato usando le frecce.
+            Attiva/disattiva le sezioni e configura il loro contenuto. L&apos;ordine può essere modificato usando le frecce.
           </p>
         </div>
 

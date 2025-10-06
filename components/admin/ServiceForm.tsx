@@ -14,7 +14,7 @@ const serviceSchema = z.object({
   description: z.string().min(1, 'La descrizione è obbligatoria'),
   sector: z.string().min(1, 'Il settore è obbligatorio'),
   icon: z.string().optional(),
-  order: z.number().min(0, 'L\'ordine deve essere maggiore o uguale a 0'),
+  order: z.number().min(0, 'L&apos;ordine deve essere maggiore o uguale a 0'),
   isActive: z.boolean().default(true),
 })
 

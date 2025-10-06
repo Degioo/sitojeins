@@ -33,7 +33,7 @@ export default function ChiSiamoPage() {
               Chi siamo
             </h1>
             <p className="text-xl max-w-3xl mx-auto">
-              JEIns è la Junior Enterprise dell'Università dell'Insubria, 
+              JEIns è la Junior Enterprise dell&apos;Università dell&apos;Insubria, 
               un ponte tra il mondo accademico e quello professionale.
             </p>
           </div>
@@ -58,7 +58,7 @@ export default function ChiSiamoPage() {
                 <h2 className="text-2xl font-bold newspaper-headline">Mission</h2>
               </div>
               <p className="text-neutral-500 text-lg leading-relaxed">
-                Valorizzare il talento degli studenti dell'Università dell'Insubria 
+                Valorizzare il talento degli studenti dell&apos;Università dell&apos;Insubria 
                 attraverso progetti di consulenza reali, offrendo alle aziende 
                 soluzioni innovative e agli studenti esperienze professionali concrete.
               </p>
@@ -73,7 +73,7 @@ export default function ChiSiamoPage() {
                 <h2 className="text-2xl font-bold newspaper-headline">Vision</h2>
               </div>
               <p className="text-neutral-500 text-lg leading-relaxed">
-                Diventare il punto di riferimento per l'innovazione e la consulenza 
+                Diventare il punto di riferimento per l&apos;innovazione e la consulenza 
                 nel territorio insubre, creando un ecosistema virtuoso tra università, 
                 studenti e imprese.
               </p>
@@ -149,7 +149,7 @@ export default function ChiSiamoPage() {
                   Innovazione
                 </h3>
                 <p className="text-neutral-500 text-sm">
-                  Sviluppiamo soluzioni creative e all'avanguardia
+                  Sviluppiamo soluzioni creative e all&apos;avanguardia
                 </p>
               </div>
             </div>

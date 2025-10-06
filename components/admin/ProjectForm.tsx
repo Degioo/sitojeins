@@ -16,7 +16,7 @@ const projectSchema = z.object({
   tags: z.string().optional(),
   client: z.string().optional(),
   year: z.number().min(1900).max(new Date().getFullYear() + 1).optional(),
-  order: z.number().min(0, 'L\'ordine deve essere maggiore o uguale a 0'),
+  order: z.number().min(0, 'L&apos;ordine deve essere maggiore o uguale a 0'),
   isActive: z.boolean().default(true),
 })
 

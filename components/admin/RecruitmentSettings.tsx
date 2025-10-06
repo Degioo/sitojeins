@@ -191,7 +191,7 @@ export default function RecruitmentSettings({ recruitment }: RecruitmentSettings
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-insubria-500 focus:border-insubria-500"
               />
               <p className="mt-1 text-xs text-gray-500">
-                Data limite per l'invio delle candidature
+                Data limite per l&apos;invio delle candidature
               </p>
             </div>
           </div>

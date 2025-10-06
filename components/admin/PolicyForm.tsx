@@ -232,7 +232,7 @@ export default function PolicyForm({ policy, type }: PolicyFormProps) {
                     <li>• Identificazione del titolare del trattamento</li>
                     <li>• Finalità e base giuridica del trattamento</li>
                     <li>• Categorie di dati personali</li>
-                    <li>• Diritti dell'interessato (GDPR)</li>
+                    <li>• Diritti dell&apos;interessato (GDPR)</li>
                     <li>• Periodo di conservazione</li>
                     <li>• Trasferimenti internazionali</li>
                   </>

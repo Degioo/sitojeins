@@ -98,7 +98,7 @@ export default async function PrivacyPolicyPage() {
               <div>
                 <h4 className="font-semibold text-insubria-600 mb-2">Titolare del Trattamento</h4>
                 <p className="text-neutral-500">JEIns - Junior Enterprise Insubria</p>
-                <p className="text-neutral-500">Università dell'Insubria</p>
+                <p className="text-neutral-500">Università dell&apos;Insubria</p>
               </div>
               <div>
                 <h4 className="font-semibold text-insubria-600 mb-2">Contatti</h4>

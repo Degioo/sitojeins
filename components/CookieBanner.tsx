@@ -44,7 +44,7 @@ export default function CookieBanner() {
               <p className="text-neutral-500 text-sm">
                 Utilizziamo i cookie per migliorare la tua esperienza di navigazione, 
                 fornire funzionalità personalizzate e analizzare il nostro traffico. 
-                Cliccando "Accetta tutti" acconsenti al nostro utilizzo dei cookie.
+                Cliccando &quot;Accetta tutti&quot; acconsenti al nostro utilizzo dei cookie.
               </p>
               <div className="mt-2 flex gap-4">
                 <a 

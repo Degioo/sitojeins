@@ -140,7 +140,7 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
             {post ? 'Modifica Articolo' : 'Nuovo Articolo'}
           </h1>
           <p className="text-gray-600">
-            {post ? 'Modifica l\'articolo del blog' : 'Scrivi un nuovo articolo per il blog'}
+            {post ? 'Modifica l&apos;articolo del blog' : 'Scrivi un nuovo articolo per il blog'}
           </p>
         </div>
       </div>
@@ -193,7 +193,7 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
               id="excerpt"
               rows={3}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-insubria-500 focus:border-insubria-500"
-              placeholder="Breve descrizione dell'articolo..."
+              placeholder="Breve descrizione dell&apos;articolo..."
             />
             <p className="mt-1 text-xs text-gray-500">
               Estratto che apparirà nelle liste e nei social media
@@ -269,7 +269,7 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
               </label>
             </div>
             <p className="mt-1 text-xs text-gray-500">
-              Se deselezionato, l'articolo rimarrà come bozza
+              Se deselezionato, l&apos;articolo rimarrà come bozza
             </p>
           </div>
         </div>
