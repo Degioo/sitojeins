@@ -23,5 +23,11 @@ async function getPolicy(id: string) {
 export default async function EditPrivacyPolicyPage({ params }: EditPrivacyPolicyPageProps) {
   const policy = await getPolicy(params.id)
   
-  return <PolicyForm policy={policy} type="privacy" />
+  // Converti il tipo per compatibilità TypeScript
+  const formattedPolicy = {
+    ...policy,
+    type: policy.type as 'privacy',
+  }
+  
+  return <PolicyForm policy={formattedPolicy} type="privacy" />
 }

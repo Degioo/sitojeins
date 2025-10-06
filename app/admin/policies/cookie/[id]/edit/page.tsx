@@ -23,5 +23,11 @@ async function getPolicy(id: string) {
 export default async function EditCookiePolicyPage({ params }: EditCookiePolicyPageProps) {
   const policy = await getPolicy(params.id)
   
-  return <PolicyForm policy={policy} type="cookie" />
+  // Converti il tipo per compatibilità TypeScript
+  const formattedPolicy = {
+    ...policy,
+    type: policy.type as 'cookie',
+  }
+  
+  return <PolicyForm policy={formattedPolicy} type="cookie" />
 }
