@@ -355,6 +355,64 @@ async function seedDatabase() {
     })
   }
 
+  // Create home sections
+  const homeSections = [
+    {
+      name: 'hero',
+      title: "Mostriamo il valore degli studenti dell'Insubria",
+      subtitle: 'Consulenza, progetti e crescita: per aziende e studenti',
+      description: 'Sezione principale della homepage con call-to-action',
+      isActive: true,
+      order: 1
+    },
+    {
+      name: 'services',
+      title: 'I nostri servizi',
+      subtitle: 'Soluzioni innovative e personalizzate per aziende di ogni dimensione',
+      description: 'Mostra i primi 3 servizi attivi',
+      isActive: true,
+      order: 2
+    },
+    {
+      name: 'stats',
+      title: 'I nostri numeri',
+      subtitle: 'Risultati che testimoniano il nostro impegno e la nostra crescita',
+      description: 'Statistiche sui progetti, servizi, team e candidature',
+      isActive: true,
+      order: 3
+    },
+    {
+      name: 'portfolio',
+      title: 'I nostri progetti',
+      subtitle: 'Alcuni esempi dei progetti che abbiamo realizzato',
+      description: 'Mostra i primi 6 progetti attivi',
+      isActive: true,
+      order: 4
+    },
+    {
+      name: 'newsletter',
+      title: 'Newsletter',
+      subtitle: 'Resta aggiornato sulle nostre attività',
+      description: 'Form di iscrizione alla newsletter',
+      isActive: true,
+      order: 5
+    },
+    {
+      name: 'contact',
+      title: 'Contatto rapido',
+      subtitle: 'Hai un progetto in mente? Contattaci per una consulenza gratuita',
+      description: 'Form di contatto rapido',
+      isActive: true,
+      order: 6
+    }
+  ]
+
+  for (const section of homeSections) {
+    await prisma.homeSection.create({
+      data: section
+    })
+  }
+
   console.log('✅ Database seeded successfully!')
   console.log(`📊 Created:`)
   console.log(`   - ${services.length} services`)
@@ -364,6 +422,7 @@ async function seedDatabase() {
   console.log(`   - ${applications.length} applications`)
   console.log(`   - ${contacts.length} contacts`)
   console.log(`   - ${policies.length} policies`)
+  console.log(`   - ${homeSections.length} home sections`)
 }
 
 seedDatabase()

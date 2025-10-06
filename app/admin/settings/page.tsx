@@ -1,55 +1,205 @@
 'use client'
 
-import { useState } from 'react'
-import { Settings, Database, Mail, Shield, Bell, Globe, Save, RotateCcw } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Settings, Eye, EyeOff, Save, RotateCcw, Home, BarChart3, Briefcase, Mail, MessageSquare, Users } from 'lucide-react'
 import toast from 'react-hot-toast'
 
+interface HomeSection {
+  id: string
+  name: string
+  title?: string
+  subtitle?: string
+  description?: string
+  isActive: boolean
+  order: number
+  config?: string
+}
+
+const sectionIcons = {
+  hero: Home,
+  services: Briefcase,
+  stats: BarChart3,
+  portfolio: Briefcase,
+  newsletter: Mail,
+  contact: MessageSquare
+}
+
+const sectionLabels = {
+  hero: 'Sezione Hero',
+  services: 'Servizi in evidenza',
+  stats: 'Statistiche',
+  portfolio: 'Portfolio/Progetti',
+  newsletter: 'Newsletter',
+  contact: 'Contatto rapido'
+}
+
 export default function SettingsPage() {
-  const [settings, setSettings] = useState({
-    siteName: 'JEIns - Junior Enterprise Insubria',
-    siteDescription: 'Consulenza aziendale e progetti universitari per studenti e aziende dell\'Università dell\'Insubria.',
-    siteUrl: 'https://jeins.it',
-    adminEmail: 'admin@jeins.it',
-    supportEmail: 'info@jeins.it',
-    maintenanceMode: false,
-    allowRegistration: true,
-    emailNotifications: true,
-    maxFileSize: '10',
-    allowedFileTypes: 'jpg,jpeg,png,pdf,doc,docx',
-    backupFrequency: 'daily',
-    analyticsEnabled: true,
-    seoEnabled: true,
-    socialLogin: false
-  })
+  const [sections, setSections] = useState<HomeSection[]>([])
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
 
-  const [loading, setLoading] = useState(false)
+  useEffect(() => {
+    fetchSections()
+  }, [])
 
-  const handleSave = async () => {
-    setLoading(true)
+  const fetchSections = async () => {
     try {
-      // TODO: Implement settings save API
-      await new Promise(resolve => setTimeout(resolve, 1000)) // Simulate API call
-      toast.success('Impostazioni salvate con successo!')
+      const response = await fetch('/api/admin/home-sections')
+      if (response.ok) {
+        const data = await response.json()
+        setSections(data)
+      } else {
+        // Se non ci sono sezioni nel DB, crea quelle di default
+        const defaultSections = [
+          {
+            id: 'hero',
+            name: 'hero',
+            title: "Mostriamo il valore degli studenti dell'Insubria",
+            subtitle: 'Consulenza, progetti e crescita: per aziende e studenti',
+            description: 'Sezione principale della homepage con call-to-action',
+            isActive: true,
+            order: 1
+          },
+          {
+            id: 'services',
+            name: 'services',
+            title: 'I nostri servizi',
+            subtitle: 'Soluzioni innovative e personalizzate per aziende di ogni dimensione',
+            description: 'Mostra i primi 3 servizi attivi',
+            isActive: true,
+            order: 2
+          },
+          {
+            id: 'stats',
+            name: 'stats',
+            title: 'I nostri numeri',
+            subtitle: 'Risultati che testimoniano il nostro impegno e la nostra crescita',
+            description: 'Statistiche sui progetti, servizi, team e candidature',
+            isActive: true,
+            order: 3
+          },
+          {
+            id: 'portfolio',
+            name: 'portfolio',
+            title: 'I nostri progetti',
+            subtitle: 'Alcuni esempi dei progetti che abbiamo realizzato',
+            description: 'Mostra i primi 6 progetti attivi',
+            isActive: true,
+            order: 4
+          },
+          {
+            id: 'newsletter',
+            name: 'newsletter',
+            title: 'Newsletter',
+            subtitle: 'Resta aggiornato sulle nostre attività',
+            description: 'Form di iscrizione alla newsletter',
+            isActive: true,
+            order: 5
+          },
+          {
+            id: 'contact',
+            name: 'contact',
+            title: 'Contatto rapido',
+            subtitle: 'Hai un progetto in mente? Contattaci per una consulenza gratuita',
+            description: 'Form di contatto rapido',
+            isActive: true,
+            order: 6
+          }
+        ]
+        setSections(defaultSections)
+      }
     } catch (error) {
-      toast.error('Errore nel salvare le impostazioni')
+      toast.error('Errore nel caricare le sezioni')
     } finally {
       setLoading(false)
     }
   }
 
-  const handleReset = () => {
-    if (confirm('Sei sicuro di voler ripristinare le impostazioni predefinite?')) {
-      // TODO: Implement reset functionality
-      toast.success('Impostazioni ripristinate')
+  const toggleSection = (sectionId: string) => {
+    setSections(prev => prev.map(section => 
+      section.id === sectionId 
+        ? { ...section, isActive: !section.isActive }
+        : section
+    ))
+  }
+
+  const updateSection = (sectionId: string, field: keyof HomeSection, value: any) => {
+    setSections(prev => prev.map(section => 
+      section.id === sectionId 
+        ? { ...section, [field]: value }
+        : section
+    ))
+  }
+
+  const moveSection = (sectionId: string, direction: 'up' | 'down') => {
+    setSections(prev => {
+      const sortedSections = [...prev].sort((a, b) => a.order - b.order)
+      const currentIndex = sortedSections.findIndex(s => s.id === sectionId)
+      
+      if (currentIndex === -1) return prev
+      
+      const newIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1
+      
+      if (newIndex < 0 || newIndex >= sortedSections.length) return prev
+      
+      // Swap orders
+      const temp = sortedSections[currentIndex].order
+      sortedSections[currentIndex].order = sortedSections[newIndex].order
+      sortedSections[newIndex].order = temp
+      
+      return sortedSections
+    })
+  }
+
+  const handleSave = async () => {
+    setSaving(true)
+    try {
+      const response = await fetch('/api/admin/home-sections', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(sections),
+      })
+
+      if (response.ok) {
+        toast.success('Configurazione salvata con successo!')
+      } else {
+        toast.error('Errore nel salvare la configurazione')
+      }
+    } catch (error) {
+      toast.error('Errore nel salvare la configurazione')
+    } finally {
+      setSaving(false)
     }
   }
+
+  const handleReset = () => {
+    if (confirm('Sei sicuro di voler ripristinare le configurazioni predefinite?')) {
+      fetchSections()
+      toast.success('Configurazioni ripristinate')
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-96">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-insubria-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Caricamento configurazioni...</p>
+        </div>
+      </div>
+    )
+  }
+
+  const sortedSections = [...sections].sort((a, b) => a.order - b.order)
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Impostazioni</h1>
-          <p className="text-gray-600">Gestisci le configurazioni generali del sito</p>
+          <h1 className="text-3xl font-bold text-gray-900">Configurazione Homepage</h1>
+          <p className="text-gray-600">Gestisci le sezioni e il contenuto della homepage</p>
         </div>
         <div className="flex gap-2">
           <button 
@@ -61,315 +211,143 @@ export default function SettingsPage() {
           </button>
           <button 
             onClick={handleSave} 
-            disabled={loading}
+            disabled={saving}
             className="px-4 py-2 bg-insubria-600 text-white rounded-lg hover:bg-insubria-700 transition-colors disabled:opacity-50 flex items-center gap-2"
           >
             <Save className="h-4 w-4" />
-            {loading ? 'Salvataggio...' : 'Salva'}
+            {saving ? 'Salvataggio...' : 'Salva'}
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Informazioni Generali */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <div className="mb-6">
-            <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-2">
-              <Globe className="h-5 w-5" />
-              Informazioni Generali
-            </h2>
-            <p className="text-sm text-gray-500">
-              Configura le informazioni base del sito
-            </p>
-          </div>
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="siteName" className="block text-sm font-medium text-gray-700 mb-2">
-                Nome del sito
-              </label>
-              <input
-                id="siteName"
-                type="text"
-                value={settings.siteName}
-                onChange={(e) => setSettings({...settings, siteName: e.target.value})}
-                placeholder="Nome del sito"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-insubria-500 focus:border-insubria-500"
-              />
-            </div>
-            <div>
-              <label htmlFor="siteDescription" className="block text-sm font-medium text-gray-700 mb-2">
-                Descrizione
-              </label>
-              <textarea
-                id="siteDescription"
-                value={settings.siteDescription}
-                onChange={(e) => setSettings({...settings, siteDescription: e.target.value})}
-                placeholder="Descrizione del sito"
-                rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-insubria-500 focus:border-insubria-500"
-              />
-            </div>
-            <div>
-              <label htmlFor="siteUrl" className="block text-sm font-medium text-gray-700 mb-2">
-                URL del sito
-              </label>
-              <input
-                id="siteUrl"
-                type="url"
-                value={settings.siteUrl}
-                onChange={(e) => setSettings({...settings, siteUrl: e.target.value})}
-                placeholder="https://jeins.it"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-insubria-500 focus:border-insubria-500"
-              />
-            </div>
-          </div>
+      <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-2">
+            <Settings className="h-5 w-5" />
+            Sezioni Homepage
+          </h2>
+          <p className="text-sm text-gray-500">
+            Attiva/disattiva le sezioni e configura il loro contenuto. L'ordine può essere modificato usando le frecce.
+          </p>
         </div>
 
-        {/* Email e Notifiche */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <div className="mb-6">
-            <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-2">
-              <Mail className="h-5 w-5" />
-              Email e Notifiche
-            </h2>
-            <p className="text-sm text-gray-500">
-              Configura le impostazioni email
-            </p>
-          </div>
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="adminEmail" className="block text-sm font-medium text-gray-700 mb-2">
-                Email amministratore
-              </label>
-              <input
-                id="adminEmail"
-                type="email"
-                value={settings.adminEmail}
-                onChange={(e) => setSettings({...settings, adminEmail: e.target.value})}
-                placeholder="admin@jeins.it"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-insubria-500 focus:border-insubria-500"
-              />
-            </div>
-            <div>
-              <label htmlFor="supportEmail" className="block text-sm font-medium text-gray-700 mb-2">
-                Email supporto
-              </label>
-              <input
-                id="supportEmail"
-                type="email"
-                value={settings.supportEmail}
-                onChange={(e) => setSettings({...settings, supportEmail: e.target.value})}
-                placeholder="info@jeins.it"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-insubria-500 focus:border-insubria-500"
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <label htmlFor="emailNotifications" className="block text-sm font-medium text-gray-700">
-                  Notifiche email
-                </label>
-                <p className="text-sm text-gray-500">Invia notifiche per nuove candidature e messaggi</p>
-              </div>
-              <input
-                id="emailNotifications"
-                type="checkbox"
-                checked={settings.emailNotifications}
-                onChange={(e) => setSettings({...settings, emailNotifications: e.target.checked})}
-                className="h-4 w-4 text-insubria-600 focus:ring-insubria-500 border-gray-300 rounded"
-              />
-            </div>
-          </div>
-        </div>
+        <div className="space-y-4">
+          {sortedSections.map((section, index) => {
+            const IconComponent = sectionIcons[section.name as keyof typeof sectionIcons] || Settings
+            const label = sectionLabels[section.name as keyof typeof sectionLabels] || section.name
+            
+            return (
+              <div key={section.id} className="border border-gray-200 rounded-lg p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-insubria-50 text-insubria-600 rounded-lg p-2">
+                      <IconComponent className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-900">{label}</h3>
+                      <p className="text-sm text-gray-500">{section.description}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-2">
+                    {/* Ordine */}
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={() => moveSection(section.id, 'up')}
+                        disabled={index === 0}
+                        className="p-1 text-gray-400 hover:text-gray-600 disabled:opacity-30"
+                      >
+                        ↑
+                      </button>
+                      <span className="text-sm text-gray-500 px-2 py-1 bg-gray-100 rounded">
+                        {section.order}
+                      </span>
+                      <button
+                        onClick={() => moveSection(section.id, 'down')}
+                        disabled={index === sortedSections.length - 1}
+                        className="p-1 text-gray-400 hover:text-gray-600 disabled:opacity-30"
+                      >
+                        ↓
+                      </button>
+                    </div>
+                    
+                    {/* Toggle */}
+                    <button
+                      onClick={() => toggleSection(section.id)}
+                      className={`p-2 rounded-lg transition-colors ${
+                        section.isActive 
+                          ? 'bg-green-100 text-green-600 hover:bg-green-200' 
+                          : 'bg-gray-100 text-gray-400 hover:bg-gray-200'
+                      }`}
+                    >
+                      {section.isActive ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                    </button>
+                  </div>
+                </div>
 
-        {/* Sicurezza e Accesso */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <div className="mb-6">
-            <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-2">
-              <Shield className="h-5 w-5" />
-              Sicurezza e Accesso
-            </h2>
-            <p className="text-sm text-gray-500">
-              Gestisci le impostazioni di sicurezza
-            </p>
-          </div>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <label htmlFor="maintenanceMode" className="block text-sm font-medium text-gray-700">
-                  Modalità manutenzione
-                </label>
-                <p className="text-sm text-gray-500">Nasconde il sito ai visitatori</p>
+                {section.isActive && (
+                  <div className="space-y-3 pl-12">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Titolo
+                      </label>
+                      <input
+                        type="text"
+                        value={section.title || ''}
+                        onChange={(e) => updateSection(section.id, 'title', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-insubria-500 focus:border-insubria-500"
+                        placeholder="Titolo della sezione"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Sottotitolo
+                      </label>
+                      <input
+                        type="text"
+                        value={section.subtitle || ''}
+                        onChange={(e) => updateSection(section.id, 'subtitle', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-insubria-500 focus:border-insubria-500"
+                        placeholder="Sottotitolo della sezione"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Descrizione
+                      </label>
+                      <textarea
+                        value={section.description || ''}
+                        onChange={(e) => updateSection(section.id, 'description', e.target.value)}
+                        rows={2}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-insubria-500 focus:border-insubria-500"
+                        placeholder="Descrizione della sezione"
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
-              <input
-                id="maintenanceMode"
-                type="checkbox"
-                checked={settings.maintenanceMode}
-                onChange={(e) => setSettings({...settings, maintenanceMode: e.target.checked})}
-                className="h-4 w-4 text-insubria-600 focus:ring-insubria-500 border-gray-300 rounded"
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <label htmlFor="allowRegistration" className="block text-sm font-medium text-gray-700">
-                  Registrazione utenti
-                </label>
-                <p className="text-sm text-gray-500">Permetti la registrazione di nuovi utenti</p>
-              </div>
-              <input
-                id="allowRegistration"
-                type="checkbox"
-                checked={settings.allowRegistration}
-                onChange={(e) => setSettings({...settings, allowRegistration: e.target.checked})}
-                className="h-4 w-4 text-insubria-600 focus:ring-insubria-500 border-gray-300 rounded"
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <label htmlFor="socialLogin" className="block text-sm font-medium text-gray-700">
-                  Login social
-                </label>
-                <p className="text-sm text-gray-500">Permetti login con Google, Facebook, etc.</p>
-              </div>
-              <input
-                id="socialLogin"
-                type="checkbox"
-                checked={settings.socialLogin}
-                onChange={(e) => setSettings({...settings, socialLogin: e.target.checked})}
-                className="h-4 w-4 text-insubria-600 focus:ring-insubria-500 border-gray-300 rounded"
-              />
-            </div>
-          </div>
+            )
+          })}
         </div>
+      </div>
 
-        {/* File e Upload */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <div className="mb-6">
-            <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-2">
-              <Database className="h-5 w-5" />
-              File e Upload
-            </h2>
-            <p className="text-sm text-gray-500">
-              Configura le impostazioni per i file
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div className="flex items-start gap-3">
+          <div className="bg-blue-100 text-blue-600 rounded-lg p-2">
+            <Settings className="h-5 w-5" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-blue-900 mb-1">Informazioni</h3>
+            <p className="text-sm text-blue-700">
+              Le modifiche verranno applicate immediatamente alla homepage. 
+              Le sezioni disattivate non verranno mostrate ai visitatori.
             </p>
-          </div>
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="maxFileSize" className="block text-sm font-medium text-gray-700 mb-2">
-                Dimensione massima file (MB)
-              </label>
-              <input
-                id="maxFileSize"
-                type="number"
-                value={settings.maxFileSize}
-                onChange={(e) => setSettings({...settings, maxFileSize: e.target.value})}
-                placeholder="10"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-insubria-500 focus:border-insubria-500"
-              />
-            </div>
-            <div>
-              <label htmlFor="allowedFileTypes" className="block text-sm font-medium text-gray-700 mb-2">
-                Tipi di file consentiti
-              </label>
-              <input
-                id="allowedFileTypes"
-                type="text"
-                value={settings.allowedFileTypes}
-                onChange={(e) => setSettings({...settings, allowedFileTypes: e.target.value})}
-                placeholder="jpg,jpeg,png,pdf,doc,docx"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-insubria-500 focus:border-insubria-500"
-              />
-            </div>
-            <div>
-              <label htmlFor="backupFrequency" className="block text-sm font-medium text-gray-700 mb-2">
-                Frequenza backup
-              </label>
-              <select
-                id="backupFrequency"
-                value={settings.backupFrequency}
-                onChange={(e) => setSettings({...settings, backupFrequency: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-insubria-500 focus:border-insubria-500"
-              >
-                <option value="daily">Giornaliero</option>
-                <option value="weekly">Settimanale</option>
-                <option value="monthly">Mensile</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        {/* SEO e Analytics */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <div className="mb-6">
-            <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-2">
-              <Bell className="h-5 w-5" />
-              SEO e Analytics
-            </h2>
-            <p className="text-sm text-gray-500">
-              Configura SEO e analytics
-            </p>
-          </div>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <label htmlFor="seoEnabled" className="block text-sm font-medium text-gray-700">
-                  SEO abilitato
-                </label>
-                <p className="text-sm text-gray-500">Ottimizza il sito per i motori di ricerca</p>
-              </div>
-              <input
-                id="seoEnabled"
-                type="checkbox"
-                checked={settings.seoEnabled}
-                onChange={(e) => setSettings({...settings, seoEnabled: e.target.checked})}
-                className="h-4 w-4 text-insubria-600 focus:ring-insubria-500 border-gray-300 rounded"
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <label htmlFor="analyticsEnabled" className="block text-sm font-medium text-gray-700">
-                  Analytics abilitato
-                </label>
-                <p className="text-sm text-gray-500">Traccia le visite e le statistiche</p>
-              </div>
-              <input
-                id="analyticsEnabled"
-                type="checkbox"
-                checked={settings.analyticsEnabled}
-                onChange={(e) => setSettings({...settings, analyticsEnabled: e.target.checked})}
-                className="h-4 w-4 text-insubria-600 focus:ring-insubria-500 border-gray-300 rounded"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Azioni di Sistema */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <div className="mb-6">
-            <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-2">
-              <Settings className="h-5 w-5" />
-              Azioni di Sistema
-            </h2>
-            <p className="text-sm text-gray-500">
-              Operazioni avanzate sul sistema
-            </p>
-          </div>
-          <div className="space-y-4">
-            <button className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
-              Backup Database
-            </button>
-            <button className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
-              Pulizia Cache
-            </button>
-            <button className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
-              Test Connessione Email
-            </button>
-            <div className="border-t border-gray-200 my-4"></div>
-            <button className="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
-              Reset Completo
-            </button>
           </div>
         </div>
       </div>
     </div>
   )
+}
 }

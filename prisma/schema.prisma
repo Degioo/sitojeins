@@ -154,3 +154,16 @@ model Policy {
 
   @@unique([type, version])
 }
+
+model HomeSection {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String   @unique // hero, services, stats, portfolio, newsletter, contact
+  title       String?
+  subtitle    String?
+  description String?
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  config      String?  // JSON configuration
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
