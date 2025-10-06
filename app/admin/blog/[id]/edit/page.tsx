@@ -23,5 +23,14 @@ async function getBlogPost(id: string) {
 export default async function EditBlogPostPage({ params }: EditBlogPostPageProps) {
   const post = await getBlogPost(params.id)
 
-  return <BlogPostForm post={post} />
+  // Converti null in undefined per compatibilità TypeScript
+  const formattedPost = {
+    ...post,
+    excerpt: post.excerpt ?? undefined,
+    featuredImage: post.featuredImage ?? undefined,
+    tags: post.tags ?? undefined,
+    publishedAt: post.publishedAt ?? undefined,
+  }
+
+  return <BlogPostForm post={formattedPost} />
 }
