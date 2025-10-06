@@ -17,7 +17,7 @@ const projectSchema = z.object({
   client: z.string().optional(),
   year: z.number().min(1900).max(new Date().getFullYear() + 1).optional(),
   order: z.number().min(0, 'L&apos;ordine deve essere maggiore o uguale a 0'),
-  isActive: z.boolean().default(true),
+  isActive: z.boolean(),
 })
 
 type ProjectFormData = z.infer<typeof projectSchema>

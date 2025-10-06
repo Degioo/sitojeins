@@ -50,7 +50,10 @@ export default function ContactForm({ contact }: ContactFormProps) {
     watch
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
-    defaultValues: contact || {
+    defaultValues: contact ? {
+      ...contact,
+      type: contact.type as 'email' | 'phone' | 'address' | 'facebook' | 'instagram' | 'linkedin',
+    } : {
       type: 'email',
       value: '',
       label: '',

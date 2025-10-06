@@ -15,7 +15,7 @@ const serviceSchema = z.object({
   sector: z.string().min(1, 'Il settore è obbligatorio'),
   icon: z.string().optional(),
   order: z.number().min(0, 'L&apos;ordine deve essere maggiore o uguale a 0'),
-  isActive: z.boolean().default(true),
+  isActive: z.boolean(),
 })
 
 type ServiceFormData = z.infer<typeof serviceSchema>
