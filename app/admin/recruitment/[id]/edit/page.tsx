@@ -23,5 +23,12 @@ async function getApplication(id: string) {
 export default async function EditApplicationPage({ params }: EditApplicationPageProps) {
   const application = await getApplication(params.id)
 
-  return <ApplicationEdit application={application} />
+  // Converti null in undefined per compatibilità TypeScript
+  const formattedApplication = {
+    ...application,
+    notes: application.notes ?? undefined,
+    cvUrl: application.cvUrl ?? undefined,
+  }
+
+  return <ApplicationEdit application={formattedApplication} />
 }
