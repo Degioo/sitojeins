@@ -14,7 +14,7 @@ export default function ServiceCard({
   ctaHref = "/contatti"
 }: ServiceCardProps) {
   return (
-    <div className="bg-white border border-neutral-100 rounded-2xl p-6 hover:shadow-lg transition-all hover:scale-[1.02] h-full flex flex-col">
+    <div className="bg-white border border-neutral-100 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-shadow duration-300 h-full flex flex-col overflow-hidden">
       <div className="mb-4">
         <span className="inline-block bg-insubria-50 text-insubria-600 px-3 py-1 rounded-full text-sm font-medium">
           {sector}

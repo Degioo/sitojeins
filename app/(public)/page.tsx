@@ -78,7 +78,7 @@ export default async function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {services.map((service, index) => (
                 <div key={service.id} className="animate-fade-in-left hover-lift h-full" style={{animationDelay: `${index * 0.1}s`}}>
-                  <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all h-full flex flex-col">
+                  <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-shadow duration-300 h-full flex flex-col overflow-hidden">
                     <div className="mb-4">
                       <span className="bg-insubria-600 text-white px-3 py-1 rounded-full text-sm font-medium">
                         {service.sector}
@@ -203,7 +203,7 @@ export default async function HomePage() {
                 const tags = project.tags ? JSON.parse(project.tags) : []
                 return (
                   <div key={project.id} className="animate-fade-in-left hover-lift h-full" style={{animationDelay: `${index * 0.1}s`}}>
-                    <div className="bg-white border-2 border-insubria-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all h-full flex flex-col">
+                    <div className="bg-white border-2 border-insubria-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
                       <div className="h-48 bg-insubria-50 flex items-center justify-center">
                         {project.image ? (
                           <img 

@@ -14,7 +14,7 @@ export default function PortfolioCard({
   client 
 }: PortfolioCardProps) {
   return (
-    <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg transition-all hover:scale-[1.02] h-full flex flex-col">
+    <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
       {image && (
         <div className="h-48 bg-insubria-green-100 flex items-center justify-center">
           <img 
