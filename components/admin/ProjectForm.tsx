@@ -90,7 +90,10 @@ export default function ProjectForm({ project }: ProjectFormProps) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          tags: data.tags || '[]',
+        }),
       })
 
       if (response.ok) {

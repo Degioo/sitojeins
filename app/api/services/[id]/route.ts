@@ -40,7 +40,14 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 
     const service = await prisma.service.update({
       where: { id: params.id },
-      data
+      data: {
+        title: data.title,
+        description: data.description,
+        sector: data.sector,
+        order: data.order,
+        isActive: data.isActive,
+        ...(data.icon && { icon: data.icon }),
+      }
     })
 
     return NextResponse.json(service)

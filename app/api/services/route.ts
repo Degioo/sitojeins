@@ -29,8 +29,12 @@ export async function POST(request: NextRequest) {
 
     const service = await prisma.service.create({
       data: {
-        ...data,
-        icon: data.icon || '',
+        title: data.title,
+        description: data.description,
+        sector: data.sector,
+        order: data.order,
+        isActive: data.isActive,
+        ...(data.icon && { icon: data.icon }),
       }
     })
 

@@ -28,8 +28,11 @@ export async function POST(request: NextRequest) {
 
     const contact = await prisma.contact.create({
       data: {
-        ...data,
-        label: data.label || '',
+        type: data.type,
+        value: data.value,
+        order: data.order,
+        isActive: data.isActive,
+        ...(data.label && { label: data.label }),
       }
     })
 

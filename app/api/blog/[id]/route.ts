@@ -8,7 +8,7 @@ const blogPostSchema = z.object({
   content: z.string().min(1),
   excerpt: z.string().optional(),
   featuredImage: z.string().optional(),
-  tags: z.string().optional(),
+  tags: z.string().default('[]'),
   isPublished: z.boolean().default(false),
   publishedAt: z.string().optional(),
 })
@@ -55,8 +55,14 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     const post = await prisma.blogPost.update({
       where: { id: params.id },
       data: {
-        ...data,
+        title: data.title,
+        slug: data.slug,
+        content: data.content,
+        tags: data.tags,
+        isPublished: data.isPublished,
         publishedAt: data.isPublished ? new Date(data.publishedAt || new Date()) : null,
+        ...(data.excerpt && { excerpt: data.excerpt }),
+        ...(data.featuredImage && { featuredImage: data.featuredImage }),
       }
     })
 

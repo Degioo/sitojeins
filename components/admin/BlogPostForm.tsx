@@ -54,7 +54,7 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
     resolver: zodResolver(blogPostSchema),
     defaultValues: post ? {
       ...post,
-      publishedAt: post.publishedAt ? post.publishedAt.toISOString().split('T')[0] : '',
+      publishedAt: post.publishedAt ? new Date(post.publishedAt).toISOString() : undefined,
     } : {
       title: '',
       slug: '',
@@ -112,6 +112,7 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
         body: JSON.stringify({
           ...data,
           content,
+          tags: data.tags || '[]',
           publishedAt: data.isPublished && !post?.publishedAt ? new Date().toISOString() : data.publishedAt,
         }),
       })

@@ -39,7 +39,13 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 
     const contact = await prisma.contact.update({
       where: { id: params.id },
-      data
+      data: {
+        type: data.type,
+        value: data.value,
+        order: data.order,
+        isActive: data.isActive,
+        ...(data.label && { label: data.label }),
+      }
     })
 
     return NextResponse.json(contact)

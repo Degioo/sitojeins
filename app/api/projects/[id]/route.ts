@@ -6,7 +6,7 @@ const projectSchema = z.object({
   title: z.string().min(1),
   description: z.string().min(1),
   image: z.string().optional(),
-  tags: z.string().optional(),
+  tags: z.string().default('[]'),
   client: z.string().optional(),
   year: z.number().min(1900).max(new Date().getFullYear() + 1).optional(),
   order: z.number().min(0),
@@ -42,7 +42,16 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 
     const project = await prisma.project.update({
       where: { id: params.id },
-      data
+      data: {
+        title: data.title,
+        description: data.description,
+        tags: data.tags,
+        order: data.order,
+        isActive: data.isActive,
+        ...(data.image && { image: data.image }),
+        ...(data.client && { client: data.client }),
+        ...(data.year !== undefined && { year: data.year }),
+      }
     })
 
     return NextResponse.json(project)

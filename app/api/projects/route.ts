@@ -6,7 +6,7 @@ const projectSchema = z.object({
   title: z.string().min(1),
   description: z.string().min(1),
   image: z.string().optional(),
-  tags: z.string().optional(),
+  tags: z.string().default('[]'),
   client: z.string().optional(),
   year: z.number().min(1900).max(new Date().getFullYear() + 1).optional(),
   order: z.number().min(0),
@@ -31,11 +31,14 @@ export async function POST(request: NextRequest) {
 
     const project = await prisma.project.create({
       data: {
-        ...data,
-        image: data.image || '',
-        tags: data.tags || '',
-        client: data.client || '',
-        year: data.year || new Date().getFullYear(),
+        title: data.title,
+        description: data.description,
+        tags: data.tags,
+        order: data.order,
+        isActive: data.isActive,
+        ...(data.image && { image: data.image }),
+        ...(data.client && { client: data.client }),
+        ...(data.year !== undefined && { year: data.year }),
       }
     })
 

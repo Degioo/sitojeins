@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { Calendar, FileText, Cookie } from 'lucide-react'
+import CookiePreferencesButton from '@/components/CookiePreferencesButton'
 
 export const metadata: Metadata = {
   title: 'Cookie Policy - JEIns | Gestione Cookie e Tecnologie Simili',
@@ -100,15 +101,7 @@ export default async function CookiePolicyPage() {
                 <p className="text-neutral-500 mb-4">
                   Puoi gestire le tue preferenze sui cookie utilizzando il banner che appare al primo accesso al sito.
                 </p>
-                <button 
-                  onClick={() => {
-                    localStorage.removeItem('cookie_consent')
-                    window.location.reload()
-                  }}
-                  className="bg-insubria-600 text-white px-4 py-2 rounded-lg hover:bg-insubria-700 transition-colors"
-                >
-                  Modifica Preferenze
-                </button>
+                <CookiePreferencesButton />
               </div>
               <div>
                 <h4 className="font-semibold text-insubria-600 mb-2">Contatti</h4>
