@@ -77,8 +77,8 @@ export default async function HomePage() {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {services.map((service, index) => (
-                <div key={service.id} className="animate-fade-in-left hover-lift" style={{animationDelay: `${index * 0.1}s`}}>
-                  <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm">
+                <div key={service.id} className="animate-fade-in-left hover-lift h-full" style={{animationDelay: `${index * 0.1}s`}}>
+                  <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all h-full flex flex-col">
                     <div className="mb-4">
                       <span className="bg-insubria-600 text-white px-3 py-1 rounded-full text-sm font-medium">
                         {service.sector}
@@ -87,12 +87,12 @@ export default async function HomePage() {
                     <h3 className="text-xl font-semibold text-insubria-600 mb-3">
                       {service.title}
                     </h3>
-                    <p className="text-neutral-500 mb-4">
+                    <p className="text-neutral-500 mb-4 flex-grow">
                       {service.description}
                     </p>
                     <a
                       href="/contatti"
-                      className="inline-block text-insubria-600 font-medium hover:text-insubria-700 transition-colors"
+                      className="inline-block text-insubria-600 font-medium hover:text-insubria-700 transition-colors mt-auto"
                     >
                       Richiedi un preventivo →
                     </a>
@@ -202,8 +202,8 @@ export default async function HomePage() {
               {projects.map((project, index) => {
                 const tags = project.tags ? JSON.parse(project.tags) : []
                 return (
-                  <div key={project.id} className="animate-fade-in-left hover-lift" style={{animationDelay: `${index * 0.1}s`}}>
-                    <div className="bg-white border-2 border-insubria-200 rounded-2xl overflow-hidden shadow-sm">
+                  <div key={project.id} className="animate-fade-in-left hover-lift h-full" style={{animationDelay: `${index * 0.1}s`}}>
+                    <div className="bg-white border-2 border-insubria-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all h-full flex flex-col">
                       <div className="h-48 bg-insubria-50 flex items-center justify-center">
                         {project.image ? (
                           <img 
@@ -218,17 +218,17 @@ export default async function HomePage() {
                           </div>
                         )}
                       </div>
-                      <div className="p-6">
+                      <div className="p-6 flex-grow flex flex-col">
                         <p className="text-sm text-insubria-600 font-medium mb-2">
                           {project.client || 'JEIns'}
                         </p>
                         <h3 className="text-lg font-semibold text-insubria-600 mb-2">
                           {project.title}
                         </h3>
-                        <p className="text-neutral-500 mb-4">
+                        <p className="text-neutral-500 mb-4 flex-grow">
                           {project.description}
                         </p>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap gap-2 mt-auto">
                           {tags.slice(0, 3).map((tag: string, tagIndex: number) => (
                             <span key={tagIndex} className="bg-insubria-50 text-insubria-600 px-2 py-1 rounded text-xs">
                               {tag}

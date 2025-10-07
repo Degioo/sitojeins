@@ -38,13 +38,13 @@ export default function NewsletterBox() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="La tua email"
-              className="flex-1 px-4 py-3 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-insubria-green-500"
+              className="flex-1 px-4 py-3 rounded-2xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-insubria-green-500"
               required
             />
             <button
               type="submit"
               disabled={isSubmitting || !consent}
-              className="bg-insubria-green-500 text-neutral-900 px-6 py-3 rounded-2xl font-semibold hover:bg-insubria-green-700 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-insubria-600 text-white px-6 py-3 rounded-2xl font-semibold hover:bg-insubria-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? 'Invio...' : 'Iscriviti'}
             </button>

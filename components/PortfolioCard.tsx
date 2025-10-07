@@ -14,7 +14,7 @@ export default function PortfolioCard({
   client 
 }: PortfolioCardProps) {
   return (
-    <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-sm transition-shadow">
+    <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg transition-all hover:scale-[1.02] h-full flex flex-col">
       {image && (
         <div className="h-48 bg-insubria-green-100 flex items-center justify-center">
           <img 
@@ -25,7 +25,7 @@ export default function PortfolioCard({
         </div>
       )}
       
-      <div className="p-6">
+      <div className="p-6 flex-grow flex flex-col">
         {client && (
           <p className="text-sm text-insubria-green-700 font-medium mb-2">
             {client}
@@ -36,11 +36,11 @@ export default function PortfolioCard({
           {title}
         </h3>
         
-        <p className="text-neutral-700 mb-4">
+        <p className="text-neutral-700 mb-4 flex-grow">
           {description}
         </p>
         
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 mt-auto">
           {tags.map((tag, index) => (
             <span 
               key={index}
