@@ -57,8 +57,8 @@ export default async function ServiziPage() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, index) => (
-              <div key={index} className="animate-fade-in-up hover-lift" style={{animationDelay: `${index * 0.1}s`}}>
-                <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm">
+              <div key={index} className="animate-fade-in-up hover-lift h-full" style={{animationDelay: `${index * 0.1}s`}}>
+                <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
                   <div className="mb-4">
                     <span className="bg-insubria-600 text-white px-3 py-1 rounded-full text-sm font-medium">
                       {service.sector}
@@ -67,12 +67,12 @@ export default async function ServiziPage() {
                   <h3 className="text-xl font-semibold text-insubria-600 mb-3">
                     {service.title}
                   </h3>
-                  <p className="text-neutral-500 mb-4">
+                  <p className="text-neutral-500 mb-4 flex-grow">
                     {service.description}
                   </p>
                   <a
                     href="/contatti"
-                    className="inline-block text-insubria-600 font-medium hover:text-insubria-700 transition-colors"
+                    className="inline-block text-insubria-600 font-medium hover:text-insubria-700 transition-colors mt-auto"
                   >
                     Richiedi un preventivo →
                   </a>
@@ -101,57 +101,57 @@ export default async function ServiziPage() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="text-center animate-scale-in hover-lift">
-              <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm">
+            <div className="text-center animate-scale-in hover-lift h-full">
+              <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
                 <div className="bg-insubria-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-xl">
                   1
                 </div>
                 <h3 className="text-lg font-semibold text-insubria-600 mb-3">
                   Analisi
                 </h3>
-                <p className="text-neutral-500 text-sm">
+                <p className="text-neutral-500 text-sm flex-grow">
                   Comprendiamo le tue esigenze e analizziamo il contesto aziendale
                 </p>
               </div>
             </div>
 
-            <div className="text-center animate-scale-in hover-lift" style={{animationDelay: '0.1s'}}>
-              <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm">
+            <div className="text-center animate-scale-in hover-lift h-full" style={{animationDelay: '0.1s'}}>
+              <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
                 <div className="bg-insubria-300 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-xl">
                   2
                 </div>
                 <h3 className="text-lg font-semibold text-insubria-600 mb-3">
                   Progettazione
                 </h3>
-                <p className="text-neutral-500 text-sm">
+                <p className="text-neutral-500 text-sm flex-grow">
                   Sviluppiamo una strategia personalizzata per raggiungere i tuoi obiettivi
                 </p>
               </div>
             </div>
 
-            <div className="text-center animate-scale-in hover-lift" style={{animationDelay: '0.2s'}}>
-              <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm">
+            <div className="text-center animate-scale-in hover-lift h-full" style={{animationDelay: '0.2s'}}>
+              <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
                 <div className="bg-insubria-200 text-insubria-700 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-xl">
                   3
                 </div>
                 <h3 className="text-lg font-semibold text-insubria-600 mb-3">
                   Implementazione
                 </h3>
-                <p className="text-neutral-500 text-sm">
+                <p className="text-neutral-500 text-sm flex-grow">
                   Mettiamo in pratica la soluzione con monitoraggio costante
                 </p>
               </div>
             </div>
 
-            <div className="text-center animate-scale-in hover-lift" style={{animationDelay: '0.3s'}}>
-              <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm">
+            <div className="text-center animate-scale-in hover-lift h-full" style={{animationDelay: '0.3s'}}>
+              <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
                 <div className="bg-insubria-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-xl">
                   4
                 </div>
                 <h3 className="text-lg font-semibold text-insubria-600 mb-3">
                   Follow-up
                 </h3>
-                <p className="text-neutral-500 text-sm">
+                <p className="text-neutral-500 text-sm flex-grow">
                   Monitoriamo i risultati e ottimizziamo la soluzione implementata
                 </p>
               </div>
