@@ -8,6 +8,7 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData()
     const file = formData.get('file') as File
+    const folder = (formData.get('folder') as string) || 'general'
 
     if (!file) {
       return NextResponse.json({ error: 'Nessun file caricato' }, { status: 400 })
@@ -19,7 +20,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Genera nome file unico
-    const filename = `team/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`
+    const timestamp = Date.now()
+    const cleanFilename = file.name.replace(/[^a-zA-Z0-9.-]/g, '_')
+    const filename = `jeins/${folder}/${timestamp}-${cleanFilename}`
 
     // Upload su Vercel Blob
     const blob = await put(filename, file, {

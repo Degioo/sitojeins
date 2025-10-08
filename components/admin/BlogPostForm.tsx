@@ -43,6 +43,8 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
   const [tags, setTags] = useState<string[]>(post?.tags ? JSON.parse(post.tags) : [])
   const [newTag, setNewTag] = useState('')
   const [content, setContent] = useState(post?.content || '')
+  const [featuredImageUrl, setFeaturedImageUrl] = useState(post?.featuredImage || '')
+  const [isUploadingImage, setIsUploadingImage] = useState(false)
 
   const {
     register,
@@ -96,6 +98,46 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
     const updatedTags = tags.filter(tag => tag !== tagToRemove)
     setTags(updatedTags)
     setValue('tags', JSON.stringify(updatedTags))
+  }
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    if (!file.type.startsWith('image/')) {
+      toast.error('Per favore carica un\'immagine')
+      return
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('L\'immagine deve essere inferiore a 5MB')
+      return
+    }
+
+    setIsUploadingImage(true)
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('folder', 'blog')
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (response.ok) {
+        const { url } = await response.json()
+        setFeaturedImageUrl(url)
+        setValue('featuredImage', url)
+        toast.success('Immagine caricata!')
+      } else {
+        toast.error('Errore durante il caricamento')
+      }
+    } catch (error) {
+      toast.error('Errore durante il caricamento')
+    } finally {
+      setIsUploadingImage(false)
+    }
   }
 
   const onSubmit = async (data: BlogPostFormData) => {
@@ -205,19 +247,69 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
           </div>
 
           <div className="mt-6">
-            <label htmlFor="featuredImage" className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Immagine in evidenza
             </label>
-            <input
-              {...register('featuredImage')}
-              type="url"
-              id="featuredImage"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-insubria-500 focus:border-insubria-500"
-              placeholder="https://example.com/image.jpg"
-            />
-            <p className="mt-1 text-xs text-gray-500">
-              URL dell&apos;immagine principale dell&apos;articolo
-            </p>
+
+            {/* Preview immagine */}
+            {featuredImageUrl && (
+              <div className="mb-4 flex items-center gap-4">
+                <img
+                  src={featuredImageUrl}
+                  alt="Preview"
+                  className="w-32 h-32 rounded-lg object-cover border-2 border-gray-200"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFeaturedImageUrl('')
+                    setValue('featuredImage', '')
+                  }}
+                  className="text-sm text-red-600 hover:text-red-800"
+                >
+                  Rimuovi immagine
+                </button>
+              </div>
+            )}
+
+            {/* Upload file */}
+            <div className="mb-3">
+              <label className="block text-sm text-gray-600 mb-2">
+                Opzione 1: Carica un&apos;immagine
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                disabled={isUploadingImage}
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-insubria-50 file:text-insubria-700 hover:file:bg-insubria-100 disabled:opacity-50"
+              />
+              <p className="mt-1 text-xs text-gray-500">
+                PNG, JPG, GIF fino a 5MB. Consigliato: 1200x630px
+              </p>
+              {isUploadingImage && (
+                <p className="mt-2 text-sm text-insubria-600">Caricamento in corso...</p>
+              )}
+            </div>
+
+            {/* URL manuale */}
+            <div>
+              <label htmlFor="featuredImage" className="block text-sm text-gray-600 mb-2">
+                Opzione 2: Inserisci URL immagine
+              </label>
+              <input
+                {...register('featuredImage')}
+                type="url"
+                id="featuredImage"
+                value={featuredImageUrl}
+                onChange={(e) => setFeaturedImageUrl(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-insubria-500 focus:border-insubria-500"
+                placeholder="https://example.com/image.jpg"
+              />
+              <p className="mt-1 text-xs text-gray-500">
+                Oppure incolla l&apos;URL di un&apos;immagine già online
+              </p>
+            </div>
           </div>
 
           <div className="mt-6">

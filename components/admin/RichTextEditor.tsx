@@ -50,6 +50,7 @@ function RichTextEditorComponent({ content, onChange, placeholder = "Inizia a sc
   const [linkUrl, setLinkUrl] = useState('')
   const [showImageDialog, setShowImageDialog] = useState(false)
   const [imageUrl, setImageUrl] = useState('')
+  const [isUploadingImage, setIsUploadingImage] = useState(false)
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -114,6 +115,46 @@ function RichTextEditorComponent({ content, onChange, placeholder = "Inizia a sc
       editor.chain().focus().setImage({ src: imageUrl }).run()
       setShowImageDialog(false)
       setImageUrl('')
+    }
+  }
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    if (!file.type.startsWith('image/')) {
+      alert('Per favore carica un\'immagine')
+      return
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert('L\'immagine deve essere inferiore a 5MB')
+      return
+    }
+
+    setIsUploadingImage(true)
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('folder', 'blog-content')
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (response.ok) {
+        const { url } = await response.json()
+        editor.chain().focus().setImage({ src: url }).run()
+        setShowImageDialog(false)
+        setImageUrl('')
+      } else {
+        alert('Errore durante il caricamento')
+      }
+    } catch (error) {
+      alert('Errore durante il caricamento')
+    } finally {
+      setIsUploadingImage(false)
     }
   }
 
@@ -355,23 +396,55 @@ function RichTextEditorComponent({ content, onChange, placeholder = "Inizia a sc
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-96">
             <h3 className="text-lg font-semibold mb-4">Aggiungi Immagine</h3>
-            <input
-              type="url"
-              value={imageUrl}
-              onChange={(e) => setImageUrl(e.target.value)}
-              placeholder="https://example.com/image.jpg"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-insubria-500 focus:border-insubria-500 mb-4"
-            />
+            
+            {/* Upload file */}
+            <div className="mb-4">
+              <label className="block text-sm text-gray-600 mb-2">
+                Opzione 1: Carica un&apos;immagine
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                disabled={isUploadingImage}
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-insubria-50 file:text-insubria-700 hover:file:bg-insubria-100 disabled:opacity-50"
+              />
+              <p className="mt-1 text-xs text-gray-500">
+                PNG, JPG, GIF fino a 5MB
+              </p>
+              {isUploadingImage && (
+                <p className="mt-2 text-sm text-insubria-600">Caricamento in corso...</p>
+              )}
+            </div>
+
+            {/* URL manuale */}
+            <div className="mb-4">
+              <label className="block text-sm text-gray-600 mb-2">
+                Opzione 2: Inserisci URL immagine
+              </label>
+              <input
+                type="url"
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+                placeholder="https://example.com/image.jpg"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-insubria-500 focus:border-insubria-500"
+              />
+            </div>
+
             <div className="flex justify-end gap-2">
               <button
-                onClick={() => setShowImageDialog(false)}
+                onClick={() => {
+                  setShowImageDialog(false)
+                  setImageUrl('')
+                }}
                 className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
               >
                 Annulla
               </button>
               <button
                 onClick={addImage}
-                className="px-4 py-2 bg-insubria-600 text-white rounded-lg hover:bg-insubria-700"
+                disabled={!imageUrl || isUploadingImage}
+                className="px-4 py-2 bg-insubria-600 text-white rounded-lg hover:bg-insubria-700 disabled:opacity-50"
               >
                 Aggiungi
               </button>
