@@ -21,6 +21,7 @@ const navigation = [
   { name: 'Servizi', href: '/admin/services', icon: Briefcase },
   { name: 'Progetti', href: '/admin/projects', icon: FileText },
   { name: 'Blog', href: '/admin/blog', icon: FileText },
+  { name: 'Team', href: '/admin/team', icon: Users },
   { name: 'Recruitment', href: '/admin/recruitment', icon: Users },
   { name: 'Contatti', href: '/admin/contacts', icon: Mail },
   { name: 'Privacy Policy', href: '/admin/policies', icon: Shield },

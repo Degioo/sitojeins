@@ -1,5 +1,6 @@
 import { Target, Eye, Users, Award, CheckCircle } from 'lucide-react'
 import TeamMember from '@/components/TeamMember'
+import { prisma } from '@/lib/prisma'
 
 import type { Metadata } from 'next'
 
@@ -17,7 +18,17 @@ export const metadata: Metadata = {
   },
 }
 
-export default function ChiSiamoPage() {
+async function getTeamMembers() {
+  const members = await prisma.teamMember.findMany({
+    where: { isActive: true },
+    orderBy: { order: 'asc' }
+  })
+  return members
+}
+
+export default async function ChiSiamoPage() {
+  const teamMembers = await getTeamMembers()
+
   return (
     <main>
       {/* Hero Section */}
@@ -173,50 +184,30 @@ export default function ChiSiamoPage() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="animate-fade-in-left hover-lift">
-              <TeamMember
-                name="Marco Rossi"
-                role="Presidente"
-                description="Studente di Economia e Management, appassionato di leadership e strategia aziendale."
-              />
+          {teamMembers.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-neutral-500 text-lg">
+                I membri del team verranno aggiunti a breve.
+              </p>
             </div>
-            <div className="animate-fade-in-up hover-lift">
-              <TeamMember
-                name="Sofia Bianchi"
-                role="Vice Presidente"
-                description="Laureanda in Marketing, esperta di comunicazione digitale e social media strategy."
-              />
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {teamMembers.map((member, index) => (
+                <div 
+                  key={member.id} 
+                  className={`animate-fade-in-left hover-lift`}
+                  style={{animationDelay: `${index * 0.1}s`}}
+                >
+                  <TeamMember
+                    name={member.name}
+                    role={member.role}
+                    image={member.image || undefined}
+                    description={member.description || undefined}
+                  />
+                </div>
+              ))}
             </div>
-            <div className="animate-fade-in-right hover-lift">
-              <TeamMember
-                name="Alessandro Verdi"
-                role="Project Manager"
-                description="Studente di Informatica, specializzato in sviluppo software e gestione progetti IT."
-              />
-            </div>
-            <div className="animate-fade-in-left hover-lift">
-              <TeamMember
-                name="Giulia Neri"
-                role="Marketing Manager"
-                description="Laureanda in Comunicazione, creativa e strategica nel digital marketing."
-              />
-            </div>
-            <div className="animate-fade-in-up hover-lift">
-              <TeamMember
-                name="Luca Ferrari"
-                role="Finance Manager"
-                description="Studente di Economia, esperto in analisi finanziarie e business planning."
-              />
-            </div>
-            <div className="animate-fade-in-right hover-lift">
-              <TeamMember
-                name="Emma Romano"
-                role="HR Manager"
-                description="Laureanda in Psicologia, specializzata in gestione risorse umane e team building."
-              />
-            </div>
-          </div>
+          )}
         </div>
       </section>
     </main>
