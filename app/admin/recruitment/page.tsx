@@ -99,24 +99,26 @@ export default async function RecruitmentPage() {
 
                 {/* Link alle risposte */}
                 <a
-                  href={recruitment.googleFormUrl ? recruitment.googleFormUrl.replace('/viewform', '/edit#responses') : '#'}
+                  href={recruitment.googleFormUrl ? recruitment.googleFormUrl.replace(/\/viewform.*/, '/edit#responses') : '#'}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 bg-blue-600 text-white px-6 py-4 rounded-lg hover:bg-blue-700 transition-colors"
+                  title="Devi essere proprietario o collaboratore del form per vedere le risposte"
                 >
                   <Users className="h-5 w-5" />
                   Vedi Risposte
                 </a>
 
-                {/* Link al Google Sheet */}
+                {/* Link al Google Sheet - stessa pagina delle risposte */}
                 <a
-                  href={recruitment.googleFormUrl ? recruitment.googleFormUrl.replace('/viewform', '/edit#responses') : '#'}
+                  href={recruitment.googleFormUrl ? recruitment.googleFormUrl.replace(/\/viewform.*/, '/edit#responses') : '#'}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 bg-green-600 text-white px-6 py-4 rounded-lg hover:bg-green-700 transition-colors"
+                  title="Dalle risposte, clicca l'icona verde di Sheets per collegare"
                 >
                   <FileSpreadsheet className="h-5 w-5" />
-                  Apri Google Sheet
+                  Collega Sheet
                 </a>
               </div>
 

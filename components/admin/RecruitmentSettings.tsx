@@ -16,7 +16,7 @@ const recruitmentSettingsSchema = z.object({
   description: z.string().optional(),
   requirements: z.string().optional(),
   benefits: z.string().optional(),
-  googleFormUrl: z.string().url().optional().or(z.literal('')),
+  googleFormUrl: z.string().optional().or(z.literal('')),
 })
 
 type RecruitmentSettingsData = z.infer<typeof recruitmentSettingsSchema>
@@ -242,20 +242,41 @@ export default function RecruitmentSettings({ recruitment }: RecruitmentSettings
         {/* Google Form URL */}
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Google Form</h2>
-          <input
-            {...register('googleFormUrl')}
-            type="url"
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-insubria-500 focus:border-insubria-500"
-            placeholder="https://forms.gle/..."
-          />
-          <p className="mt-1 text-xs text-gray-500">
-            URL del Google Form per le candidature. Se vuoto, verrà mostrato un link di esempio.
-          </p>
-          {errors.googleFormUrl && (
-            <p className="mt-1 text-xs text-red-500">
-              {errors.googleFormUrl.message}
+          <div className="mb-4">
+            <label htmlFor="googleFormUrl" className="block text-sm font-medium text-gray-700 mb-2">
+              URL Google Form
+            </label>
+            <input
+              {...register('googleFormUrl')}
+              type="text"
+              id="googleFormUrl"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-insubria-500 focus:border-insubria-500"
+              placeholder="https://docs.google.com/forms/d/e/1FAIpQLSe.../viewform"
+            />
+            <p className="mt-1 text-xs text-gray-500">
+              URL del Google Form per le candidature
             </p>
-          )}
+            {errors.googleFormUrl && (
+              <p className="mt-1 text-xs text-red-500">
+                {errors.googleFormUrl.message}
+              </p>
+            )}
+          </div>
+
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <h4 className="text-sm font-semibold text-blue-900 mb-2">📝 Come ottenere il link corretto</h4>
+            <ol className="text-sm text-blue-800 space-y-1 list-decimal list-inside">
+              <li>Apri il tuo Google Form</li>
+              <li>Clicca su <strong>&quot;Invia&quot;</strong> in alto a destra</li>
+              <li>Clicca sull&apos;icona del <strong>Link</strong> 🔗</li>
+              <li><strong>NON spuntare</strong> &quot;Abbrevia URL&quot;</li>
+              <li>Copia il link completo (inizia con docs.google.com)</li>
+              <li>Incollalo nel campo sopra</li>
+            </ol>
+            <p className="mt-2 text-xs text-blue-700">
+              ⚠️ Usa il link completo, non il link corto forms.gle
+            </p>
+          </div>
         </div>
 
         <div className="flex justify-end gap-4">
