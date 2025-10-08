@@ -1,0 +1,37 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { put } from '@vercel/blob'
+
+export async function POST(request: NextRequest) {
+  try {
+    const formData = await request.formData()
+    const file = formData.get('file') as File
+
+    if (!file) {
+      return NextResponse.json({ error: 'Nessun file caricato' }, { status: 400 })
+    }
+
+    // Verifica che sia un'immagine
+    if (!file.type.startsWith('image/')) {
+      return NextResponse.json({ error: 'Il file deve essere un\'immagine' }, { status: 400 })
+    }
+
+    // Genera nome file unico
+    const filename = `team/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`
+
+    // Upload su Vercel Blob
+    const blob = await put(filename, file, {
+      access: 'public',
+      contentType: file.type,
+    })
+
+    return NextResponse.json({
+      url: blob.url,
+    })
+  } catch (error) {
+    console.error('Upload error:', error)
+    return NextResponse.json(
+      { error: 'Errore durante l\'upload' },
+      { status: 500 }
+    )
+  }
+}

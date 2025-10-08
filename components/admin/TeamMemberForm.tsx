@@ -35,6 +35,8 @@ interface TeamMemberFormProps {
 export default function TeamMemberForm({ member }: TeamMemberFormProps) {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
+  const [imageUrl, setImageUrl] = useState(member?.image || '')
+  const [isUploading, setIsUploading] = useState(false)
 
   const {
     register,
@@ -52,18 +54,64 @@ export default function TeamMemberForm({ member }: TeamMemberFormProps) {
     }
   })
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    // Verifica che sia un'immagine
+    if (!file.type.startsWith('image/')) {
+      toast.error('Per favore carica un\'immagine')
+      return
+    }
+
+    // Verifica dimensione (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('L\'immagine deve essere inferiore a 5MB')
+      return
+    }
+
+    setIsUploading(true)
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (response.ok) {
+        const { url } = await response.json()
+        setImageUrl(url)
+        toast.success('Immagine caricata!')
+      } else {
+        toast.error('Errore durante il caricamento')
+      }
+    } catch (error) {
+      toast.error('Errore durante il caricamento')
+    } finally {
+      setIsUploading(false)
+    }
+  }
+
   const onSubmit = async (data: TeamMemberFormData) => {
     setIsLoading(true)
     try {
       const url = member ? `/api/team/${member.id}` : '/api/team'
       const method = member ? 'PUT' : 'POST'
 
+      // Usa l'immagine caricata se presente
+      const submitData = {
+        ...data,
+        image: imageUrl || data.image
+      }
+
       const response = await fetch(url, {
         method,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(submitData),
       })
 
       if (response.ok) {
@@ -133,20 +181,67 @@ export default function TeamMemberForm({ member }: TeamMemberFormProps) {
               )}
             </div>
 
-            <div>
-              <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-2">
-                URL Immagine
+            <div className="col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Foto Membro
               </label>
-              <input
-                {...register('image')}
-                type="url"
-                id="image"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-insubria-500 focus:border-insubria-500"
-                placeholder="https://example.com/foto.jpg"
-              />
-              <p className="mt-1 text-xs text-gray-500">
-                URL della foto del membro (lascia vuoto per usare le iniziali)
-              </p>
+              
+              {/* Preview immagine */}
+              {imageUrl && (
+                <div className="mb-4 flex items-center gap-4">
+                  <img
+                    src={imageUrl}
+                    alt="Preview"
+                    className="w-24 h-24 rounded-full object-cover border-2 border-gray-200"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setImageUrl('')}
+                    className="text-sm text-red-600 hover:text-red-800"
+                  >
+                    Rimuovi immagine
+                  </button>
+                </div>
+              )}
+
+              {/* Upload file */}
+              <div className="mb-3">
+                <label className="block text-sm text-gray-600 mb-2">
+                  Opzione 1: Carica un&apos;immagine
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  disabled={isUploading}
+                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-insubria-50 file:text-insubria-700 hover:file:bg-insubria-100 disabled:opacity-50"
+                />
+                <p className="mt-1 text-xs text-gray-500">
+                  PNG, JPG, GIF fino a 5MB. Consigliato: 500x500px
+                </p>
+                {isUploading && (
+                  <p className="mt-2 text-sm text-insubria-600">Caricamento in corso...</p>
+                )}
+              </div>
+
+              {/* URL manuale */}
+              <div>
+                <label htmlFor="image" className="block text-sm text-gray-600 mb-2">
+                  Opzione 2: Inserisci URL immagine
+                </label>
+                <input
+                  {...register('image')}
+                  type="url"
+                  id="image"
+                  value={imageUrl}
+                  onChange={(e) => setImageUrl(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-insubria-500 focus:border-insubria-500"
+                  placeholder="https://example.com/foto.jpg"
+                />
+                <p className="mt-1 text-xs text-gray-500">
+                  Oppure incolla l&apos;URL di un&apos;immagine già online
+                </p>
+              </div>
             </div>
 
             <div>
