@@ -38,13 +38,13 @@ export default function NewsletterBox() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="La tua email"
-              className="flex-1 px-4 py-3 rounded-2xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-insubria-green-500"
+              className="flex-1 px-4 py-3 rounded-2xl border border-gray-200 bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-insubria-green-500"
               required
             />
             <button
               type="submit"
               disabled={isSubmitting || !consent}
-              className="bg-insubria-600 text-white px-6 py-3 rounded-2xl font-semibold hover:bg-insubria-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-insubria-green-500 text-white px-6 py-3 rounded-2xl font-semibold hover:bg-white hover:text-insubria-green-500 hover:border-2 hover:border-insubria-green-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-insubria-green-500 disabled:hover:text-white disabled:hover:border-0"
             >
               {isSubmitting ? 'Invio...' : 'Iscriviti'}
             </button>
@@ -56,12 +56,11 @@ export default function NewsletterBox() {
               id="consent"
               checked={consent}
               onChange={(e) => setConsent(e.target.checked)}
-              className="rounded"
-              required
+              className="rounded border-gray-300"
             />
-            <label htmlFor="consent" className="text-sm text-neutral-700">
+            <label htmlFor="consent" className="text-sm text-gray-900">
               Acconsento al trattamento dei dati personali secondo la{' '}
-              <a href="/privacy" className="text-insubria-green-700 hover:underline">
+              <a href="/privacy" className="text-insubria-green-700 hover:underline font-medium">
                 Privacy Policy
               </a>
             </label>
