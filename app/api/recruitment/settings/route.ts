@@ -28,9 +28,13 @@ export async function POST(request: NextRequest) {
 
     const recruitment = await prisma.recruitment.create({
       data: {
-        ...data,
+        isOpen: data.isOpen,
         openDate: data.openDate ? new Date(data.openDate) : null,
         closeDate: data.closeDate ? new Date(data.closeDate) : null,
+        description: data.description || null,
+        requirements: data.requirements || null,
+        benefits: data.benefits || null,
+        googleFormUrl: data.googleFormUrl || null,
       }
     })
 
