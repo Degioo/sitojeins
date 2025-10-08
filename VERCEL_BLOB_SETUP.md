@@ -19,7 +19,7 @@ NEXTAUTH_URL="http://localhost:3000"
 NEXTAUTH_SECRET="..."
 
 # Vercel Blob
-BLOB_READ_WRITE_TOKEN="vercel_blob_rw_mrLuTv2DyRkwL6MA_HX2lxUQvpMkc2F4FR4F8bj0mf4FpRn"
+jeins_READ_WRITE_TOKEN="vercel_blob_rw_mrLuTv2DyRkwL6MA_HX2lxUQvpMkc2F4FR4F8bj0mf4FpRn"
 ```
 
 ### **Produzione Vercel**:
@@ -29,7 +29,7 @@ BLOB_READ_WRITE_TOKEN="vercel_blob_rw_mrLuTv2DyRkwL6MA_HX2lxUQvpMkc2F4FR4F8bj0mf
 
 | Nome | Valore | Ambiente |
 |------|--------|----------|
-| `BLOB_READ_WRITE_TOKEN` | `vercel_blob_rw_mrLuTv2DyRkwL6MA_HX2lxUQvpMkc2F4FR4F8bj0mf4FpRn` | Production, Preview, Development |
+| `jeins_READ_WRITE_TOKEN` | `vercel_blob_rw_mrLuTv2DyRkwL6MA_HX2lxUQvpMkc2F4FR4F8bj0mf4FpRn` | Production, Preview, Development |
 
 3. Clicca **Save**
 4. **NON serve redeploy** - Vercel Blob è già configurato!
@@ -113,7 +113,7 @@ Questo:
 ## ❓ Troubleshooting
 
 ### "Upload error"
-- Verifica che `BLOB_READ_WRITE_TOKEN` sia configurato
+- Verifica che `jeins_READ_WRITE_TOKEN` sia configurato
 - Controlla dimensione file < 4.5 MB
 - Verifica formato immagine valido
 
