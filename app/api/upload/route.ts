@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { put } from '@vercel/blob'
 
+// Usa il token personalizzato di Vercel
+process.env.BLOB_READ_WRITE_TOKEN = process.env.jeins_READ_WRITE_TOKEN
+
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData()
