@@ -3,6 +3,9 @@ import { notFound } from 'next/navigation'
 import { Calendar, User, Tag } from 'lucide-react'
 import Image from 'next/image'
 
+// Ricarica i dati ogni 60 secondi
+export const revalidate = 60
+
 interface BlogPostPageProps {
   params: {
     slug: string

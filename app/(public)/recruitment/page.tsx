@@ -2,6 +2,9 @@ import { prisma } from '@/lib/prisma'
 import { ExternalLink, Users, Calendar, MapPin, Clock } from 'lucide-react'
 import type { Metadata } from 'next'
 
+// Ricarica i dati ogni 60 secondi
+export const revalidate = 60
+
 export const metadata: Metadata = {
   title: 'Recruitment - JEIns | Unisciti al Nostro Team di Studenti',
   description: 'Candidati per entrare a far parte di JEIns! Offriamo opportunità di crescita professionale, progetti reali e esperienza pratica per studenti dell\'Università dell\'Insubria. Scopri i ruoli disponibili.',

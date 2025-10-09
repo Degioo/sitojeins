@@ -4,6 +4,9 @@ import { Calendar, User, Tag, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 
+// Ricarica i dati ogni 60 secondi
+export const revalidate = 60
+
 export const metadata: Metadata = {
   title: 'Blog - JEIns | Articoli e News sulla Junior Enterprise',
   description: 'Scopri gli ultimi articoli e news di JEIns. Approfondimenti su consulenza aziendale, progetti universitari, eventi e opportunità per studenti dell\'Università dell\'Insubria.',

@@ -4,6 +4,9 @@ import { prisma } from '@/lib/prisma'
 
 import type { Metadata } from 'next'
 
+// Ricarica i dati ogni 60 secondi
+export const revalidate = 60
+
 export const metadata: Metadata = {
   title: 'Chi Siamo - JEIns | Il Team e la Nostra Missione',
   description: 'Scopri JEIns, la Junior Enterprise dell\'Università dell\'Insubria. Conosci il nostro team di studenti motivati, la nostra missione e i valori che ci guidano nel fornire consulenza aziendale di qualità.',

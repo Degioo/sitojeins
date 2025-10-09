@@ -2,6 +2,9 @@ import ContactForm from '@/components/ContactForm'
 import { prisma } from '@/lib/prisma'
 import type { Metadata } from 'next'
 
+// Ricarica i dati ogni 60 secondi
+export const revalidate = 60
+
 export const metadata: Metadata = {
   title: 'Contatti - JEIns | Contattaci per Consulenza e Progetti',
   description: 'Contatta JEIns per consulenza aziendale, progetti di ricerca e collaborazioni. Siamo disponibili per aziende e studenti dell\'Università dell\'Insubria. Richiedi un preventivo gratuito.',

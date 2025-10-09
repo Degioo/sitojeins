@@ -6,6 +6,9 @@ import NewsletterBox from '@/components/NewsletterBox'
 import ContactForm from '@/components/ContactForm'
 import { prisma } from '@/lib/prisma'
 
+// Ricarica i dati ogni 60 secondi (ISR - Incremental Static Regeneration)
+export const revalidate = 60
+
 async function getHomeData() {
   const [services, projects, stats, sections] = await Promise.all([
     prisma.service.findMany({

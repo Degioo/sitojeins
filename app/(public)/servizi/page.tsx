@@ -2,6 +2,9 @@ import ServiceCard from '@/components/ServiceCard'
 import { prisma } from '@/lib/prisma'
 import type { Metadata } from 'next'
 
+// Ricarica i dati ogni 60 secondi
+export const revalidate = 60
+
 export const metadata: Metadata = {
   title: 'Servizi - JEIns | Consulenza Aziendale e Progetti Universitari',
   description: 'Scopri i servizi di JEIns: consulenza aziendale, sviluppo web, marketing digitale, business consulting e progetti di ricerca. Soluzioni innovative per aziende e opportunità di crescita per studenti.',

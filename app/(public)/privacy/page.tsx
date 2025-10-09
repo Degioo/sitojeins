@@ -3,6 +3,9 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { Calendar, FileText, Shield } from 'lucide-react'
 
+// Ricarica i dati ogni 60 secondi
+export const revalidate = 60
+
 export const metadata: Metadata = {
   title: 'Privacy Policy - JEIns | Trattamento Dati Personali',
   description: 'Privacy Policy di JEIns - Junior Enterprise Insubria. Informazioni sul trattamento dei dati personali secondo il GDPR e la normativa italiana.',
