@@ -16,32 +16,41 @@ export async function PUT(request: NextRequest) {
   try {
     const sections = await request.json()
     
+    console.log('Saving sections:', sections.length)
+    
     // Aggiorna o crea ogni sezione
+    const results = []
     for (const section of sections) {
-      await prisma.homeSection.upsert({
+      const result = await prisma.homeSection.upsert({
         where: { name: section.name },
         update: {
-          title: section.title,
-          subtitle: section.subtitle,
-          description: section.description,
+          title: section.title || null,
+          subtitle: section.subtitle || null,
+          description: section.description || null,
           isActive: section.isActive,
           order: section.order,
-          config: section.config
+          config: section.config || null
         },
         create: {
           name: section.name,
-          title: section.title,
-          subtitle: section.subtitle,
-          description: section.description,
+          title: section.title || null,
+          subtitle: section.subtitle || null,
+          description: section.description || null,
           isActive: section.isActive,
           order: section.order,
-          config: section.config
+          config: section.config || null
         }
       })
+      results.push(result)
     }
 
-    return NextResponse.json({ success: true })
+    console.log('Sections saved successfully:', results.length)
+    return NextResponse.json({ success: true, count: results.length })
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to update home sections' }, { status: 500 })
+    console.error('Error saving sections:', error)
+    return NextResponse.json({ 
+      error: 'Failed to update home sections',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 })
   }
 }

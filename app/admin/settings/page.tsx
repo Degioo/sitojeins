@@ -163,11 +163,16 @@ export default function SettingsPage() {
       })
 
       if (response.ok) {
-        toast.success('Configurazione salvata con successo!')
+        toast.success('Configurazione salvata con successo! 🎉')
+        // Ricarica per mostrare i dati dal DB
+        await fetchSections()
       } else {
+        const error = await response.json()
+        console.error('Error response:', error)
         toast.error('Errore nel salvare la configurazione')
       }
     } catch (error) {
+      console.error('Save error:', error)
       toast.error('Errore nel salvare la configurazione')
     } finally {
       setSaving(false)
