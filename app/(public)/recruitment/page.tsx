@@ -21,14 +21,15 @@ export const metadata: Metadata = {
 
 async function getRecruitmentStatus() {
   return await prisma.recruitment.findFirst({
-    where: { isOpen: true },
     orderBy: { createdAt: 'desc' }
   })
 }
 
 export default async function RecruitmentPage() {
   const recruitment = await getRecruitmentStatus()
-  const faqs = [
+  
+  // Parse FAQs from database or use defaults
+  const defaultFaqs = [
     {
       question: "Come funziona il processo di selezione?",
       answer: "Il processo prevede una prima valutazione del CV, seguita da un colloquio conoscitivo e, se necessario, da un test pratico specifico per il ruolo."
@@ -46,6 +47,8 @@ export default async function RecruitmentPage() {
       answer: "Esperienza professionale reale, networking con aziende, sviluppo di competenze trasversali, certificazioni e possibilità di crescita personale e professionale."
     }
   ]
+  
+  const faqs = recruitment?.faqs ? JSON.parse(recruitment.faqs) : defaultFaqs
 
   return (
     <main>
@@ -63,7 +66,7 @@ export default async function RecruitmentPage() {
           <p className="text-xl max-w-3xl mx-auto">
             {recruitment?.description || "Candidati per diventare parte di JEIns e sviluppa le tue competenze professionali attraverso progetti reali e un ambiente stimolante."}
           </p>
-          {recruitment && (
+          {recruitment?.isOpen && (
             <div className="mt-6">
               <div className="inline-flex items-center px-4 py-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full text-white">
                 <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
@@ -91,7 +94,7 @@ export default async function RecruitmentPage() {
             </p>
           </div>
 
-          {recruitment ? (
+          {recruitment?.isOpen ? (
             <div className="bg-white border-2 border-insubria-200 rounded-2xl p-8 shadow-sm animate-fade-in-up">
               <div className="text-center mb-8">
                 <div className="bg-insubria-50 text-insubria-600 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
@@ -180,7 +183,7 @@ export default async function RecruitmentPage() {
           </div>
           
           <div className="space-y-6">
-            {faqs.map((faq, index) => (
+            {faqs.map((faq: { question: string; answer: string }, index: number) => (
               <div key={index} className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm animate-fade-in-up hover-lift" style={{animationDelay: `${index * 0.1}s`}}>
                 <h3 className="text-lg font-semibold text-insubria-600 mb-3">
                   {faq.question}

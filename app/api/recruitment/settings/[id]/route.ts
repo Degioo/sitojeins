@@ -10,6 +10,7 @@ const recruitmentSettingsSchema = z.object({
   requirements: z.string().optional(),
   benefits: z.string().optional(),
   googleFormUrl: z.string().url().optional().or(z.literal('')),
+  faqs: z.string().optional(),
 })
 
 interface RouteParams {
@@ -33,6 +34,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         requirements: data.requirements || null,
         benefits: data.benefits || null,
         googleFormUrl: data.googleFormUrl || null,
+        faqs: data.faqs || null,
       }
     })
 

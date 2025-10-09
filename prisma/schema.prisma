@@ -124,6 +124,7 @@ model Recruitment {
   requirements  String?
   benefits      String?
   googleFormUrl String?
+  faqs          String?  // JSON array as string
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }

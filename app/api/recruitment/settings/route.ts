@@ -10,6 +10,7 @@ const recruitmentSettingsSchema = z.object({
   requirements: z.string().optional(),
   benefits: z.string().optional(),
   googleFormUrl: z.string().url().optional().or(z.literal('')),
+  faqs: z.string().optional(),
 })
 
 export async function GET() {
@@ -35,6 +36,7 @@ export async function POST(request: NextRequest) {
         requirements: data.requirements || null,
         benefits: data.benefits || null,
         googleFormUrl: data.googleFormUrl || null,
+        faqs: data.faqs || null,
       }
     })
 

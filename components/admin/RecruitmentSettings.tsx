@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import toast from 'react-hot-toast'
-import { ArrowLeft, Save, Play, Pause } from 'lucide-react'
+import { ArrowLeft, Save, Play, Pause, Plus, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 
 const recruitmentSettingsSchema = z.object({
@@ -17,6 +17,7 @@ const recruitmentSettingsSchema = z.object({
   requirements: z.string().optional(),
   benefits: z.string().optional(),
   googleFormUrl: z.string().optional().or(z.literal('')),
+  faqs: z.string().optional(),
 })
 
 type RecruitmentSettingsData = z.infer<typeof recruitmentSettingsSchema>
@@ -31,12 +32,20 @@ interface RecruitmentSettingsProps {
     requirements?: string
     benefits?: string
     googleFormUrl?: string
+    faqs?: string
   }
 }
 
 export default function RecruitmentSettings({ recruitment }: RecruitmentSettingsProps) {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
+  
+  // Parse FAQ from recruitment data
+  const initialFaqs = recruitment?.faqs 
+    ? JSON.parse(recruitment.faqs) 
+    : [{ question: '', answer: '' }]
+  
+  const [faqs, setFaqs] = useState<Array<{ question: string; answer: string }>>(initialFaqs)
 
   const {
     register,
@@ -54,6 +63,7 @@ export default function RecruitmentSettings({ recruitment }: RecruitmentSettings
       requirements: recruitment.requirements || '',
       benefits: recruitment.benefits || '',
       googleFormUrl: recruitment.googleFormUrl || '',
+      faqs: recruitment.faqs || '',
     } : {
       isOpen: false,
       openDate: '',
@@ -62,6 +72,7 @@ export default function RecruitmentSettings({ recruitment }: RecruitmentSettings
       requirements: '',
       benefits: '',
       googleFormUrl: '',
+      faqs: '',
     }
   })
 
@@ -72,6 +83,9 @@ export default function RecruitmentSettings({ recruitment }: RecruitmentSettings
     try {
       const url = recruitment ? `/api/recruitment/settings/${recruitment.id}` : '/api/recruitment/settings'
       const method = recruitment ? 'PUT' : 'POST'
+      
+      // Filter out empty FAQs
+      const validFaqs = faqs.filter(faq => faq.question.trim() && faq.answer.trim())
 
       const response = await fetch(url, {
         method,
@@ -82,6 +96,7 @@ export default function RecruitmentSettings({ recruitment }: RecruitmentSettings
           ...data,
           openDate: data.openDate ? new Date(data.openDate).toISOString() : null,
           closeDate: data.closeDate ? new Date(data.closeDate).toISOString() : null,
+          faqs: validFaqs.length > 0 ? JSON.stringify(validFaqs) : null,
         }),
       })
 
@@ -96,6 +111,20 @@ export default function RecruitmentSettings({ recruitment }: RecruitmentSettings
     } finally {
       setIsLoading(false)
     }
+  }
+  
+  const addFaq = () => {
+    setFaqs([...faqs, { question: '', answer: '' }])
+  }
+  
+  const removeFaq = (index: number) => {
+    setFaqs(faqs.filter((_, i) => i !== index))
+  }
+  
+  const updateFaq = (index: number, field: 'question' | 'answer', value: string) => {
+    const newFaqs = [...faqs]
+    newFaqs[index][field] = value
+    setFaqs(newFaqs)
   }
 
   const toggleRecruitment = () => {
@@ -147,18 +176,6 @@ export default function RecruitmentSettings({ recruitment }: RecruitmentSettings
                 </>
               )}
             </button>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <input
-              {...register('isOpen')}
-              type="checkbox"
-              id="isOpen"
-              className="h-4 w-4 text-insubria-600 focus:ring-insubria-500 border-gray-300 rounded"
-            />
-            <label htmlFor="isOpen" className="text-sm text-gray-900">
-              Recruitment attualmente aperto
-            </label>
           </div>
         </div>
 
@@ -277,6 +294,74 @@ export default function RecruitmentSettings({ recruitment }: RecruitmentSettings
               ⚠️ Usa il link completo, non il link corto forms.gle
             </p>
           </div>
+        </div>
+
+        {/* FAQ Section */}
+        <div className="bg-white rounded-lg border border-gray-200 p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-gray-900">Domande Frequenti (FAQ)</h2>
+            <button
+              type="button"
+              onClick={addFaq}
+              className="flex items-center gap-2 px-3 py-2 text-sm bg-insubria-600 text-white rounded-lg hover:bg-insubria-700 transition-colors"
+            >
+              <Plus className="h-4 w-4" />
+              Aggiungi FAQ
+            </button>
+          </div>
+          
+          <div className="space-y-4">
+            {faqs.map((faq, index) => (
+              <div key={index} className="border border-gray-200 rounded-lg p-4">
+                <div className="flex justify-between items-start mb-3">
+                  <h3 className="text-sm font-semibold text-gray-700">FAQ #{index + 1}</h3>
+                  {faqs.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeFaq(index)}
+                      className="text-red-600 hover:text-red-700"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  )}
+                </div>
+                
+                <div className="space-y-3">
+                  <div>
+                    <label htmlFor={`faq-question-${index}`} className="block text-sm font-medium text-gray-700 mb-1">
+                      Domanda
+                    </label>
+                    <input
+                      type="text"
+                      id={`faq-question-${index}`}
+                      value={faq.question}
+                      onChange={(e) => updateFaq(index, 'question', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-insubria-500 focus:border-insubria-500"
+                      placeholder="Es: Come funziona il processo di selezione?"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label htmlFor={`faq-answer-${index}`} className="block text-sm font-medium text-gray-700 mb-1">
+                      Risposta
+                    </label>
+                    <textarea
+                      id={`faq-answer-${index}`}
+                      value={faq.answer}
+                      onChange={(e) => updateFaq(index, 'answer', e.target.value)}
+                      rows={3}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-insubria-500 focus:border-insubria-500"
+                      placeholder="Scrivi la risposta..."
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <p className="mt-4 text-xs text-gray-500">
+            Le FAQ verranno mostrate nella pagina pubblica del recruitment
+          </p>
         </div>
 
         <div className="flex justify-end gap-4">

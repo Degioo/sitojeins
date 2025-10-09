@@ -17,6 +17,7 @@ export default async function RecruitmentSettingsPage() {
     requirements: recruitment.requirements ?? undefined,
     benefits: recruitment.benefits ?? undefined,
     googleFormUrl: recruitment.googleFormUrl ?? undefined,
+    faqs: recruitment.faqs ?? undefined,
   } : undefined
   
   return <RecruitmentSettings recruitment={formattedRecruitment} />
