@@ -162,6 +162,7 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
       if (response.ok) {
         toast.success(post ? 'Articolo aggiornato!' : 'Articolo creato!')
         router.push('/admin/blog')
+        router.refresh()
       } else {
         toast.error('Errore durante il salvataggio')
       }

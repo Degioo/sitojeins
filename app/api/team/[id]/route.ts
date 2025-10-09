@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 const teamMemberSchema = z.object({
@@ -50,6 +51,11 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       }
     })
 
+    // Invalida la cache delle pagine pubbliche e admin
+    revalidatePath('/')
+    revalidatePath('/chi-siamo')
+    revalidatePath('/admin/team')
+
     return NextResponse.json(member)
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -64,6 +70,11 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     await prisma.teamMember.delete({
       where: { id: params.id }
     })
+
+    // Invalida la cache delle pagine pubbliche e admin
+    revalidatePath('/')
+    revalidatePath('/chi-siamo')
+    revalidatePath('/admin/team')
 
     return NextResponse.json({ success: true })
   } catch (error) {

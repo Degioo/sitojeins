@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 const projectSchema = z.object({
@@ -41,6 +42,10 @@ export async function POST(request: NextRequest) {
         ...(data.year !== undefined && { year: data.year }),
       }
     })
+
+    // Invalida la cache delle pagine pubbliche e admin
+    revalidatePath('/')
+    revalidatePath('/admin/projects')
 
     return NextResponse.json(project, { status: 201 })
   } catch (error) {

@@ -103,6 +103,7 @@ export default function RecruitmentSettings({ recruitment }: RecruitmentSettings
       if (response.ok) {
         toast.success('Impostazioni aggiornate!')
         router.push('/admin/recruitment')
+        router.refresh()
       } else {
         toast.error('Errore durante il salvataggio')
       }

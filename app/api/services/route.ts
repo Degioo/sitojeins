@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 const serviceSchema = z.object({
@@ -37,6 +38,11 @@ export async function POST(request: NextRequest) {
         ...(data.icon && { icon: data.icon }),
       }
     })
+
+    // Invalida la cache delle pagine pubbliche e admin
+    revalidatePath('/')
+    revalidatePath('/servizi')
+    revalidatePath('/admin/services')
 
     return NextResponse.json(service, { status: 201 })
   } catch (error) {

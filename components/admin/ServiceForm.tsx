@@ -73,6 +73,7 @@ export default function ServiceForm({ service }: ServiceFormProps) {
       if (response.ok) {
         toast.success(service ? 'Servizio aggiornato!' : 'Servizio creato!')
         router.push('/admin/services')
+        router.refresh()
       } else {
         toast.error('Errore durante il salvataggio')
       }

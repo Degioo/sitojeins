@@ -141,6 +141,7 @@ export default function ProjectForm({ project }: ProjectFormProps) {
       if (response.ok) {
         toast.success(project ? 'Progetto aggiornato!' : 'Progetto creato!')
         router.push('/admin/projects')
+        router.refresh()
       } else {
         toast.error('Errore durante il salvataggio')
       }

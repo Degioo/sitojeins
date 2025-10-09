@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 const blogPostSchema = z.object({
@@ -50,6 +51,11 @@ export async function POST(request: NextRequest) {
         ...(data.featuredImage && { featuredImage: data.featuredImage }),
       }
     })
+
+    // Invalida la cache delle pagine pubbliche e admin
+    revalidatePath('/')
+    revalidatePath('/blog')
+    revalidatePath('/admin/blog')
 
     return NextResponse.json(post, { status: 201 })
   } catch (error) {

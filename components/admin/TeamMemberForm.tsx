@@ -118,7 +118,8 @@ export default function TeamMemberForm({ member }: TeamMemberFormProps) {
       if (response.ok) {
         toast.success(member ? 'Membro aggiornato!' : 'Membro aggiunto!')
         router.push('/admin/team')
-      } else {
+        router.refresh()
+      } else{
         toast.error('Errore durante il salvataggio')
       }
     } catch (error) {

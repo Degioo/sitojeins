@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 const teamMemberSchema = z.object({
@@ -37,6 +38,11 @@ export async function POST(request: NextRequest) {
         ...(data.description && { description: data.description }),
       }
     })
+
+    // Invalida la cache delle pagine pubbliche e admin
+    revalidatePath('/')
+    revalidatePath('/chi-siamo')
+    revalidatePath('/admin/team')
 
     return NextResponse.json(member, { status: 201 })
   } catch (error) {

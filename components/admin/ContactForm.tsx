@@ -100,6 +100,7 @@ export default function ContactForm({ contact }: ContactFormProps) {
       if (response.ok) {
         toast.success(contact ? 'Contatto aggiornato!' : 'Contatto creato!')
         router.push('/admin/contacts')
+        router.refresh()
       } else {
         toast.error('Errore durante il salvataggio')
       }
