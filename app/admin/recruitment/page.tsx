@@ -11,6 +11,9 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 
+// Forza ricaricamento dal DB ad ogni visita
+export const revalidate = 0
+
 async function getRecruitmentData() {
   const recruitment = await prisma.recruitment.findFirst()
   return recruitment

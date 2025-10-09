@@ -1,4 +1,27 @@
-export default function AdminTestPage() {
+import { prisma } from '@/lib/prisma'
+
+// Forza ricaricamento dal DB ad ogni visita
+export const revalidate = 0
+
+async function getDashboardStats() {
+  const [servicesCount, projectsCount, teamCount, blogCount] = await Promise.all([
+    prisma.service.count({ where: { isActive: true } }),
+    prisma.project.count({ where: { isActive: true } }),
+    prisma.teamMember.count({ where: { isActive: true } }),
+    prisma.blogPost.count({ where: { isPublished: true } }),
+  ])
+
+  return {
+    services: servicesCount,
+    projects: projectsCount,
+    team: teamCount,
+    blog: blogCount,
+  }
+}
+
+export default async function AdminTestPage() {
+  const stats = await getDashboardStats()
+
   return (
     <div className="space-y-6">
       <div>
@@ -9,25 +32,25 @@ export default function AdminTestPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <h3 className="text-lg font-semibold text-gray-900">Servizi</h3>
-          <p className="text-3xl font-bold text-insubria-600">0</p>
+          <p className="text-3xl font-bold text-insubria-600">{stats.services}</p>
           <p className="text-sm text-gray-500">Servizi attivi</p>
         </div>
         
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <h3 className="text-lg font-semibold text-gray-900">Progetti</h3>
-          <p className="text-3xl font-bold text-insubria-600">0</p>
+          <p className="text-3xl font-bold text-insubria-600">{stats.projects}</p>
           <p className="text-sm text-gray-500">Progetti completati</p>
         </div>
         
         <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900">Candidature</h3>
-          <p className="text-3xl font-bold text-insubria-600">0</p>
-          <p className="text-sm text-gray-500">Candidature ricevute</p>
+          <h3 className="text-lg font-semibold text-gray-900">Team</h3>
+          <p className="text-3xl font-bold text-insubria-600">{stats.team}</p>
+          <p className="text-sm text-gray-500">Membri attivi</p>
         </div>
         
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <h3 className="text-lg font-semibold text-gray-900">Articoli</h3>
-          <p className="text-3xl font-bold text-insubria-600">0</p>
+          <p className="text-3xl font-bold text-insubria-600">{stats.blog}</p>
           <p className="text-sm text-gray-500">Articoli pubblicati</p>
         </div>
       </div>

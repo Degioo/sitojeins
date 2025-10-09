@@ -53,7 +53,7 @@ export default async function HomePage() {
           title={sectionConfig.hero.title || "Mostriamo il valore degli studenti dell'Insubria"}
           subtitle={sectionConfig.hero.subtitle || 'Consulenza, progetti e crescita: per aziende e studenti'}
           primaryCta="Richiedi un preventivo"
-          secondaryCta="Candidati"
+          secondaryCta="Unisciti a noi"
           primaryCtaHref="/contatti"
           secondaryCtaHref="/recruitment"
           backgroundImage="/images/hero-universita.jpg"

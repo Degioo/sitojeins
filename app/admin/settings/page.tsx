@@ -138,16 +138,20 @@ export default function SettingsPage() {
       
       if (currentIndex === -1) return prev
       
-      const newIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1
+      // Controlla limiti
+      if (direction === 'up' && currentIndex === 0) return prev
+      if (direction === 'down' && currentIndex === sortedSections.length - 1) return prev
       
-      if (newIndex < 0 || newIndex >= sortedSections.length) return prev
+      // Trova l'elemento con cui scambiare
+      const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1
       
-      // Swap orders
-      const temp = sortedSections[currentIndex].order
-      sortedSections[currentIndex].order = sortedSections[newIndex].order
-      sortedSections[newIndex].order = temp
+      // Scambia solo gli order di questi due elementi
+      const newSections = [...sortedSections]
+      const tempOrder = newSections[currentIndex].order
+      newSections[currentIndex].order = newSections[targetIndex].order
+      newSections[targetIndex].order = tempOrder
       
-      return sortedSections
+      return newSections
     })
   }
 

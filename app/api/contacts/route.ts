@@ -30,9 +30,9 @@ export async function POST(request: NextRequest) {
       data: {
         type: data.type,
         value: data.value,
+        label: data.label || null,
         order: data.order,
         isActive: data.isActive,
-        ...(data.label && { label: data.label }),
       }
     })
 

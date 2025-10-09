@@ -42,9 +42,9 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       data: {
         type: data.type,
         value: data.value,
+        label: data.label || null,
         order: data.order,
         isActive: data.isActive,
-        ...(data.label && { label: data.label }),
       }
     })
 

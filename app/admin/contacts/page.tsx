@@ -2,6 +2,9 @@ import { prisma } from '@/lib/prisma'
 import { Plus, Edit, Trash2, Mail, Phone, MapPin, Facebook, Instagram, Linkedin } from 'lucide-react'
 import Link from 'next/link'
 
+// Forza ricaricamento dal DB ad ogni visita
+export const revalidate = 0
+
 async function getContacts() {
   return await prisma.contact.findMany({
     orderBy: { order: 'asc' }

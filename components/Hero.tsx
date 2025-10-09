@@ -55,7 +55,7 @@ export default function Hero({
           </Link>
           <Link
             href={secondaryCtaHref}
-            className="border border-insubria-600 text-insubria-700 px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-insubria-50 transition-colors"
+            className="bg-yellow-400/60 border-2 border-yellow-500 text-yellow-900 px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-yellow-500 hover:text-white transition-all shadow-sm"
           >
             {secondaryCta}
           </Link>

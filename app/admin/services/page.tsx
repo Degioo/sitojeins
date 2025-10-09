@@ -1,4 +1,7 @@
 import { prisma } from '@/lib/prisma'
+
+// Forza ricaricamento dal DB ad ogni visita
+export const revalidate = 0
 import { Plus, Edit, Trash2, Eye, EyeOff } from 'lucide-react'
 import Link from 'next/link'
 
