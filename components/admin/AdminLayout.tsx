@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { 
   LayoutDashboard, 
   Settings, 
@@ -13,8 +13,11 @@ import {
   Shield,
   Menu,
   X,
-  LogOut
+  LogOut,
+  MailOpen
 } from 'lucide-react'
+import { signOut } from 'next-auth/react'
+import toast from 'react-hot-toast'
 
 const navigation = [
   { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
@@ -24,6 +27,7 @@ const navigation = [
   { name: 'Team', href: '/admin/team', icon: Users },
   { name: 'Recruitment', href: '/admin/recruitment', icon: Users },
   { name: 'Contatti', href: '/admin/contacts', icon: Mail },
+  { name: 'Newsletter', href: '/admin/newsletter', icon: MailOpen },
   { name: 'Privacy Policy', href: '/admin/policies', icon: Shield },
   { name: 'Impostazioni', href: '/admin/settings', icon: Settings },
 ]
@@ -35,6 +39,17 @@ export default function AdminLayout({
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const pathname = usePathname()
+  const router = useRouter()
+
+  const handleLogout = async () => {
+    try {
+      await signOut({ redirect: false })
+      toast.success('Logout effettuato con successo')
+      router.push('/admin/login')
+    } catch (error) {
+      toast.error('Errore durante il logout')
+    }
+  }
 
   return (
     <>
@@ -73,6 +88,13 @@ export default function AdminLayout({
                   </Link>
                 )
               })}
+              <button
+                onClick={handleLogout}
+                className="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900 w-full"
+              >
+                <LogOut className="mr-3 h-5 w-5 flex-shrink-0" />
+                Logout
+              </button>
             </nav>
           </div>
         </div>
@@ -106,6 +128,15 @@ export default function AdminLayout({
                       </li>
                     )
                   })}
+                  <li>
+                    <button
+                      onClick={handleLogout}
+                      className="group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold text-gray-700 hover:text-insubria-600 hover:bg-gray-50 w-full"
+                    >
+                      <LogOut className="h-6 w-6 shrink-0" />
+                      Logout
+                    </button>
+                  </li>
                 </ul>
               </li>
             </ul>
