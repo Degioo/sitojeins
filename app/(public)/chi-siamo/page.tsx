@@ -44,7 +44,7 @@ export default async function ChiSiamoPage() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="animate-fade-in-up">
             <h1 className="text-5xl md:text-6xl font-bold mb-6 newspaper-headline">
-              Chi siamo
+              <span className="text-yellow-400">Chi</span> <span className="text-white">siamo</span>
             </h1>
             <p className="text-xl max-w-3xl mx-auto">
               JEIns è la Junior Enterprise dell&apos;Università dell&apos;Insubria, 

@@ -182,9 +182,9 @@ export default async function RecruitmentPage() {
             </p>
           </div>
           
-          <div className="space-y-6">
+          <div className="space-y-4">
             {faqs.map((faq: { question: string; answer: string }, index: number) => (
-              <div key={index} className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm animate-fade-in-up hover-lift" style={{animationDelay: `${index * 0.1}s`}}>
+              <div key={index} className="bg-white border-l-4 border-insubria-600 p-6 animate-slide-in-left" style={{animationDelay: `${index * 0.1}s`}}>
                 <h3 className="text-lg font-semibold text-insubria-600 mb-3">
                   {faq.question}
                 </h3>

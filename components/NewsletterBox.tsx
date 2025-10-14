@@ -44,7 +44,7 @@ export default function NewsletterBox() {
             <button
               type="submit"
               disabled={isSubmitting || !consent}
-              className="bg-insubria-green-500 text-white px-6 py-3 rounded-2xl font-semibold border-2 border-transparent hover:bg-white hover:text-insubria-green-600 hover:border-insubria-green-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-insubria-green-500 disabled:hover:text-white disabled:hover:border-transparent"
+              className="cta-primary disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-insubria-600 disabled:hover:text-white"
             >
               {isSubmitting ? 'Invio...' : 'Iscriviti'}
             </button>

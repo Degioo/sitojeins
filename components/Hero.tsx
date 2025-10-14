@@ -49,13 +49,13 @@ export default function Hero({
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Link
             href={primaryCtaHref}
-            className="bg-insubria-600 text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-insubria-700 transition-colors shadow-sm"
+            className="cta-primary px-8 py-4 text-lg"
           >
             {primaryCta}
           </Link>
           <Link
             href={secondaryCtaHref}
-            className="bg-yellow-400/60 border-2 border-yellow-500 text-yellow-900 px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-yellow-500 hover:text-white transition-all shadow-sm"
+            className="cta-secondary px-8 py-4 text-lg"
           >
             {secondaryCta}
           </Link>

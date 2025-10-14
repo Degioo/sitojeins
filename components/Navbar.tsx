@@ -25,7 +25,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <img 
-              src="/images/logo-jeins.png" 
+              src="/images/logo-jeins-tab.png" 
               alt="JEIns Logo" 
               className="h-10 w-auto"
             />
@@ -51,7 +51,7 @@ export default function Navbar() {
             })}
             <Link
               href="/contatti"
-              className="bg-insubria-600 text-white px-6 py-2 rounded-2xl font-semibold hover:bg-insubria-700 transition-colors ml-4"
+              className="cta-navbar ml-4"
             >
               Richiedi un preventivo
             </Link>
@@ -61,9 +61,13 @@ export default function Navbar() {
           <div className="md:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-neutral-500 hover:text-insubria-600"
+              className={`text-neutral-500 hover:text-insubria-600 transition-colors ${isMenuOpen ? 'hamburger-active' : ''}`}
             >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              <div className="w-6 h-6 flex flex-col justify-center items-center">
+                <div className="hamburger-line w-6 h-0.5 bg-current mb-1"></div>
+                <div className="hamburger-line w-6 h-0.5 bg-current mb-1"></div>
+                <div className="hamburger-line w-6 h-0.5 bg-current"></div>
+              </div>
             </button>
           </div>
         </div>
@@ -91,7 +95,7 @@ export default function Navbar() {
               })}
               <Link
                 href="/contatti"
-                className="block mx-3 mt-4 bg-insubria-600 text-white px-6 py-2 rounded-2xl font-semibold text-center hover:bg-insubria-700 transition-colors"
+                className="block mx-3 mt-4 cta-navbar text-center"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Richiedi un preventivo

@@ -69,7 +69,7 @@ export default async function HomePage() {
           <div className="decorative-strip decorative-strip-top"></div>
           
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16 animate-fade-in-up">
+            <div className="text-center mb-16 animate-slide-in-top">
               <h2 className="text-4xl font-bold mb-6 newspaper-headline">
                 {sectionConfig.services.title || 'I nostri servizi'}
               </h2>
@@ -116,7 +116,7 @@ export default async function HomePage() {
           <div className="decorative-strip decorative-strip-bottom"></div>
           
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16 animate-fade-in-up">
+            <div className="text-center mb-16 animate-slide-in-bottom">
               <h2 className="text-4xl font-bold mb-6 newspaper-headline">
                 {sectionConfig.stats.title || 'I nostri numeri'}
               </h2>
@@ -192,7 +192,7 @@ export default async function HomePage() {
           <div className="decorative-strip decorative-strip-top"></div>
           
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16 animate-fade-in-up">
+            <div className="text-center mb-16 animate-zoom-in">
               <h2 className="text-4xl font-bold mb-6 newspaper-headline">
                 {sectionConfig.portfolio.title || 'I nostri progetti'}
               </h2>

@@ -104,8 +104,8 @@ export default async function ServiziPage() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="text-center animate-scale-in hover-lift h-full">
-              <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
+            <div className="text-center animate-scale-in h-full sequence-line">
+              <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm h-full flex flex-col sequence-step">
                 <div className="bg-insubria-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-xl">
                   1
                 </div>
@@ -118,8 +118,8 @@ export default async function ServiziPage() {
               </div>
             </div>
 
-            <div className="text-center animate-scale-in hover-lift h-full" style={{animationDelay: '0.1s'}}>
-              <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
+            <div className="text-center animate-scale-in h-full sequence-line" style={{animationDelay: '0.1s'}}>
+              <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm h-full flex flex-col sequence-step">
                 <div className="bg-insubria-300 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-xl">
                   2
                 </div>
@@ -132,8 +132,8 @@ export default async function ServiziPage() {
               </div>
             </div>
 
-            <div className="text-center animate-scale-in hover-lift h-full" style={{animationDelay: '0.2s'}}>
-              <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
+            <div className="text-center animate-scale-in h-full sequence-line" style={{animationDelay: '0.2s'}}>
+              <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm h-full flex flex-col sequence-step">
                 <div className="bg-insubria-200 text-insubria-700 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-xl">
                   3
                 </div>
@@ -146,8 +146,8 @@ export default async function ServiziPage() {
               </div>
             </div>
 
-            <div className="text-center animate-scale-in hover-lift h-full" style={{animationDelay: '0.3s'}}>
-              <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
+            <div className="text-center animate-scale-in h-full" style={{animationDelay: '0.3s'}}>
+              <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm h-full flex flex-col sequence-step">
                 <div className="bg-insubria-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-xl">
                   4
                 </div>
@@ -182,13 +182,13 @@ export default async function ServiziPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="/contatti"
-                className="bg-insubria-600 text-white px-8 py-4 rounded-2xl font-semibold hover:bg-insubria-700 transition-colors"
+                className="cta-primary px-8 py-4"
               >
                 Richiedi un preventivo
               </a>
               <a
                 href="/chi-siamo"
-                className="border-2 border-insubria-600 text-insubria-600 px-8 py-4 rounded-2xl font-semibold hover:bg-insubria-50 transition-colors"
+                className="cta-secondary px-8 py-4"
               >
                 Scopri di più su di noi
               </a>

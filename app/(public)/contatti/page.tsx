@@ -46,13 +46,15 @@ export default async function ContattiPage() {
         <div className="decorative-strip decorative-strip-bottom"></div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 newspaper-headline">
-            Contattaci
-          </h1>
-          <p className="text-xl max-w-3xl mx-auto">
-            Hai un progetto in mente? Vuoi saperne di più sui nostri servizi? 
-            Siamo qui per aiutarti. Contattaci per una consulenza gratuita.
-          </p>
+          <div className="animate-slide-in-top">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 newspaper-headline">
+              Contattaci
+            </h1>
+            <p className="text-xl max-w-3xl mx-auto">
+              Hai un progetto in mente? Vuoi saperne di più sui nostri servizi? 
+              Siamo qui per aiutarti. Contattaci per una consulenza gratuita.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -64,7 +66,9 @@ export default async function ContattiPage() {
         <div className="decorative-strip decorative-strip-top"></div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <ContactForm />
+          <div className="animate-slide-in-bottom">
+            <ContactForm />
+          </div>
         </div>
       </section>
 
@@ -77,6 +81,14 @@ export default async function ContattiPage() {
           <div className="decorative-strip decorative-strip-top"></div>
           
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12 animate-zoom-in">
+              <h2 className="text-3xl font-bold mb-6 newspaper-headline">
+                Informazioni di contatto
+              </h2>
+              <p className="text-neutral-500 text-lg">
+                Siamo sempre disponibili per rispondere alle tue domande
+              </p>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* Email */}
               {emailContacts.length > 0 && (
@@ -169,7 +181,7 @@ export default async function ContattiPage() {
           <div className="decorative-strip decorative-strip-top"></div>
           
           <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="animate-fade-in-up">
+            <div className="animate-slide-in-top">
               <h2 className="text-3xl font-bold mb-6 newspaper-headline">
                 Seguici sui social
               </h2>
@@ -177,13 +189,13 @@ export default async function ContattiPage() {
                 Resta aggiornato sulle nostre attività e progetti
               </p>
               
-              <div className="flex justify-center space-x-6">
+              <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
                 {facebookContact && (
                   <a 
                     href={facebookContact.value} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="bg-insubria-50 text-insubria-600 px-6 py-3 rounded-2xl font-semibold hover:bg-insubria-600 hover:text-white transition-colors"
+                    className="cta-secondary"
                   >
                     Facebook
                   </a>
@@ -193,7 +205,7 @@ export default async function ContattiPage() {
                     href={instagramContact.value} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="bg-insubria-50 text-insubria-600 px-6 py-3 rounded-2xl font-semibold hover:bg-insubria-600 hover:text-white transition-colors"
+                    className="cta-secondary"
                   >
                     Instagram
                   </a>
@@ -203,7 +215,7 @@ export default async function ContattiPage() {
                     href={linkedinContact.value} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="bg-insubria-50 text-insubria-600 px-6 py-3 rounded-2xl font-semibold hover:bg-insubria-600 hover:text-white transition-colors"
+                    className="cta-secondary"
                   >
                     LinkedIn
                   </a>
