@@ -89,7 +89,11 @@ export default async function ContattiPage() {
                 Siamo sempre disponibili per rispondere alle tue domande
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className={`grid gap-8 ${
+              (emailContacts.length + phoneContacts.length + addressContacts.length) === 1 ? 'grid-cols-1 max-w-md mx-auto' :
+              (emailContacts.length + phoneContacts.length + addressContacts.length) === 2 ? 'grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto' :
+              'grid-cols-1 md:grid-cols-3'
+            }`}>
               {/* Email */}
               {emailContacts.length > 0 && (
                 <div className="text-center animate-scale-in hover-lift">
