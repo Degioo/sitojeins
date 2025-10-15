@@ -25,7 +25,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <img 
-              src="/images/logo-jeins-tab.png" 
+              src="/images/logo-jeins.png" 
               alt="JEIns Logo" 
               className="h-10 w-auto"
             />

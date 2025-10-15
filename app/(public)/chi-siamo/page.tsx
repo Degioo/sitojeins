@@ -194,7 +194,13 @@ export default async function ChiSiamoPage() {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+            <div className={`grid gap-8 justify-items-center ${
+              teamMembers.length === 1 ? 'grid-cols-1 max-w-md mx-auto' :
+              teamMembers.length === 2 ? 'grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto' :
+              teamMembers.length === 3 ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' :
+              teamMembers.length === 4 ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4' :
+              'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+            }`}>
               {teamMembers.map((member, index) => (
                 <div 
                   key={member.id} 
