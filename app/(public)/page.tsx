@@ -205,7 +205,7 @@ export default async function HomePage() {
               {projects.map((project, index) => {
                 const tags = project.tags ? JSON.parse(project.tags) : []
                 return (
-                  <div key={project.id} className="animate-fade-in-left hover-lift h-full w-full" style={{animationDelay: `${index * 0.1}s`}}>
+                  <div key={project.id} className="animate-fade-in-left hover-lift h-full card-standard" style={{animationDelay: `${index * 0.1}s`}}>
                     <div className="bg-white border-2 border-insubria-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
                       <div className="h-48 bg-insubria-50 flex items-center justify-center">
                         {project.image ? (

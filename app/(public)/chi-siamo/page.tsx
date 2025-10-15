@@ -204,7 +204,7 @@ export default async function ChiSiamoPage() {
               {teamMembers.map((member, index) => (
                 <div 
                   key={member.id} 
-                  className={`animate-fade-in-left hover-lift w-full`}
+                  className={`animate-fade-in-left hover-lift card-standard`}
                   style={{animationDelay: `${index * 0.1}s`}}
                 >
                   <TeamMember

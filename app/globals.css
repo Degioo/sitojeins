@@ -271,11 +271,26 @@ a {
 /* Hover effects */
 .hover-lift {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  border-radius: 1rem;
 }
 
 .hover-lift:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 25px rgba(0, 113, 97, 0.15);
+}
+
+/* Unified card dimensions */
+.card-standard {
+  @apply w-full md:w-80 lg:w-96;
+}
+
+.card-standard-sm {
+  @apply w-full max-w-sm;
+}
+
+.card-standard-md {
+  @apply w-full max-w-md;
 }
 
 /* CTA Button Styles */

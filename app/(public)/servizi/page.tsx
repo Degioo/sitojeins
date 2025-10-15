@@ -60,7 +60,7 @@ export default async function ServiziPage() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap justify-center gap-8">
             {services.map((service, index) => (
-              <div key={index} className="animate-fade-in-up hover-lift h-full w-full md:w-80 lg:w-96" style={{animationDelay: `${index * 0.1}s`}}>
+              <div key={index} className="animate-fade-in-up hover-lift h-full card-standard" style={{animationDelay: `${index * 0.1}s`}}>
                 <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
                   <div className="mb-4">
                     <span className="bg-insubria-600 text-white px-3 py-1 rounded-full text-sm font-medium">
