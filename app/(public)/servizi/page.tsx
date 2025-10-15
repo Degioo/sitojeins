@@ -58,13 +58,7 @@ export default async function ServiziPage() {
         <div className="decorative-strip decorative-strip-top"></div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`grid gap-8 justify-items-center ${
-            services.length === 1 ? 'grid-cols-1 max-w-md mx-auto' :
-            services.length === 2 ? 'grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto' :
-            services.length === 3 ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' :
-            services.length === 4 ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4' :
-            'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
-          }`}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
             {services.map((service, index) => (
               <div key={index} className="animate-fade-in-up hover-lift h-full w-full" style={{animationDelay: `${index * 0.1}s`}}>
                 <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
