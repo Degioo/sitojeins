@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Plus, Trash2, Send, Mail, Users, Eye } from 'lucide-react'
 import toast from 'react-hot-toast'
+import RichTextEditor from '@/components/admin/RichTextEditor'
 
 interface Subscriber {
   id: string
@@ -369,18 +370,16 @@ export default function NewsletterPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Contenuto
                 </label>
-                <textarea
-                  value={newEmail.content}
-                  onChange={(e) => setNewEmail({ ...newEmail, content: e.target.value })}
-                  rows={12}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-insubria-500 focus:ring-insubria-500 sm:text-sm"
-                  placeholder="Scrivi il contenuto dell'email in HTML..."
+                <RichTextEditor
+                  content={newEmail.content}
+                  onChange={(content) => setNewEmail({ ...newEmail, content })}
+                  placeholder="Scrivi il contenuto dell'email..."
                 />
                 <p className="mt-2 text-sm text-gray-500">
-                  Puoi utilizzare HTML per formattare il contenuto dell&apos;email.
+                  Utilizza l&apos;editor per formattare il contenuto dell&apos;email con testo ricco.
                 </p>
               </div>
 

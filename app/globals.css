@@ -293,6 +293,10 @@ a {
   @apply w-full max-w-md;
 }
 
+.card-fixed-height {
+  @apply h-80;
+}
+
 /* CTA Button Styles */
 .cta-primary {
   @apply bg-insubria-600 text-white px-6 py-3 rounded-2xl font-semibold hover:bg-insubria-700 transition-colors shadow-sm;
