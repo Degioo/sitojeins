@@ -194,11 +194,11 @@ export default async function ChiSiamoPage() {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
               {teamMembers.map((member, index) => (
                 <div 
                   key={member.id} 
-                  className={`animate-fade-in-left hover-lift`}
+                  className={`animate-fade-in-left hover-lift w-full`}
                   style={{animationDelay: `${index * 0.1}s`}}
                 >
                   <TeamMember

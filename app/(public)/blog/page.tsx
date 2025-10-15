@@ -64,11 +64,11 @@ export default async function BlogPage() {
           </div>
 
           {posts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
               {posts.map((post) => {
                 const tags = post.tags ? JSON.parse(post.tags) : []
                 return (
-                  <article key={post.id} className="bg-white border-2 border-insubria-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                  <article key={post.id} className="bg-white border-2 border-insubria-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow w-full h-full flex flex-col">
                     {post.featuredImage && (
                       <div className="aspect-video w-full">
                         <Image
@@ -81,7 +81,7 @@ export default async function BlogPage() {
                       </div>
                     )}
                     
-                    <div className="p-6">
+                    <div className="p-6 flex-grow flex flex-col">
                       <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
                         <div className="flex items-center gap-1">
                           <Calendar className="h-4 w-4" />
@@ -98,13 +98,13 @@ export default async function BlogPage() {
                       </h3>
 
                       {post.excerpt && (
-                        <p className="text-gray-600 mb-4 line-clamp-3">
+                        <p className="text-gray-600 mb-4 line-clamp-3 flex-grow">
                           {post.excerpt}
                         </p>
                       )}
 
                       {tags.length > 0 && (
-                        <div className="flex flex-wrap gap-2 mb-4">
+                        <div className="flex flex-wrap gap-2 mb-4 mt-auto">
                           {tags.slice(0, 3).map((tag: string, index: number) => (
                             <span
                               key={index}

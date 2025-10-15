@@ -214,44 +214,44 @@ export default async function RecruitmentPage() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center animate-scale-in hover-lift">
-              <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
+            <div className="text-center animate-scale-in hover-lift h-full w-full">
+              <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm h-full flex flex-col">
                 <div className="bg-insubria-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl">💼</span>
                 </div>
                 <h3 className="text-lg font-semibold text-insubria-600 mb-3">
                   Esperienza Reale
                 </h3>
-                <p className="text-neutral-500 text-sm">
+                <p className="text-neutral-500 text-sm flex-grow">
                   Lavora su progetti concreti con aziende reali, sviluppando competenze professionali autentiche.
                 </p>
               </div>
             </div>
 
-            <div className="text-center animate-scale-in hover-lift" style={{animationDelay: '0.1s'}}>
-              <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm">
+            <div className="text-center animate-scale-in hover-lift h-full w-full" style={{animationDelay: '0.1s'}}>
+              <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm h-full flex flex-col">
                 <div className="bg-insubria-300 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl">🤝</span>
                 </div>
                 <h3 className="text-lg font-semibold text-insubria-600 mb-3">
                   Networking
                 </h3>
-                <p className="text-neutral-500 text-sm">
+                <p className="text-neutral-500 text-sm flex-grow">
                   Entra in contatto con professionisti del settore e costruisci la tua rete di contatti.
                 </p>
               </div>
             </div>
 
-            <div className="text-center animate-scale-in hover-lift" style={{animationDelay: '0.2s'}}>
-              <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm">
+            <div className="text-center animate-scale-in hover-lift h-full w-full" style={{animationDelay: '0.2s'}}>
+              <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm h-full flex flex-col">
                 <div className="bg-insubria-200 text-insubria-700 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl">📈</span>
                 </div>
                 <h3 className="text-lg font-semibold text-insubria-600 mb-3">
                   Crescita Personale
                 </h3>
-                <p className="text-neutral-500 text-sm">
+                <p className="text-neutral-500 text-sm flex-grow">
                   Sviluppa soft skills, leadership e capacità di problem solving in un ambiente stimolante.
                 </p>
               </div>
