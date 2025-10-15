@@ -297,6 +297,43 @@ a {
   @apply h-80;
 }
 
+/* TipTap Editor Styles */
+.ProseMirror {
+  outline: none !important;
+  cursor: text !important;
+  caret-color: #007161 !important;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #9ca3af;
+  pointer-events: none;
+  height: 0;
+}
+
+.ProseMirror p {
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+.ProseMirror p:first-child {
+  margin-top: 0;
+}
+
+.ProseMirror p:last-child {
+  margin-bottom: 0;
+}
+
+.ProseMirror:focus {
+  outline: none !important;
+}
+
+/* Hide paragraph selection indicator */
+.ProseMirror .selectedCell:after {
+  display: none !important;
+}
+
 /* CTA Button Styles */
 .cta-primary {
   @apply bg-insubria-600 text-white px-6 py-3 rounded-2xl font-semibold hover:bg-insubria-700 transition-colors shadow-sm;

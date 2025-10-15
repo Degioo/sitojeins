@@ -74,6 +74,7 @@ function RichTextEditorComponent({ content, onChange, placeholder = "Inizia a sc
       }),
       Placeholder.configure({
         placeholder,
+        emptyEditorClass: 'is-editor-empty',
       }),
       TextAlign.configure({
         types: ['heading', 'paragraph'],
@@ -358,6 +359,7 @@ function RichTextEditorComponent({ content, onChange, placeholder = "Inizia a sc
         <EditorContent 
           editor={editor} 
           className="prose prose-sm max-w-none focus:outline-none"
+          data-placeholder={placeholder}
         />
       </div>
 
