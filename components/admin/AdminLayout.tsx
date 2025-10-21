@@ -77,9 +77,10 @@ export default function AdminLayout({
                   <Link
                     key={item.name}
                     href={item.href}
+                    onClick={() => setSidebarOpen(false)}
                     className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md ${
                       isActive
-                        ? 'bg-insubria-100 text-insubria-900'
+                        ? 'bg-yellow-400 text-yellow-900'
                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                     }`}
                   >
@@ -118,7 +119,7 @@ export default function AdminLayout({
                           href={item.href}
                           className={`group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold ${
                             isActive
-                              ? 'bg-insubria-50 text-insubria-600'
+                              ? 'bg-yellow-400 text-yellow-900'
                               : 'text-gray-700 hover:text-insubria-600 hover:bg-gray-50'
                           }`}
                         >

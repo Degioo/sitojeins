@@ -97,72 +97,74 @@ export default async function ChiSiamoPage() {
       </section>
 
       {/* Valori */}
-      <section className="py-20 bg-gradient-newspaper relative">
-        {/* Pattern di sfondo */}
-        <div className="absolute inset-0 bg-pattern-halftone opacity-30"></div>
+      <section className="py-20 section-green relative overflow-hidden">
+        {/* Elementi decorativi */}
+        <div className="decorative-corner top-0 right-0" style={{clipPath: 'polygon(100% 0, 100% 100%, 0 0)'}}></div>
+        <div className="decorative-corner-bottom-right bottom-0 left-0" style={{clipPath: 'polygon(0 0, 100% 100%, 0 100%)'}}></div>
+        <div className="decorative-strip decorative-strip-bottom"></div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 animate-fade-in-up">
-            <h2 className="text-4xl font-bold text-neutral-900 mb-6 newspaper-headline">
+            <h2 className="text-4xl font-bold mb-6 newspaper-headline">
               I nostri valori
             </h2>
-            <p className="text-neutral-500 text-xl max-w-3xl mx-auto">
+            <p className="text-xl max-w-3xl mx-auto">
               I principi che guidano il nostro lavoro e la nostra crescita
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center animate-scale-in hover-lift">
-              <div className="newspaper-card rounded-2xl p-6">
-                <div className="bg-newspaper-yellow rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 shadow-sm">
-                  <Users className="text-newspaper-blue" size={32} />
+              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6">
+                <div className="bg-white/20 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 shadow-sm">
+                  <Users className="text-white" size={32} />
                 </div>
-                <h3 className="text-lg font-semibold text-neutral-900 mb-3">
+                <h3 className="text-lg font-semibold text-white mb-3">
                   Collaborazione
                 </h3>
-                <p className="text-neutral-500 text-sm">
+                <p className="text-white/90 text-sm">
                   Lavoriamo insieme per raggiungere obiettivi comuni
                 </p>
               </div>
             </div>
 
             <div className="text-center animate-scale-in hover-lift" style={{animationDelay: '0.1s'}}>
-              <div className="newspaper-card rounded-2xl p-6">
-                <div className="bg-newspaper-yellow rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 shadow-sm">
-                  <Award className="text-newspaper-orange" size={32} />
+              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6">
+                <div className="bg-white/20 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 shadow-sm">
+                  <Award className="text-white" size={32} />
                 </div>
-                <h3 className="text-lg font-semibold text-neutral-900 mb-3">
+                <h3 className="text-lg font-semibold text-white mb-3">
                   Eccellenza
                 </h3>
-                <p className="text-neutral-500 text-sm">
+                <p className="text-white/90 text-sm">
                   Cerchiamo sempre la massima qualità nei nostri progetti
                 </p>
               </div>
             </div>
 
             <div className="text-center animate-scale-in hover-lift" style={{animationDelay: '0.2s'}}>
-              <div className="newspaper-card rounded-2xl p-6">
-                <div className="bg-newspaper-yellow rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 shadow-sm">
-                  <CheckCircle className="text-newspaper-red" size={32} />
+              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6">
+                <div className="bg-white/20 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 shadow-sm">
+                  <CheckCircle className="text-white" size={32} />
                 </div>
-                <h3 className="text-lg font-semibold text-neutral-900 mb-3">
+                <h3 className="text-lg font-semibold text-white mb-3">
                   Professionalità
                 </h3>
-                <p className="text-neutral-500 text-sm">
+                <p className="text-white/90 text-sm">
                   Approccio serio e competente in ogni attività
                 </p>
               </div>
             </div>
 
             <div className="text-center animate-scale-in hover-lift" style={{animationDelay: '0.3s'}}>
-              <div className="newspaper-card rounded-2xl p-6">
-                <div className="bg-newspaper-yellow rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 shadow-sm">
-                  <Target className="text-newspaper-blue" size={32} />
+              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6">
+                <div className="bg-white/20 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 shadow-sm">
+                  <Target className="text-white" size={32} />
                 </div>
-                <h3 className="text-lg font-semibold text-neutral-900 mb-3">
+                <h3 className="text-lg font-semibold text-white mb-3">
                   Innovazione
                 </h3>
-                <p className="text-neutral-500 text-sm">
+                <p className="text-white/90 text-sm">
                   Sviluppiamo soluzioni creative e all&apos;avanguardia
                 </p>
               </div>
