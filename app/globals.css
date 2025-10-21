@@ -441,7 +441,13 @@ a {
   left: 0;
   width: 100%;
   height: 3px;
-  background: linear-gradient(90deg, #FF4500 0%, #FFD700 50%, #0056B3 100%);
+  background: #007161;
+}
+
+/* Variant for green background sections */
+.section-green .newspaper-headline::after,
+.section-green-light .newspaper-headline::after {
+  background: white;
 }
 
 /* Decorative elements */

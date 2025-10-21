@@ -148,7 +148,7 @@ export default async function ServiziPage() {
 
             <div className="text-center animate-scale-in h-full" style={{animationDelay: '0.3s'}}>
               <div className="bg-white border-2 border-insubria-200 rounded-2xl p-6 shadow-sm h-full flex flex-col sequence-step">
-                <div className="bg-insubria-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-xl">
+                <div className="bg-insubria-50 text-insubria-700 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-xl">
                   4
                 </div>
                 <h3 className="text-lg font-semibold text-insubria-600 mb-3">

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import type { BlogPost } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
 import { Calendar, User, Tag, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
@@ -65,7 +66,7 @@ export default async function BlogPage() {
 
           {posts.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
-              {posts.map((post) => {
+              {posts.map((post: BlogPost) => {
                 const tags = post.tags ? JSON.parse(post.tags) : []
                 return (
                   <article key={post.id} className="bg-white border-2 border-insubria-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow w-full h-full flex flex-col">
