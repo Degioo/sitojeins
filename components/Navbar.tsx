@@ -14,7 +14,7 @@ export default function Navbar() {
     { name: 'Chi siamo', href: '/chi-siamo' },
     { name: 'Servizi', href: '/servizi' },
     { name: 'Blog', href: '/blog' },
-    { name: 'Recruitment', href: '/recruitment' },
+    { name: 'Unisciti a noi', href: '/recruitment' },
     { name: 'Contatti', href: '/contatti' },
   ]
 

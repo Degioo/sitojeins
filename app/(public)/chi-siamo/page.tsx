@@ -47,7 +47,7 @@ export default async function ChiSiamoPage() {
               <span className="text-white">Chi</span> <span className="text-white">siamo</span>
             </h1>
             <p className="text-xl max-w-3xl mx-auto">
-              JEIns è la Junior Enterprise dell&apos;Università dell&apos;Insubria, 
+              JEIns è la Junior Enterprise dell&apos;Università degli Studi dell&apos;Insubria, 
               un ponte tra il mondo accademico e quello professionale.
             </p>
           </div>
