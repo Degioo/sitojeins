@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Shield, Plus, Edit, Trash2, Save, X } from 'lucide-react'
+import { Shield, Plus, Edit, Trash2, Save, X, RefreshCw } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 interface Role {
@@ -135,23 +135,62 @@ export default function RolesManager() {
     )
   }
 
+  const handleMigrateRoles = async () => {
+    if (!confirm('Vuoi migrare gli utenti esistenti al nuovo sistema di ruoli? Questo creerà il ruolo admin e lo assegnerà a tutti gli utenti senza ruolo.')) {
+      return
+    }
+
+    try {
+      const response = await fetch('/api/admin/migrate-roles', {
+        method: 'POST'
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        toast.success(`Migrazione completata! ${data.usersMigrated} utente/i migrato/i.`)
+        fetchRoles()
+      } else {
+        const error = await response.json()
+        toast.error(error.error || 'Errore durante la migrazione')
+      }
+    } catch (error) {
+      toast.error('Errore nella richiesta')
+    }
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-xl font-semibold text-gray-900">Gestione Ruoli</h2>
-        {!showForm && (
-          <button
-            onClick={() => {
-              setEditingRole(null)
-              setFormData({ name: '', description: '' })
-              setShowForm(true)
-            }}
-            className="flex items-center gap-2 px-4 py-2 bg-insubria-600 text-white rounded-lg hover:bg-insubria-700 transition-colors"
-          >
-            <Plus className="h-4 w-4" />
-            Nuovo Ruolo
-          </button>
-        )}
+        <div>
+          <h2 className="text-xl font-semibold text-gray-900">Gestione Ruoli</h2>
+          <p className="text-sm text-gray-500 mt-1">
+            Crea e gestisci i ruoli per gli utenti dell&apos;area amministrativa
+          </p>
+        </div>
+        <div className="flex gap-2">
+          {!showForm && (
+            <>
+              <button
+                onClick={handleMigrateRoles}
+                className="flex items-center gap-2 px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors"
+              >
+                <RefreshCw className="h-4 w-4" />
+                Migra Utenti
+              </button>
+              <button
+                onClick={() => {
+                  setEditingRole(null)
+                  setFormData({ name: '', description: '' })
+                  setShowForm(true)
+                }}
+                className="flex items-center gap-2 px-4 py-2 bg-insubria-600 text-white rounded-lg hover:bg-insubria-700 transition-colors"
+              >
+                <Plus className="h-4 w-4" />
+                Nuovo Ruolo
+              </button>
+            </>
+          )}
+        </div>
       </div>
 
       {showForm && (
