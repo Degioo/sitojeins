@@ -66,7 +66,17 @@ export async function POST(request: NextRequest) {
       include: { role: true }
     })
 
-    if (!user || (user.role?.name !== 'admin' && user.role?.name !== 'Admin')) {
+    if (!user) {
+      return NextResponse.json({ error: 'Utente non trovato' }, { status: 403 })
+    }
+
+    // Permetti accesso se ha ruolo admin nel nuovo sistema O se la session dice che è admin (retrocompatibilità)
+    const isAdmin = user.role?.name === 'admin' || 
+                    user.role?.name === 'Admin' || 
+                    session.user.role === 'admin' || 
+                    session.user.role === 'Admin'
+
+    if (!isAdmin) {
       return NextResponse.json({ error: 'Non autorizzato' }, { status: 403 })
     }
 
@@ -117,7 +127,17 @@ export async function PUT(request: NextRequest) {
       include: { role: true }
     })
 
-    if (!user || (user.role?.name !== 'admin' && user.role?.name !== 'Admin')) {
+    if (!user) {
+      return NextResponse.json({ error: 'Utente non trovato' }, { status: 403 })
+    }
+
+    // Permetti accesso se ha ruolo admin nel nuovo sistema O se la session dice che è admin (retrocompatibilità)
+    const isAdmin = user.role?.name === 'admin' || 
+                    user.role?.name === 'Admin' || 
+                    session.user.role === 'admin' || 
+                    session.user.role === 'Admin'
+
+    if (!isAdmin) {
       return NextResponse.json({ error: 'Non autorizzato' }, { status: 403 })
     }
 
@@ -168,7 +188,17 @@ export async function DELETE(request: NextRequest) {
       include: { role: true }
     })
 
-    if (!user || (user.role?.name !== 'admin' && user.role?.name !== 'Admin')) {
+    if (!user) {
+      return NextResponse.json({ error: 'Utente non trovato' }, { status: 403 })
+    }
+
+    // Permetti accesso se ha ruolo admin nel nuovo sistema O se la session dice che è admin (retrocompatibilità)
+    const isAdmin = user.role?.name === 'admin' || 
+                    user.role?.name === 'Admin' || 
+                    session.user.role === 'admin' || 
+                    session.user.role === 'Admin'
+
+    if (!isAdmin) {
       return NextResponse.json({ error: 'Non autorizzato' }, { status: 403 })
     }
 
