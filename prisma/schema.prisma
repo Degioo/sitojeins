@@ -45,12 +45,41 @@ model User {
   emailVerified DateTime?
   image         String?
   password      String?
-  role          String    @default("admin")
+  roleId        String?   @db.ObjectId
+  username      String?   @unique
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
   accounts Account[]
   sessions Session[]
+  role     Role?    @relation(fields: [roleId], references: [id], onDelete: SetNull)
+  
+  @@index([roleId])
+}
+
+model Role {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String   @unique
+  description String?
+  isSystem    Boolean  @default(false) // Ruoli di sistema non possono essere eliminati
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users      User[]
+  permissions RolePermission[]
+}
+
+model RolePermission {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  roleId    String   @db.ObjectId
+  menuItem  String   // Nome della voce menu (es: 'services', 'projects', etc.)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, menuItem])
+  @@index([roleId])
 }
 
 model VerificationToken {

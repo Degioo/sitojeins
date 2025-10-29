@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import { 
   LayoutDashboard, 
   Settings, 
@@ -14,22 +15,31 @@ import {
   Menu,
   X,
   LogOut,
-  MailOpen
+  MailOpen,
+  Home
 } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 import toast from 'react-hot-toast'
 
-const navigation = [
-  { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
-  { name: 'Servizi', href: '/admin/services', icon: Briefcase },
-  { name: 'Progetti', href: '/admin/projects', icon: FileText },
-  { name: 'Blog', href: '/admin/blog', icon: FileText },
-  { name: 'Team', href: '/admin/team', icon: Users },
-  { name: 'Recruitment', href: '/admin/recruitment', icon: Users },
-  { name: 'Contatti', href: '/admin/contacts', icon: Mail },
-  { name: 'Newsletter', href: '/admin/newsletter', icon: MailOpen },
-  { name: 'Privacy Policy', href: '/admin/policies', icon: Shield },
-  { name: 'Impostazioni', href: '/admin/settings', icon: Settings },
+interface NavigationItem {
+  name: string
+  href: string
+  icon: any
+  menuId: string
+}
+
+const allNavigation: NavigationItem[] = [
+  { name: 'Dashboard', href: '/admin', icon: LayoutDashboard, menuId: 'dashboard' },
+  { name: 'Pagina Home', href: '/admin/home', icon: Home, menuId: 'home' },
+  { name: 'Servizi', href: '/admin/services', icon: Briefcase, menuId: 'services' },
+  { name: 'Progetti', href: '/admin/projects', icon: FileText, menuId: 'projects' },
+  { name: 'Blog', href: '/admin/blog', icon: FileText, menuId: 'blog' },
+  { name: 'Team', href: '/admin/team', icon: Users, menuId: 'team' },
+  { name: 'Recruitment', href: '/admin/recruitment', icon: Users, menuId: 'recruitment' },
+  { name: 'Contatti', href: '/admin/contacts', icon: Mail, menuId: 'contacts' },
+  { name: 'Newsletter', href: '/admin/newsletter', icon: MailOpen, menuId: 'newsletter' },
+  { name: 'Privacy Policy', href: '/admin/policies', icon: Shield, menuId: 'policies' },
+  { name: 'Impostazioni', href: '/admin/settings', icon: Settings, menuId: 'settings' },
 ]
 
 export default function AdminLayout({
@@ -38,8 +48,51 @@ export default function AdminLayout({
   children: React.ReactNode
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [navigation, setNavigation] = useState<NavigationItem[]>(allNavigation)
   const pathname = usePathname()
   const router = useRouter()
+  const { data: session } = useSession()
+
+  useEffect(() => {
+    // Carica i permessi dell'utente
+    const loadPermissions = async () => {
+      try {
+        if (!session?.user?.roleId) {
+          // Se non ha ruolo, mostra tutto (per retrocompatibilità)
+          setNavigation(allNavigation)
+          return
+        }
+
+        const response = await fetch(`/api/admin/permissions?roleId=${session.user.roleId}`)
+        if (response.ok) {
+          const permissions: { menuItem: string }[] = await response.json()
+          const allowedMenuIds = permissions.map(p => p.menuItem)
+          
+          // Filtra il menu in base ai permessi
+          // Sempre mostra Dashboard e Impostazioni per admin
+          const isAdmin = session.user.role === 'admin' || session.user.role === 'Admin'
+          const filtered = allNavigation.filter(item => 
+            allowedMenuIds.includes(item.menuId) || 
+            (isAdmin && (item.menuId === 'dashboard' || item.menuId === 'settings'))
+          )
+          
+          setNavigation(filtered)
+        } else {
+          // In caso di errore, mostra tutto
+          setNavigation(allNavigation)
+        }
+      } catch (error) {
+        // In caso di errore, mostra tutto
+        setNavigation(allNavigation)
+      }
+    }
+
+    if (session) {
+      loadPermissions()
+    } else {
+      setNavigation(allNavigation)
+    }
+  }, [session])
 
   const handleLogout = async () => {
     try {

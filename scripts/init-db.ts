@@ -4,6 +4,21 @@ import bcrypt from 'bcryptjs'
 const prisma = new PrismaClient()
 
 async function main() {
+  // Crea o recupera il ruolo admin
+  let adminRole = await prisma.role.findUnique({
+    where: { name: 'admin' }
+  })
+  
+  if (!adminRole) {
+    adminRole = await prisma.role.create({
+      data: {
+        name: 'admin',
+        description: 'Amministratore completo del sistema',
+        isSystem: true
+      }
+    })
+  }
+
   // Create admin user
   const hashedPassword = await bcrypt.hash('admin123', 12)
   
@@ -12,9 +27,10 @@ async function main() {
     update: {},
     create: {
       email: 'admin@jeins.it',
+      username: 'admin',
       name: 'Admin JEIns',
       password: hashedPassword,
-      role: 'admin',
+      roleId: adminRole.id,
     },
   })
 

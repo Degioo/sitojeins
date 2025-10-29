@@ -25,15 +25,48 @@ export async function POST(request: NextRequest) {
       })
     }
 
+    // Crea o recupera il ruolo admin
+    let adminRole = await prisma.role.findUnique({
+      where: { name: 'admin' }
+    })
+    
+    if (!adminRole) {
+      adminRole = await prisma.role.create({
+        data: {
+          name: 'admin',
+          description: 'Amministratore completo del sistema',
+          isSystem: true
+        }
+      })
+    }
+    
+    // Assegna tutti i permessi al ruolo admin se non li ha già
+    if (adminRole) {
+      const existingPermissions = await prisma.rolePermission.findMany({
+        where: { roleId: adminRole.id }
+      })
+      
+      if (existingPermissions.length === 0) {
+        const allMenuItems = ['dashboard', 'home', 'services', 'projects', 'blog', 'team', 'recruitment', 'contacts', 'newsletter', 'policies', 'settings']
+        await prisma.rolePermission.createMany({
+          data: allMenuItems.map(menuItem => ({
+            roleId: adminRole!.id,
+            menuItem
+          }))
+        })
+      }
+    }
+
     // Crea admin user
     const hashedPassword = await bcrypt.hash('admin123', 12)
     
     const admin = await prisma.user.create({
       data: {
         email: 'admin@jeins.it',
+        username: 'admin',
         name: 'Admin JEIns',
         password: hashedPassword,
-        role: 'admin',
+        roleId: adminRole.id,
       },
     })
 
