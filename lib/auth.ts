@@ -60,6 +60,8 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.role = user.role
         token.roleId = (user as any).roleId
+        // Forza aggiornamento del token quando cambia l'utente
+        token.sub = user.id
       }
       return token
     },

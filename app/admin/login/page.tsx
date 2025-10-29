@@ -40,15 +40,29 @@ export default function LoginPage() {
         toast.error('Credenziali non valide')
       } else if (result?.ok) {
         // Aspetta che la sessione si aggiorni
-        await new Promise(resolve => setTimeout(resolve, 500))
+        await new Promise(resolve => setTimeout(resolve, 1000))
         
-        // Verifica la nuova sessione
-        const session = await getSession()
+        // Verifica la nuova sessione più volte per essere sicuri
+        let session = null
+        for (let i = 0; i < 3; i++) {
+          session = await getSession()
+          if (session?.user?.roleId) {
+            break
+          }
+          await new Promise(resolve => setTimeout(resolve, 500))
+        }
+        
         if (session) {
+          console.log('Login successful, session:', {
+            email: session.user?.email,
+            roleId: session.user?.roleId,
+            role: session.user?.role
+          })
           toast.success('Login effettuato con successo')
           router.push('/admin')
           router.refresh() // Forza il refresh della pagina
         } else {
+          console.error('Session not loaded properly')
           toast.error('Errore nel caricamento della sessione')
         }
       }

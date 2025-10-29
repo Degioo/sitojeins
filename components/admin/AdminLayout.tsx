@@ -57,8 +57,15 @@ export default function AdminLayout({
     // Carica i permessi dell'utente
     const loadPermissions = async () => {
       try {
+        console.log('Loading permissions for user:', {
+          email: session?.user?.email,
+          roleId: session?.user?.roleId,
+          role: session?.user?.role
+        })
+
         if (!session?.user?.roleId) {
           // Se non ha ruolo, mostra tutto (per retrocompatibilità)
+          console.log('No roleId found, showing all navigation')
           setNavigation(allNavigation)
           return
         }
@@ -66,6 +73,7 @@ export default function AdminLayout({
         const response = await fetch(`/api/admin/permissions?roleId=${session.user.roleId}`)
         if (response.ok) {
           const permissions: { menuItem: string }[] = await response.json()
+          console.log('Loaded permissions:', permissions)
           const allowedMenuIds = permissions.map(p => p.menuItem)
           
           // Filtra il menu in base ai permessi
@@ -76,12 +84,16 @@ export default function AdminLayout({
             (isAdmin && (item.menuId === 'dashboard' || item.menuId === 'settings'))
           )
           
+          console.log('Filtered navigation:', filtered.map(n => n.menuId))
           setNavigation(filtered)
         } else {
+          const error = await response.json()
+          console.error('Error loading permissions:', error)
           // In caso di errore, mostra tutto
           setNavigation(allNavigation)
         }
       } catch (error) {
+        console.error('Error in loadPermissions:', error)
         // In caso di errore, mostra tutto
         setNavigation(allNavigation)
       }
