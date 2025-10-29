@@ -49,6 +49,7 @@ export default function AdminLayout({
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [navigation, setNavigation] = useState<NavigationItem[]>(allNavigation)
+  const [permissionsLoaded, setPermissionsLoaded] = useState(false)
   const pathname = usePathname()
   const router = useRouter()
   const { data: session, update: updateSession } = useSession()
@@ -67,6 +68,7 @@ export default function AdminLayout({
           // Se non ha ruolo, mostra tutto (per retrocompatibilità)
           console.log('No roleId found, showing all navigation')
           setNavigation(allNavigation)
+          setPermissionsLoaded(true)
           return
         }
 
@@ -86,16 +88,19 @@ export default function AdminLayout({
           
           console.log('Filtered navigation:', filtered.map(n => n.menuId))
           setNavigation(filtered)
+          setPermissionsLoaded(true)
         } else {
           const error = await response.json()
           console.error('Error loading permissions:', error)
           // In caso di errore, mostra tutto
           setNavigation(allNavigation)
+          setPermissionsLoaded(true)
         }
       } catch (error) {
         console.error('Error in loadPermissions:', error)
         // In caso di errore, mostra tutto
         setNavigation(allNavigation)
+        setPermissionsLoaded(true)
       }
     }
 
@@ -103,8 +108,21 @@ export default function AdminLayout({
       loadPermissions()
     } else {
       setNavigation(allNavigation)
+      setPermissionsLoaded(true)
     }
   }, [session])
+
+  // Reindirizza alla prima voce disponibile se siamo su /admin
+  useEffect(() => {
+    if (permissionsLoaded && pathname === '/admin' && navigation.length > 0) {
+      const firstItem = navigation[0]
+      // Se la prima voce non è /admin, reindirizza ad essa
+      if (firstItem.href !== '/admin') {
+        console.log('Redirecting to first available item:', firstItem.href)
+        router.replace(firstItem.href)
+      }
+    }
+  }, [permissionsLoaded, pathname, navigation, router])
 
   // Forza aggiornamento della sessione quando cambia
   useEffect(() => {
