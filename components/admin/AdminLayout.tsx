@@ -144,8 +144,10 @@ export default function AdminLayout({
               <h1 className="text-xl font-bold text-gray-900">JEIns Admin</h1>
             </div>
             <nav className="mt-5 flex-1 space-y-1 px-2">
-              {navigation.map((item) => {
-                const isActive = pathname === item.href
+              {navigation.map((item, index) => {
+                // Se siamo su /admin e questa è la prima voce, evidenziala
+                const isFirstItemOnDashboard = pathname === '/admin' && index === 0
+                const isActive = pathname === item.href || isFirstItemOnDashboard
                 return (
                   <Link
                     key={item.name}
@@ -184,8 +186,10 @@ export default function AdminLayout({
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
               <li>
                 <ul role="list" className="-mx-2 space-y-1">
-                  {navigation.map((item) => {
-                    const isActive = pathname === item.href
+                  {navigation.map((item, index) => {
+                    // Se siamo su /admin e questa è la prima voce, evidenziala
+                    const isFirstItemOnDashboard = pathname === '/admin' && index === 0
+                    const isActive = pathname === item.href || isFirstItemOnDashboard
                     return (
                       <li key={item.name}>
                         <Link
