@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { signIn, getSession } from 'next-auth/react'
+import { signIn, getSession, signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Eye, EyeOff, Lock, Mail } from 'lucide-react'
 import toast from 'react-hot-toast'
@@ -27,6 +27,9 @@ export default function LoginPage() {
     setIsLoading(true)
 
     try {
+      // Prima fa logout per pulire la sessione precedente
+      await signOut({ redirect: false })
+      
       const result = await signIn('credentials', {
         email,
         password,
@@ -36,8 +39,18 @@ export default function LoginPage() {
       if (result?.error) {
         toast.error('Credenziali non valide')
       } else if (result?.ok) {
-        toast.success('Login effettuato con successo')
-        router.push('/admin')
+        // Aspetta che la sessione si aggiorni
+        await new Promise(resolve => setTimeout(resolve, 500))
+        
+        // Verifica la nuova sessione
+        const session = await getSession()
+        if (session) {
+          toast.success('Login effettuato con successo')
+          router.push('/admin')
+          router.refresh() // Forza il refresh della pagina
+        } else {
+          toast.error('Errore nel caricamento della sessione')
+        }
       }
     } catch (error) {
       toast.error('Errore durante il login')
@@ -61,7 +74,7 @@ export default function LoginPage() {
           <div className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email
+                Email o Username
               </label>
               <div className="mt-1 relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -70,13 +83,13 @@ export default function LoginPage() {
                 <input
                   id="email"
                   name="email"
-                  type="email"
-                  autoComplete="email"
+                  type="text"
+                  autoComplete="username"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="appearance-none rounded-lg relative block w-full pl-10 pr-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-insubria-500 focus:border-insubria-500 focus:z-10 sm:text-sm"
-                  placeholder="admin@jeins.it"
+                  placeholder="admin@jeins.it o username"
                 />
               </div>
             </div>
