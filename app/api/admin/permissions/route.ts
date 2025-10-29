@@ -20,28 +20,33 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Utente non trovato' }, { status: 403 })
     }
 
+    const { searchParams } = new URL(request.url)
+    const roleId = searchParams.get('roleId')
+
     // Permetti accesso se ha ruolo admin nel nuovo sistema O se la session dice che è admin (retrocompatibilità)
     const isAdmin = user.role?.name === 'admin' || 
                     user.role?.name === 'Admin' || 
                     session.user.role === 'admin' || 
                     session.user.role === 'Admin'
 
-    if (!isAdmin) {
-      return NextResponse.json({ error: 'Non autorizzato' }, { status: 403 })
-    }
-
-    const { searchParams } = new URL(request.url)
-    const roleId = searchParams.get('roleId')
-
     if (roleId) {
-      // Recupera i permessi per un ruolo specifico
-      const permissions = await prisma.rolePermission.findMany({
-        where: { roleId },
-        orderBy: { menuItem: 'asc' }
-      })
-      return NextResponse.json(permissions)
+      // Se l'utente richiede i permessi del proprio ruolo, consentiglielo sempre
+      // Se richiede i permessi di un altro ruolo, solo gli admin possono farlo
+      if (user.roleId === roleId || isAdmin) {
+        const permissions = await prisma.rolePermission.findMany({
+          where: { roleId },
+          orderBy: { menuItem: 'asc' }
+        })
+        return NextResponse.json(permissions)
+      } else {
+        return NextResponse.json({ error: 'Non autorizzato a vedere i permessi di questo ruolo' }, { status: 403 })
+      }
     } else {
-      // Recupera tutti i permessi raggruppati per ruolo
+      // Recupera tutti i permessi raggruppati per ruolo - solo admin
+      if (!isAdmin) {
+        return NextResponse.json({ error: 'Non autorizzato' }, { status: 403 })
+      }
+      
       const permissions = await prisma.rolePermission.findMany({
         include: {
           role: true
