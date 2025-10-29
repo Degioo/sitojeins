@@ -11,13 +11,23 @@ export async function GET() {
       return NextResponse.json({ error: 'Non autenticato' }, { status: 401 })
     }
 
-    // Verifica che l'utente sia admin (controlleremo questo meglio dopo)
+    // Verifica che l'utente sia admin
     const user = await prisma.user.findUnique({
       where: { email: session.user.email! },
       include: { role: true }
     })
 
-    if (!user || (user.role?.name !== 'admin' && user.role?.name !== 'Admin')) {
+    if (!user) {
+      return NextResponse.json({ error: 'Utente non trovato' }, { status: 403 })
+    }
+
+    // Permetti accesso se ha ruolo admin nel nuovo sistema O se la session dice che è admin (retrocompatibilità)
+    const isAdmin = user.role?.name === 'admin' || 
+                    user.role?.name === 'Admin' || 
+                    session.user.role === 'admin' || 
+                    session.user.role === 'Admin'
+
+    if (!isAdmin) {
       return NextResponse.json({ error: 'Non autorizzato' }, { status: 403 })
     }
 
