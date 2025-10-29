@@ -51,7 +51,7 @@ export default function AdminLayout({
   const [navigation, setNavigation] = useState<NavigationItem[]>(allNavigation)
   const pathname = usePathname()
   const router = useRouter()
-  const { data: session } = useSession()
+  const { data: session, update: updateSession } = useSession()
 
   useEffect(() => {
     // Carica i permessi dell'utente
@@ -93,6 +93,14 @@ export default function AdminLayout({
       setNavigation(allNavigation)
     }
   }, [session])
+
+  // Forza aggiornamento della sessione quando cambia
+  useEffect(() => {
+    if (session) {
+      updateSession()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session?.user?.roleId])
 
   const handleLogout = async () => {
     try {
