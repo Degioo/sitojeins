@@ -21,10 +21,16 @@ export async function POST(request: NextRequest) {
     }
 
     // Permetti accesso se è admin (nuovo sistema o vecchio)
-    const isAdmin = user.role?.name === 'admin' || 
+    const userRoleName = user.role?.name?.toLowerCase() || ''
+    const sessionRoleName = session.user.role?.toLowerCase() || ''
+    const isAdmin = userRoleName === 'admin' || 
+                    userRoleName === 'amministratore' ||
                     user.role?.name === 'Admin' || 
-                    session.user.role === 'admin' || 
-                    session.user.role === 'Admin'
+                    user.role?.name === 'Amministratore' ||
+                    sessionRoleName === 'admin' ||
+                    sessionRoleName === 'amministratore' ||
+                    session.user.role === 'Admin' ||
+                    session.user.role === 'Amministratore'
 
     if (!isAdmin) {
       return NextResponse.json({ error: 'Non autorizzato' }, { status: 403 })

@@ -24,17 +24,24 @@ export async function GET(request: NextRequest) {
     const roleId = searchParams.get('roleId')
 
     // Permetti accesso se ha ruolo admin nel nuovo sistema O se la session dice che è admin (retrocompatibilità)
-    const isAdmin = user.role?.name === 'admin' || 
+    const userRoleName = user.role?.name?.toLowerCase() || ''
+    const sessionRoleName = session.user.role?.toLowerCase() || ''
+    const isAdmin = userRoleName === 'admin' || 
+                    userRoleName === 'amministratore' ||
                     user.role?.name === 'Admin' || 
-                    session.user.role === 'admin' || 
-                    session.user.role === 'Admin'
+                    user.role?.name === 'Amministratore' ||
+                    sessionRoleName === 'admin' ||
+                    sessionRoleName === 'amministratore' ||
+                    session.user.role === 'Admin' ||
+                    session.user.role === 'Amministratore'
 
     if (roleId) {
       // Se l'utente richiede i permessi del proprio ruolo, consentiglielo sempre
       // Se richiede i permessi di un altro ruolo, solo gli admin possono farlo
       if (user.roleId === roleId || isAdmin) {
         const role = await prisma.role.findUnique({ where: { id: roleId } })
-        const isRequestedRoleAdmin = role?.name?.toLowerCase() === 'admin'
+        const roleNameLower = role?.name?.toLowerCase() || ''
+        const isRequestedRoleAdmin = roleNameLower === 'admin' || roleNameLower === 'amministratore'
         
         const permissions = await prisma.rolePermission.findMany({
           where: { roleId },
@@ -118,10 +125,16 @@ export async function POST(request: NextRequest) {
     }
 
     // Permetti accesso se ha ruolo admin nel nuovo sistema O se la session dice che è admin (retrocompatibilità)
-    const isAdmin = user.role?.name === 'admin' || 
+    const userRoleName = user.role?.name?.toLowerCase() || ''
+    const sessionRoleName = session.user.role?.toLowerCase() || ''
+    const isAdmin = userRoleName === 'admin' || 
+                    userRoleName === 'amministratore' ||
                     user.role?.name === 'Admin' || 
-                    session.user.role === 'admin' || 
-                    session.user.role === 'Admin'
+                    user.role?.name === 'Amministratore' ||
+                    sessionRoleName === 'admin' ||
+                    sessionRoleName === 'amministratore' ||
+                    session.user.role === 'Admin' ||
+                    session.user.role === 'Amministratore'
 
     if (!isAdmin) {
       return NextResponse.json({ error: 'Non autorizzato' }, { status: 403 })
@@ -181,10 +194,16 @@ export async function PUT(request: NextRequest) {
     }
 
     // Permetti accesso se ha ruolo admin nel nuovo sistema O se la session dice che è admin (retrocompatibilità)
-    const isAdmin = user.role?.name === 'admin' || 
+    const userRoleName = user.role?.name?.toLowerCase() || ''
+    const sessionRoleName = session.user.role?.toLowerCase() || ''
+    const isAdmin = userRoleName === 'admin' || 
+                    userRoleName === 'amministratore' ||
                     user.role?.name === 'Admin' || 
-                    session.user.role === 'admin' || 
-                    session.user.role === 'Admin'
+                    user.role?.name === 'Amministratore' ||
+                    sessionRoleName === 'admin' ||
+                    sessionRoleName === 'amministratore' ||
+                    session.user.role === 'Admin' ||
+                    session.user.role === 'Amministratore'
 
     if (!isAdmin) {
       return NextResponse.json({ error: 'Non autorizzato' }, { status: 403 })
@@ -251,10 +270,16 @@ export async function DELETE(request: NextRequest) {
     }
 
     // Permetti accesso se ha ruolo admin nel nuovo sistema O se la session dice che è admin (retrocompatibilità)
-    const isAdmin = user.role?.name === 'admin' || 
+    const userRoleName = user.role?.name?.toLowerCase() || ''
+    const sessionRoleName = session.user.role?.toLowerCase() || ''
+    const isAdmin = userRoleName === 'admin' || 
+                    userRoleName === 'amministratore' ||
                     user.role?.name === 'Admin' || 
-                    session.user.role === 'admin' || 
-                    session.user.role === 'Admin'
+                    user.role?.name === 'Amministratore' ||
+                    sessionRoleName === 'admin' ||
+                    sessionRoleName === 'amministratore' ||
+                    session.user.role === 'Admin' ||
+                    session.user.role === 'Amministratore'
 
     if (!isAdmin) {
       return NextResponse.json({ error: 'Non autorizzato' }, { status: 403 })

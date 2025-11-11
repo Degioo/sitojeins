@@ -78,13 +78,22 @@ export default function AdminLayout({
         if (roleResponse.ok) {
           const roleData = await roleResponse.json()
           const roleName = roleData?.name?.toLowerCase() || ''
+          // Verifica se è admin (supporta vari nomi: admin, amministratore, etc.)
           isAdmin = roleName === 'admin' || 
+                    roleName === 'amministratore' ||
                     session.user.role?.toLowerCase() === 'admin' ||
-                    session.user.role === 'Admin'
+                    session.user.role?.toLowerCase() === 'amministratore' ||
+                    session.user.role === 'Admin' ||
+                    session.user.role === 'Amministratore'
           console.log('Role info:', { roleName, isAdmin, sessionRole: session.user.role })
         } else {
           // Fallback: verifica solo dalla sessione
-          isAdmin = session.user.role?.toLowerCase() === 'admin' || session.user.role === 'Admin'
+          const sessionRole = session.user.role?.toLowerCase() || ''
+          isAdmin = sessionRole === 'admin' || 
+                    sessionRole === 'amministratore' ||
+                    session.user.role === 'Admin' ||
+                    session.user.role === 'Amministratore'
+          console.log('Fallback check:', { sessionRole, isAdmin })
         }
 
         const response = await fetch(`/api/admin/permissions?roleId=${session.user.roleId}`)
