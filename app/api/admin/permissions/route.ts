@@ -33,10 +33,43 @@ export async function GET(request: NextRequest) {
       // Se l'utente richiede i permessi del proprio ruolo, consentiglielo sempre
       // Se richiede i permessi di un altro ruolo, solo gli admin possono farlo
       if (user.roleId === roleId || isAdmin) {
+        const role = await prisma.role.findUnique({ where: { id: roleId } })
+        const isRequestedRoleAdmin = role?.name?.toLowerCase() === 'admin'
+        
         const permissions = await prisma.rolePermission.findMany({
           where: { roleId },
           orderBy: { menuItem: 'asc' }
         })
+        
+        // Se il ruolo richiesto è admin, assicurati che abbia sempre i permessi dashboard e settings
+        if (isRequestedRoleAdmin) {
+          const permissionMenuItems = permissions.map(p => p.menuItem)
+          const requiredPermissions = ['dashboard', 'settings']
+          let needsReload = false
+          
+          for (const requiredPermission of requiredPermissions) {
+            if (!permissionMenuItems.includes(requiredPermission)) {
+              // Aggiungi il permesso mancante al database
+              await prisma.rolePermission.create({
+                data: {
+                  roleId,
+                  menuItem: requiredPermission
+                }
+              })
+              needsReload = true
+            }
+          }
+          
+          // Ricarica i permessi se ne sono stati aggiunti
+          if (needsReload) {
+            const updatedPermissions = await prisma.rolePermission.findMany({
+              where: { roleId },
+              orderBy: { menuItem: 'asc' }
+            })
+            return NextResponse.json(updatedPermissions)
+          }
+        }
+        
         return NextResponse.json(permissions)
       } else {
         return NextResponse.json({ error: 'Non autorizzato a vedere i permessi di questo ruolo' }, { status: 403 })

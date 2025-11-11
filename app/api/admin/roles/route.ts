@@ -3,15 +3,14 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
-// GET - Lista tutti i ruoli
-export async function GET() {
+// GET - Lista tutti i ruoli o recupera un ruolo specifico per ID
+export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
     if (!session || !session.user) {
       return NextResponse.json({ error: 'Non autenticato' }, { status: 401 })
     }
 
-    // Verifica che l'utente sia admin
     const user = await prisma.user.findUnique({
       where: { email: session.user.email! },
       include: { role: true }
@@ -21,7 +20,42 @@ export async function GET() {
       return NextResponse.json({ error: 'Utente non trovato' }, { status: 403 })
     }
 
-    // Permetti accesso se ha ruolo admin nel nuovo sistema O se la session dice che è admin (retrocompatibilità)
+    const { searchParams } = new URL(request.url)
+    const id = searchParams.get('id')
+
+    // Se viene richiesto un ruolo specifico per ID, permettere se è il proprio ruolo o se è admin
+    if (id) {
+      // Permetti se l'utente sta richiedendo il proprio ruolo o se è admin
+      const isOwnRole = user.roleId === id
+      const isAdmin = user.role?.name === 'admin' || 
+                      user.role?.name === 'Admin' || 
+                      session.user.role === 'admin' || 
+                      session.user.role === 'Admin'
+
+      if (!isOwnRole && !isAdmin) {
+        return NextResponse.json({ error: 'Non autorizzato' }, { status: 403 })
+      }
+
+      const role = await prisma.role.findUnique({
+        where: { id },
+        include: {
+          _count: {
+            select: {
+              users: true,
+              permissions: true
+            }
+          }
+        }
+      })
+
+      if (!role) {
+        return NextResponse.json({ error: 'Ruolo non trovato' }, { status: 404 })
+      }
+
+      return NextResponse.json(role)
+    }
+
+    // Altrimenti, lista tutti i ruoli (solo admin)
     const isAdmin = user.role?.name === 'admin' || 
                     user.role?.name === 'Admin' || 
                     session.user.role === 'admin' || 

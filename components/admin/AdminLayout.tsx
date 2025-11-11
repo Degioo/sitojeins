@@ -72,6 +72,21 @@ export default function AdminLayout({
           return
         }
 
+        // Carica informazioni sul ruolo per verificare se è admin
+        const roleResponse = await fetch(`/api/admin/roles?id=${session.user.roleId}`)
+        let isAdmin = false
+        if (roleResponse.ok) {
+          const roleData = await roleResponse.json()
+          const roleName = roleData?.name?.toLowerCase() || ''
+          isAdmin = roleName === 'admin' || 
+                    session.user.role?.toLowerCase() === 'admin' ||
+                    session.user.role === 'Admin'
+          console.log('Role info:', { roleName, isAdmin, sessionRole: session.user.role })
+        } else {
+          // Fallback: verifica solo dalla sessione
+          isAdmin = session.user.role?.toLowerCase() === 'admin' || session.user.role === 'Admin'
+        }
+
         const response = await fetch(`/api/admin/permissions?roleId=${session.user.roleId}`)
         if (response.ok) {
           const permissions: { menuItem: string }[] = await response.json()
@@ -80,11 +95,14 @@ export default function AdminLayout({
           
           // Filtra il menu in base ai permessi
           // Sempre mostra Dashboard e Impostazioni per admin
-          const isAdmin = session.user.role === 'admin' || session.user.role === 'Admin'
-          const filtered = allNavigation.filter(item => 
-            allowedMenuIds.includes(item.menuId) || 
-            (isAdmin && (item.menuId === 'dashboard' || item.menuId === 'settings'))
-          )
+          const filtered = allNavigation.filter(item => {
+            // Se è admin, mostra sempre dashboard e settings
+            if (isAdmin && (item.menuId === 'dashboard' || item.menuId === 'settings')) {
+              return true
+            }
+            // Altrimenti verifica i permessi
+            return allowedMenuIds.includes(item.menuId)
+          })
           
           console.log('Filtered navigation:', filtered.map(n => n.menuId))
           setNavigation(filtered)
@@ -92,8 +110,12 @@ export default function AdminLayout({
         } else {
           const error = await response.json()
           console.error('Error loading permissions:', error)
-          // In caso di errore, mostra tutto
-          setNavigation(allNavigation)
+          // In caso di errore, se è admin mostra tutto, altrimenti mostra tutto (fallback)
+          if (isAdmin) {
+            setNavigation(allNavigation)
+          } else {
+            setNavigation(allNavigation)
+          }
           setPermissionsLoaded(true)
         }
       } catch (error) {
