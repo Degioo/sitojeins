@@ -53,6 +53,7 @@ model User {
   accounts Account[]
   sessions Session[]
   role     Role?    @relation(fields: [roleId], references: [id], onDelete: SetNull)
+  cookiePreferences CookiePreferences[]
   
   @@index([roleId])
 }
@@ -231,4 +232,20 @@ model NewsletterEmail {
   sentAt      DateTime?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model CookiePreferences {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  cookieId      String   @unique // ID univoco salvato nel localStorage per utenti anonimi
+  userId        String?  @db.ObjectId // ID utente se autenticato
+  necessary     Boolean  @default(true) // Sempre true, non modificabile
+  analytics     Boolean  @default(false)
+  marketing     Boolean  @default(false)
+  functional    Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
