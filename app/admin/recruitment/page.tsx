@@ -27,7 +27,7 @@ export default async function RecruitmentPage() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Recruitment</h1>
-          <p className="text-gray-600">Gestisci il recruitment tramite Google Forms</p>
+          <p className="text-gray-600">Gestisci il recruitment tramite Tally e Notion</p>
         </div>
         <Link
           href="/admin/recruitment/settings"
@@ -85,43 +85,32 @@ export default async function RecruitmentPage() {
               </div>
             </div>
 
-            {/* Link Google Forms */}
+            {/* Link Tally e Notion */}
             <div className="border-t border-gray-200 pt-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Gestione Candidature</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {/* Link al form */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Link al form Tally */}
                 <a
-                  href={recruitment.googleFormUrl || '#'}
+                  href={recruitment.tallyFormUrl || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 bg-insubria-600 text-white px-6 py-4 rounded-lg hover:bg-insubria-700 transition-colors"
+                  className="flex items-center justify-center gap-2 bg-insubria-600 text-white px-6 py-4 rounded-lg hover:bg-insubria-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{ pointerEvents: recruitment.tallyFormUrl ? 'auto' : 'none' }}
                 >
                   <ExternalLink className="h-5 w-5" />
-                  Apri Google Form
+                  Apri Tally Form
                 </a>
 
-                {/* Link alle risposte */}
+                {/* Link al database Notion */}
                 <a
-                  href={recruitment.googleFormUrl ? recruitment.googleFormUrl.replace(/\/viewform.*/, '/edit#responses') : '#'}
+                  href={recruitment.notionSheetUrl || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 bg-blue-600 text-white px-6 py-4 rounded-lg hover:bg-blue-700 transition-colors"
-                  title="Devi essere proprietario o collaboratore del form per vedere le risposte"
-                >
-                  <Users className="h-5 w-5" />
-                  Vedi Risposte
-                </a>
-
-                {/* Link al Google Sheet - stessa pagina delle risposte */}
-                <a
-                  href={recruitment.googleFormUrl ? recruitment.googleFormUrl.replace(/\/viewform.*/, '/edit#responses') : '#'}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 bg-green-600 text-white px-6 py-4 rounded-lg hover:bg-green-700 transition-colors"
-                  title="Dalle risposte, clicca l'icona verde di Sheets per collegare"
+                  className="flex items-center justify-center gap-2 bg-purple-600 text-white px-6 py-4 rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{ pointerEvents: recruitment.notionSheetUrl ? 'auto' : 'none' }}
                 >
                   <FileSpreadsheet className="h-5 w-5" />
-                  Collega Sheet
+                  Apri Notion Database
                 </a>
               </div>
 
@@ -131,25 +120,31 @@ export default async function RecruitmentPage() {
                   Come funziona
                 </h4>
                 <ul className="text-sm text-blue-800 space-y-1 list-disc list-inside">
-                  <li><strong>Apri Google Form</strong> - Visualizza il form di candidatura pubblico</li>
-                  <li><strong>Vedi Risposte</strong> - Accedi alla dashboard Google Forms per vedere tutte le candidature</li>
-                  <li><strong>Apri Google Sheet</strong> - Collega il form a un foglio Google per analisi e export Excel</li>
+                  <li><strong>Apri Tally Form</strong> - Visualizza il form di candidatura pubblico</li>
+                  <li><strong>Apri Notion Database</strong> - Accedi al database Notion dove vengono salvate tutte le candidature</li>
+                  <li>Puoi modificare i link in qualsiasi momento dalle <strong>Impostazioni</strong></li>
                 </ul>
               </div>
 
-              <div className="mt-4 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                <h4 className="text-sm font-semibold text-yellow-900 mb-2 flex items-center gap-2">
-                  <FileSpreadsheet className="h-4 w-4" />
-                  Come collegare Google Sheet
-                </h4>
-                <ol className="text-sm text-yellow-800 space-y-1 list-decimal list-inside">
-                  <li>Vai su <strong>Vedi Risposte</strong></li>
-                  <li>Clicca sull&apos;icona verde di Google Sheets in alto a destra</li>
-                  <li>Seleziona <strong>&quot;Crea un nuovo foglio di lavoro&quot;</strong></li>
-                  <li>Le risposte arriveranno automaticamente sul foglio</li>
-                  <li>Puoi scaricare Excel da: File → Scarica → Microsoft Excel</li>
-                </ol>
-              </div>
+              {(!recruitment.tallyFormUrl || !recruitment.notionSheetUrl) && (
+                <div className="mt-4 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                  <h4 className="text-sm font-semibold text-yellow-900 mb-2 flex items-center gap-2">
+                    <Info className="h-4 w-4" />
+                    Configurazione necessaria
+                  </h4>
+                  <p className="text-sm text-yellow-800">
+                    {!recruitment.tallyFormUrl && !recruitment.notionSheetUrl && (
+                      <>Configura il link del form Tally e del database Notion dalle <strong>Impostazioni</strong> per abilitare i link.</>
+                    )}
+                    {!recruitment.tallyFormUrl && recruitment.notionSheetUrl && (
+                      <>Configura il link del form Tally dalle <strong>Impostazioni</strong>.</>
+                    )}
+                    {recruitment.tallyFormUrl && !recruitment.notionSheetUrl && (
+                      <>Configura il link del database Notion dalle <strong>Impostazioni</strong>.</>
+                    )}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         ) : (

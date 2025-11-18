@@ -16,7 +16,8 @@ export default async function RecruitmentSettingsPage() {
     description: recruitment.description ?? undefined,
     requirements: recruitment.requirements ?? undefined,
     benefits: recruitment.benefits ?? undefined,
-    googleFormUrl: recruitment.googleFormUrl ?? undefined,
+    tallyFormUrl: recruitment.tallyFormUrl ?? undefined,
+    notionSheetUrl: recruitment.notionSheetUrl ?? undefined,
     faqs: recruitment.faqs ?? undefined,
   } : undefined
   

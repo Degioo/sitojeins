@@ -2,7 +2,9 @@
 
 export default function CookiePreferencesButton() {
   const handleClick = () => {
-    localStorage.removeItem('cookie_consent')
+    // Rimuove il valore del localStorage che controlla se i cookie sono stati accettati
+    localStorage.removeItem('jeins-cookies-accepted')
+    // Ricarica la pagina per mostrare nuovamente il banner
     window.location.reload()
   }
 

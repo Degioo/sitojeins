@@ -152,7 +152,9 @@ model Recruitment {
   description   String?
   requirements  String?
   benefits      String?
-  googleFormUrl String?
+  googleFormUrl String?  // Deprecato - mantenuto per retrocompatibilità
+  tallyFormUrl  String?
+  notionSheetUrl String?
   faqs          String?  // JSON array as string
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt

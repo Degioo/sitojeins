@@ -10,7 +10,8 @@ const recruitmentSettingsSchema = z.object({
   description: z.string().optional(),
   requirements: z.string().optional(),
   benefits: z.string().optional(),
-  googleFormUrl: z.string().url().optional().or(z.literal('')),
+  tallyFormUrl: z.string().url().optional().or(z.literal('')),
+  notionSheetUrl: z.string().url().optional().or(z.literal('')),
   faqs: z.string().optional(),
 })
 
@@ -36,7 +37,8 @@ export async function POST(request: NextRequest) {
         description: data.description || null,
         requirements: data.requirements || null,
         benefits: data.benefits || null,
-        googleFormUrl: data.googleFormUrl || null,
+        tallyFormUrl: data.tallyFormUrl || null,
+        notionSheetUrl: data.notionSheetUrl || null,
         faqs: data.faqs || null,
       }
     })

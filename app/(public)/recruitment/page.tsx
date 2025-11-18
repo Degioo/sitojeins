@@ -77,7 +77,7 @@ export default async function RecruitmentPage() {
         </div>
       </section>
 
-      {/* Google Form di candidatura */}
+      {/* Tally Form di candidatura */}
       <section className="py-20 section-white relative">
         {/* Elementi decorativi */}
         <div className="decorative-corner top-0 left-0"></div>
@@ -104,11 +104,11 @@ export default async function RecruitmentPage() {
                   Form di Candidatura JEIns
                 </h3>
                 <p className="text-neutral-500 mb-6">
-                  Clicca il pulsante qui sotto per accedere al form di candidatura su Google Forms
+                  Clicca il pulsante qui sotto per accedere al form di candidatura
                 </p>
                 
                 <a
-                  href={recruitment.googleFormUrl || "https://forms.gle/example"}
+                  href={recruitment.tallyFormUrl || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center px-8 py-4 bg-insubria-600 text-white rounded-2xl font-semibold hover:bg-insubria-700 transition-colors text-lg"

@@ -16,7 +16,8 @@ const recruitmentSettingsSchema = z.object({
   description: z.string().optional(),
   requirements: z.string().optional(),
   benefits: z.string().optional(),
-  googleFormUrl: z.string().optional().or(z.literal('')),
+  tallyFormUrl: z.string().url().optional().or(z.literal('')),
+  notionSheetUrl: z.string().url().optional().or(z.literal('')),
   faqs: z.string().optional(),
 })
 
@@ -31,7 +32,8 @@ interface RecruitmentSettingsProps {
     description?: string
     requirements?: string
     benefits?: string
-    googleFormUrl?: string
+    tallyFormUrl?: string
+    notionSheetUrl?: string
     faqs?: string
   }
 }
@@ -62,7 +64,8 @@ export default function RecruitmentSettings({ recruitment }: RecruitmentSettings
       description: recruitment.description || '',
       requirements: recruitment.requirements || '',
       benefits: recruitment.benefits || '',
-      googleFormUrl: recruitment.googleFormUrl || '',
+      tallyFormUrl: recruitment.tallyFormUrl || '',
+      notionSheetUrl: recruitment.notionSheetUrl || '',
       faqs: recruitment.faqs || '',
     } : {
       isOpen: false,
@@ -71,7 +74,8 @@ export default function RecruitmentSettings({ recruitment }: RecruitmentSettings
       description: '',
       requirements: '',
       benefits: '',
-      googleFormUrl: '',
+      tallyFormUrl: '',
+      notionSheetUrl: '',
       faqs: '',
     }
   })
@@ -257,42 +261,79 @@ export default function RecruitmentSettings({ recruitment }: RecruitmentSettings
           </p>
         </div>
 
-        {/* Google Form URL */}
+        {/* Tally Form URL */}
         <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Google Form</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Tally Form</h2>
           <div className="mb-4">
-            <label htmlFor="googleFormUrl" className="block text-sm font-medium text-gray-700 mb-2">
-              URL Google Form
+            <label htmlFor="tallyFormUrl" className="block text-sm font-medium text-gray-700 mb-2">
+              URL Tally Form
             </label>
             <input
-              {...register('googleFormUrl')}
+              {...register('tallyFormUrl')}
               type="text"
-              id="googleFormUrl"
+              id="tallyFormUrl"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-insubria-500 focus:border-insubria-500"
-              placeholder="https://docs.google.com/forms/d/e/1FAIpQLSe.../viewform"
+              placeholder="https://tally.so/r/..."
             />
             <p className="mt-1 text-xs text-gray-500">
-              URL del Google Form per le candidature
+              URL del form Tally per le candidature
             </p>
-            {errors.googleFormUrl && (
+            {errors.tallyFormUrl && (
               <p className="mt-1 text-xs text-red-500">
-                {errors.googleFormUrl.message}
+                {errors.tallyFormUrl.message}
               </p>
             )}
           </div>
 
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <h4 className="text-sm font-semibold text-blue-900 mb-2">📝 Come ottenere il link corretto</h4>
+            <h4 className="text-sm font-semibold text-blue-900 mb-2">📝 Come ottenere il link Tally</h4>
             <ol className="text-sm text-blue-800 space-y-1 list-decimal list-inside">
-              <li>Apri il tuo Google Form</li>
-              <li>Clicca su <strong>&quot;Invia&quot;</strong> in alto a destra</li>
-              <li>Clicca sull&apos;icona del <strong>Link</strong> 🔗</li>
-              <li><strong>NON spuntare</strong> &quot;Abbrevia URL&quot;</li>
-              <li>Copia il link completo (inizia con docs.google.com)</li>
+              <li>Apri il tuo form su Tally</li>
+              <li>Clicca su <strong>&quot;Condividi&quot;</strong> in alto a destra</li>
+              <li>Copia il link pubblico del form</li>
               <li>Incollalo nel campo sopra</li>
             </ol>
             <p className="mt-2 text-xs text-blue-700">
-              ⚠️ Usa il link completo, non il link corto forms.gle
+              💡 Puoi modificare questo link in qualsiasi momento dalle impostazioni
+            </p>
+          </div>
+        </div>
+
+        {/* Notion Sheet URL */}
+        <div className="bg-white rounded-lg border border-gray-200 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Notion Database</h2>
+          <div className="mb-4">
+            <label htmlFor="notionSheetUrl" className="block text-sm font-medium text-gray-700 mb-2">
+              URL Notion Database
+            </label>
+            <input
+              {...register('notionSheetUrl')}
+              type="text"
+              id="notionSheetUrl"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-insubria-500 focus:border-insubria-500"
+              placeholder="https://www.notion.so/..."
+            />
+            <p className="mt-1 text-xs text-gray-500">
+              URL del database Notion dove vengono salvate le candidature
+            </p>
+            {errors.notionSheetUrl && (
+              <p className="mt-1 text-xs text-red-500">
+                {errors.notionSheetUrl.message}
+              </p>
+            )}
+          </div>
+
+          <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+            <h4 className="text-sm font-semibold text-purple-900 mb-2">📝 Come ottenere il link Notion</h4>
+            <ol className="text-sm text-purple-800 space-y-1 list-decimal list-inside">
+              <li>Apri il tuo database su Notion</li>
+              <li>Clicca su <strong>&quot;Condividi&quot;</strong> in alto a destra</li>
+              <li>Assicurati che il database sia accessibile (pubblico o con permessi appropriati)</li>
+              <li>Copia il link del database</li>
+              <li>Incollalo nel campo sopra</li>
+            </ol>
+            <p className="mt-2 text-xs text-purple-700">
+              💡 Puoi modificare questo link in qualsiasi momento dalle impostazioni
             </p>
           </div>
         </div>
